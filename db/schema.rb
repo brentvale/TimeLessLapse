@@ -11,10 +11,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161222143754) do
+ActiveRecord::Schema.define(version: 20161222145537) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "photographs", force: :cascade do |t|
+    t.integer  "timelapse_hub_id"
+    t.integer  "user_id",            null: false
+    t.string   "image_file_name"
+    t.string   "image_content_type"
+    t.integer  "image_file_size"
+    t.datetime "image_updated_at"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "photographs", ["timelapse_hub_id"], name: "index_photographs_on_timelapse_hub_id", using: :btree
+  add_index "photographs", ["user_id"], name: "index_photographs_on_user_id", using: :btree
+
+  create_table "timelapse_hubs", force: :cascade do |t|
+    t.string   "latitude",   limit: 15, null: false
+    t.string   "longitude",  limit: 15, null: false
+    t.string   "hub_name"
+    t.integer  "user_id",               null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "timelapse_hubs", ["user_id"], name: "index_timelapse_hubs_on_user_id", using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false

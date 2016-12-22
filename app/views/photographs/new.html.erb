@@ -1,0 +1,7 @@
+<%= form_for @photograph, url: photographs_path do |form| %>
+	<div style="font-size:1.5em">
+		<%= form.file_field :image %>
+	</div>
+	
+	<%= form.submit 'Submit', class: 'btn btn-primary btn-lg' %>
+<% end %>

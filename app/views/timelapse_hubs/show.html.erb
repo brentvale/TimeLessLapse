@@ -1,0 +1,9 @@
+<h1><%= @hub.hub_name %></h1>
+<ul>
+	<% @photographs.each do |photo| %>
+	<li class="timelapse-image-container">
+		<%= image_tag photo.image %>
+	</li>
+	<% end %>
+</ul>
+

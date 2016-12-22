@@ -10,9 +10,31 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require_tree .
- *= require_self
  */
+
+@import "bootstrap-sprockets";
+@import "bootstrap";
+#map{
+	height: 100%;
+	height: 85vh;
+	width: 100%;
+}
+ul{
+ list-style: none;
+}
 .display-none{
 	display:none;
+}
+.hand-on-hover:hover{
+	cursor:hand;
+	cursor:pointer;
+	content: "New Photo";
+}
+.timelapse-image-container{
+	height:100px;
+	width: 100px;
+	img{
+		max-height:100%;
+		max-width: 100%;
+	}
 }

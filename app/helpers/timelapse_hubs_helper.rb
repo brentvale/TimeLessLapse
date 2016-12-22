@@ -1,0 +1,2 @@
+module TimelapseHubsHelper
+end

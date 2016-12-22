@@ -42,6 +42,8 @@ GEM
       activerecord (>= 2.3.0)
       rake (>= 0.8.7)
     arel (6.0.3)
+    autoprefixer-rails (6.5.4)
+      execjs
     awesome_print (1.7.0)
     aws-sdk (2.6.41)
       aws-sdk-resources (= 2.6.41)
@@ -58,6 +60,9 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.2)
     byebug (9.0.6)
     callsite (0.0.11)
@@ -84,6 +89,7 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.7.0)
+    exifr (1.2.5)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
     factory_girl_rails (4.8.0)
@@ -247,9 +253,11 @@ DEPENDENCIES
   aws-sdk (~> 2.3)
   better_errors
   binding_of_caller
+  bootstrap-sass (~> 3.3.6)
   byebug
   coffee-rails (~> 4.1.0)
   devise (~> 4.2)
+  exifr
   factory_girl_rails
   jbuilder (~> 2.0)
   jquery-rails
