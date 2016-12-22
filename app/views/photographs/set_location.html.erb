@@ -1,5 +1,9 @@
 <p id="hubConfirmation"></p>
-<div id="formSubmission" class="btn btn-primary btn-lg">Yes</div>
+
+<div id="formActions">
+	<div id="formSubmission" class="btn btn-primary btn-lg">Yes</div>
+</div>
+
 <div id="map" data-hub-locations="<%= @hubs %>" data-photo-one-url="<%= image_path('camera_image_32x32.png')%>" data-photo-two-url="<%= image_path('camera_image_32x32_red.png')%>" data-photo-coordinates="<%= @photograph_coords %>" data-photo-id="<%= @photograph.id %>"></div>
 
 <script>
@@ -131,12 +135,35 @@
 	function populateMinDistanceField(){
 		var distanceInFeet = calculateFeetFromMinDistance()
 		var messageToUser;
+		var buttonToCreateNewTimelapseHub;
 		if(distanceInFeet < 2){
-			messageToUser = "Thanks for taking a picture at the " + NEAREST_CAMERA_SPOT_NAME + "! Want to view the whole timelapse now?"
+			messageToUser = "Thanks for taking a picture at the " + NEAREST_CAMERA_SPOT_NAME + "! Want to view the whole timelapse now?";
+			buttonToCreateNewTimelapseHub = "<div></div>";
 		} else {
-			messageToUser = "You were only " +  + " feet away from the" + NEAREST_CAMERA_SPOT_NAME + " hub.  That seem correct?";
+			messageToUser = "You were only " + distanceInFeet + " feet away from the" + NEAREST_CAMERA_SPOT_NAME + " hub.  That seem correct? If not, you can create a new timelapse hub.";
+			buttonToCreateNewTimelapseHub = "<div id='createNewHub' class='btn btn-primary btn-lg'>Create New Hub</div>";
 		}
 		$('#hubConfirmation').html(messageToUser);
+		$('#formActions').append(buttonToCreateNewTimelapseHub);
+		
+		$('#createNewHub').on("click", function(e){
+			e.preventDefault();
+			$.ajax({
+				url: "/timelapse_hubs/new",
+				method: "GET",
+				data: {
+					timelapse_hub: {
+						latitude: "123",
+						longitude: "456"
+					}
+				},
+				success: function(resp){
+					document.open();
+					document.write(resp);
+					document.close();
+				}
+			});
+		});
 		
 		$('#formSubmission').on("click", function(e){
 			e.preventDefault();
@@ -172,9 +199,11 @@
 	
 	function calculateFeetFromMinDistance(){
 		//1000 meters in a km
-		var meters = MIN_DISTANCE / 1000;
+		var meters = MIN_DISTANCE * 1000;
 		//3.28084 feet in a meter
-		var feetAway = meters / 3.28084;
+		var feetAway = meters * 3.28084;
+		
+		feetAway = parseInt(feetAway * 100)/100
 		return feetAway;
 	};
 	

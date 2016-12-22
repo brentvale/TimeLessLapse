@@ -14,4 +14,6 @@
 class TimelapseHub < ActiveRecord::Base
   has_many :photographs
   belongs_to :user
+  
+  validates :hub_name, :longitude, :latitude, presence: true
 end

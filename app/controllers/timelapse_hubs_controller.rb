@@ -3,9 +3,22 @@ class TimelapseHubsController < ApplicationController
   end
 
   def new
+    @hub = TimelapseHub.new(timelapse_hub_params)
   end
 
   def create
+    @hub = TimelapseHub.new(timelapse_hub_params)
+    @hub.user_id = current_user.id
+    if @hub.save
+      last_photo = current_user.photographs.last
+      last_photo.timelapse_hub_id = @hub.id
+      last_photo.save
+      
+      redirect_to timelapse_hub_path(@hub)
+    else
+      flash[:errors] = "unable to save hub"
+      render :new
+    end
   end
 
   def show
