@@ -29,7 +29,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
+gem 'devise',           '~> 4.2'
 gem 'paperclip'
 gem 'aws-sdk', '~> 2.3'
 

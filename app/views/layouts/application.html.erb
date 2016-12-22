@@ -5,10 +5,38 @@
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  
+  <!-- Latest compiled and minified Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
 </head>
 <body>
 
-<%= yield %>
+<div class="container-fluid" style="padding:0">
+	<% if notice %>
+		<p class="notice"><%= notice %></p>
+	<% end %>
+	<% if alert %>
+		<p class="alert"><%= alert %></p>
+	<% end %>
+
+	<%= yield %>
+</div>
+
+
+<script>
+  //manually remove alerts/notices from devise
+  $(function(){
+    setTimeout(function(){
+      $(".notice").addClass("display-none");
+    }, 3000);
+    setTimeout(function(){
+      $(".alert").addClass("display-none");
+    }, 3000);
+		
+  });
+</script>
 
 </body>
 </html>
