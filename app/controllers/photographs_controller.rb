@@ -18,7 +18,7 @@ class PhotographsController < ApplicationController
   def set_location
     @photograph = Photograph.find(params[:id])
     if Rails.env.production?
-      photo = EXIFR::JPEG.new(@photograph.image.url)
+      photo = EXIFR::JPEG.new(@photograph.image.url[2..-1])
     else
       photo = EXIFR::JPEG.new(@photograph.image.path)
     end
