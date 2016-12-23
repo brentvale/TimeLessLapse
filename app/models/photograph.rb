@@ -31,6 +31,6 @@ class Photograph < ActiveRecord::Base
     def production_image_url
       constructed_url = "//timelesslapse.#{self.image.url[2..-1]}"
       constructed_url.gsub("timelesslapse/", "")
-      constructed_url.prepend("http:")
+      
     end
 end
