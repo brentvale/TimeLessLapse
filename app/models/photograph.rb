@@ -28,4 +28,8 @@ class Photograph < ActiveRecord::Base
     content_type: { content_type: ["image/jpeg", "image/jpg"] },
     attachment_size: {less_than: 5.megabytes}
   
+    def production_image_url
+      constructed_url = "//timelesslapse.#{self.image.url}"
+      constructed_url.gsub("timelesslapse/", "")
+    end
 end
