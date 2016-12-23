@@ -6,6 +6,8 @@ Rails.application.routes.draw do
       get 'set_location'
     end
   end
+  
+  get "static_pages/new_hub_instructions", to: "static_pages#new_hub_instructions", as: "/create_hub"
 
   devise_for :users
   

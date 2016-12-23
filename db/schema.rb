@@ -18,13 +18,14 @@ ActiveRecord::Schema.define(version: 20161222145537) do
 
   create_table "photographs", force: :cascade do |t|
     t.integer  "timelapse_hub_id"
-    t.integer  "user_id",            null: false
+    t.integer  "user_id",                        null: false
     t.string   "image_file_name"
     t.string   "image_content_type"
     t.integer  "image_file_size"
     t.datetime "image_updated_at"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "rotation",           default: 0, null: false
   end
 
   add_index "photographs", ["timelapse_hub_id"], name: "index_photographs_on_timelapse_hub_id", using: :btree

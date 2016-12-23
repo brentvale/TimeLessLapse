@@ -1,11 +1,12 @@
 class TimelapseHubsController < ApplicationController
   def index
+    @hubs = current_user.timelapse_hubs
   end
 
   def new
     @hub = TimelapseHub.new(timelapse_hub_params)
   end
-
+  
   def create
     @hub = TimelapseHub.new(timelapse_hub_params)
     @hub.user_id = current_user.id

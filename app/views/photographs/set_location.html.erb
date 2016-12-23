@@ -10,6 +10,7 @@
 	var MIN_DISTANCE;
 	var NEAREST_CAMERA_SPOT_NAME;
 	var SPOT_ID;
+	var PHOTO_COORDS;
 	
 	var map;
 	
@@ -21,7 +22,7 @@
       zoom: 15,
 			mapTypeId: 'terrain'
     });
-		
+		//Bella Vista Ranch Boundaries
 		var outerCoords = [
 		    {lat: 37.417933, lng: -121.760640},
 		    {lat: 37.417958, lng: -121.742680}, 
@@ -148,13 +149,17 @@
 		
 		$('#createNewHub').on("click", function(e){
 			e.preventDefault();
+	
+			var hubLat = parseFloat(PHOTO_COORDS[0]).toFixed(8);
+			var hubLong = parseFloat(PHOTO_COORDS[1]).toFixed(8);
+			
 			$.ajax({
 				url: "/timelapse_hubs/new",
 				method: "GET",
 				data: {
 					timelapse_hub: {
-						latitude: "123",
-						longitude: "456"
+						latitude: hubLat,
+						longitude: hubLong
 					}
 				},
 				success: function(resp){
@@ -208,9 +213,10 @@
 	};
 	
 	function findNearestCameraSpot(pictureSpots){
-		var photoCoords = $('#map').data('photo-coordinates').split("***");
-		var photoLat = parseFloat(photoCoords[0]);
-		var photoLong = parseFloat(photoCoords[1]);
+		PHOTO_COORDS = $('#map').data('photo-coordinates').split("***");
+		
+		var photoLat = parseFloat(PHOTO_COORDS[0]);
+		var photoLong = parseFloat(PHOTO_COORDS[1]);
 		var nameOfSpot = pictureSpots[0][0];
 		
 		var spotId = pictureSpots[0][3];

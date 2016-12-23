@@ -1,7 +1,10 @@
-<%= form_for @photograph, url: photographs_path do |form| %>
-	<div style="font-size:1.5em">
-		<%= form.file_field :image %>
+<div class="col-xs-12">
+	<div class="center-block med-form" style="margin-top: 90px; text-align:center">
+		<%= form_for @photograph, url: photographs_path do |form| %>
+			<div style="font-size:1.5em;text-align:center;">
+				<%= form.file_field :image, class: "center-block small-form" %>
+			</div>
+			<%= form.submit 'Submit', class: 'btn btn-primary btn-lg center-block', style: "margin-top:20px" %>
+		<% end %>
 	</div>
-	
-	<%= form.submit 'Submit', class: 'btn btn-primary btn-lg' %>
-<% end %>
+</div>

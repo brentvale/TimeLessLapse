@@ -1,16 +1,18 @@
-<%= form_for @hub do |form| %>
-  <div class="field">
-    <%= form.label :hub_name %><br />
-    <%= form.text_field :hub_name, autofocus: true %>
-  </div>
-  <div class="field">
-    <%= form.label :latitude %><br />
-    <%= form.text_field :latitude, autofocus: true %>
-  </div>
-  <div class="field">
-    <%= form.label :longitude %><br />
-    <%= form.text_field :longitude, autofocus: true %>
-  </div>
+<div class="col-xs-12">
+	<%= form_for @hub do |form| %>
+	  <div class="field">
+	    <%= form.label :hub_name %><br />
+	    <%= form.text_field :hub_name, autofocus: true %>
+	  </div>
+	  <div class="field">
+	    <%= form.label :latitude %><br />
+	    <%= form.text_field :latitude, autofocus: true %>
+	  </div>
+	  <div class="field">
+	    <%= form.label :longitude %><br />
+	    <%= form.text_field :longitude, autofocus: true %>
+	  </div>
 	
-	<%= form.submit 'Submit', class: 'btn btn-primary btn-lg' %>
-<% end %>
+		<%= form.submit 'Submit', class: 'btn btn-primary btn-lg' %>
+	<% end %>
+</div>
