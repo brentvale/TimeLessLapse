@@ -17,11 +17,7 @@ class PhotographsController < ApplicationController
   
   def set_location
     @photograph = Photograph.find(params[:id])
-    if Rails.env.production?
-      photo = EXIFR::JPEG.new(@photograph.image.url(:small))
-    else
-      photo = EXIFR::JPEG.new(@photograph.image.path(:small))
-    end
+    photo = EXIFR::JPEG.new(@photograph.image)
     #"37.4215***-121.7606" back door coordinates for garden timelapse 
     @photograph_coords = photo.gps.nil? ? "37.4215***-121.7606" : photo.gps.latitude.to_s.concat("***").concat(photo.gps.longitude.to_s) 
     @hubs = current_user.timelapse_hubs.map{|x| "#{x.hub_name}***#{x.latitude}***#{x.longitude}***#{x.id}"}

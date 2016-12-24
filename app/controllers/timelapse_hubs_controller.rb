@@ -1,7 +1,6 @@
 class TimelapseHubsController < ApplicationController
   def index
     @hubs = current_user.timelapse_hubs
-    @photographs = current_user.photographs
   end
 
   def new
