@@ -14,6 +14,8 @@
 #  rotation           :integer          default("0"), not null
 #  latitude           :string
 #  longitude          :string
+#  altitude           :string
+#  image_direction    :string
 #
 
 class Photograph < ActiveRecord::Base
@@ -39,11 +41,10 @@ class Photograph < ActiveRecord::Base
     if exif.nil?
       return
     end
-    self.latitude = exif.exif.gps.latitude
-    self.longitude = exif.exif.gps.longitude
-    self.altitude = exif.exif.gps.altitude
-    self.image_direction = exif.exif.gps.image_direction
-    
+    self.latitude = exif.exif.gps.latitude.to_s
+    self.longitude = exif.exif.gps.longitude.to_s
+    self.altitude = exif.exif.gps.altitude.to_s
+    self.image_direction = exif.exif.gps.image_direction.to_s
     #EXIF DATA
 # {
 # :make => "Apple",

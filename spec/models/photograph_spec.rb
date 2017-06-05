@@ -14,6 +14,8 @@
 #  rotation           :integer          default("0"), not null
 #  latitude           :string
 #  longitude          :string
+#  altitude           :string
+#  image_direction    :string
 #
 
 require 'rails_helper'
