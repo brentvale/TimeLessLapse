@@ -1,3 +1,7 @@
+<!-- 
+@hubs
+@total_images_hash (#number of images per timelpase)  -->
+
 <div class="col-xs-12" style="margin-bottom:50px">
 	<h2 style="width:200px;display:inline-block">Your Hubs</h2>
 	<label>Speed Display (miliseconds between images)<br>
@@ -6,22 +10,29 @@
 </div>
 
 <div class="col-xs-12">
-		
 	<% @hubs.each do |hub| %>
+	
 		<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
 			<h4><%= hub.hub_name %></h4>
 			<div class="timelapse-display" data-hub-id="<%= hub.id %>">
+				<% hub_length = hub.photographs.length %>
 				<% hub.photographs.each_with_index do |pic, idx| %>
-					<% if idx == 0 %>
-						<%= image_tag pic.image.url(:thumb), data: { order_id: idx}, class: "timelapse-image active" %>
-					<% else %>
-						<%= image_tag pic.image.url(:thumb), data: { order_id: idx}, class: "display-none timelapse-image" %>
-					<% end %>
+		
+						<% if idx == 0 %>
+							<div class="timelapse-image active"  data-order-id="<%= idx %>">
+								<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
+								<%= image_tag pic.image.url(:small), data: { order_id: idx} %>
+							</div>
+						<% else %>
+							<div class="display-none timelapse-image" data-order-id="<%= idx %>">
+								<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
+								<%= image_tag pic.image.url(:small), data: { order_id: idx} %>
+							</div>
+						<% end %>
 				<% end %>
 			</div>
-			
 		</div>
-	
+		
 	<% end %>
 </div>
 

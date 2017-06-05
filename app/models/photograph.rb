@@ -27,5 +27,6 @@ class Photograph < ActiveRecord::Base
   validates_attachment :image, 
     content_type: { content_type: ["image/jpeg", "image/jpg"] },
     attachment_size: {less_than: 5.megabytes}
+    
 
 end

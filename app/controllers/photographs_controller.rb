@@ -7,6 +7,7 @@ class PhotographsController < ApplicationController
   def create
     @photograph = Photograph.new(photograph_params)
     @photograph.user_id = current_user.id
+    
     if @photograph.save
       redirect_to set_location_photograph_path(@photograph)
     else
@@ -16,12 +17,19 @@ class PhotographsController < ApplicationController
   end
   
   def set_location
-    @photograph = Photograph.find(params[:id])
-    photo = EXIFR::JPEG.new(@photograph.image)
-    #"37.4215***-121.7606" back door coordinates for garden timelapse 
-    @photograph_coords = photo.gps.nil? ? "37.4215***-121.7606" : photo.gps.latitude.to_s.concat("***").concat(photo.gps.longitude.to_s) 
-    @hubs = current_user.timelapse_hubs.map{|x| "#{x.hub_name}***#{x.latitude}***#{x.longitude}***#{x.id}"}
-  end
+      @photograph = Photograph.find(params[:id])
+      if Rails.env.production?
+        photo = EXIFR::JPEG.new(@photograph.image.url)
+      else
+        photo = EXIFR::JPEG.new(@photograph.image.path)
+      end
+      puts "**********"
+      puts photo
+      puts "**********"
+      #"37.4215***-121.7606" back door coordinates for garden timelapse
+      @photograph_coords = photo.gps.nil? ? "37.4215***-121.7606" : photo.gps.latitude.to_s.concat("***").concat(photo.gps.longitude.to_s)
+      @hubs = current_user.timelapse_hubs.map{|x| "#{x.hub_name}***#{x.latitude}***#{x.longitude}***#{x.id}"}
+    end
   
   def update
     @photograph = Photograph.find(params[:id])

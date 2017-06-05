@@ -6,6 +6,9 @@ class CreatePhotographs < ActiveRecord::Migration
       t.attachment :image
       t.timestamps null: false
       t.integer :rotation, null: false, default: 0
+      t.string :latitude
+      t.string :longitude
+      
     end
     add_index :photographs, :timelapse_hub_id
     add_index :photographs, :user_id

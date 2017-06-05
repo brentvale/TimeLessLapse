@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20161222145537) do
     t.datetime "created_at",                     null: false
     t.datetime "updated_at",                     null: false
     t.integer  "rotation",           default: 0, null: false
+    t.string   "latitude"
+    t.string   "longitude"
   end
 
   add_index "photographs", ["timelapse_hub_id"], name: "index_photographs_on_timelapse_hub_id", using: :btree
