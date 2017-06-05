@@ -32,5 +32,85 @@ class Photograph < ActiveRecord::Base
     content_type: { content_type: ["image/jpeg", "image/jpg"] },
     attachment_size: {less_than: 5.megabytes}
     
+  after_image_post_process :load_exif
+  
+  def load_exif
+    exif = EXIFR::JPEG.new(self.image.queued_for_write[:original])
+    if exif.nil?
+      return
+    end
+    self.latitude = exif.exif.gps.latitude
+    self.longitude = exif.exif.gps.longitude
+    self.altitude = exif.exif.gps.altitude
+    self.image_direction = exif.exif.gps.image_direction
+    
+    #EXIF DATA
+# {
+# :make => "Apple",
+# :model => "iPhone 6s Plus",
+# :orientation => #<EXIFR::TIFF::Orientation:TopLeft(1)>,
+# :x_resolution => 72/1,
+# :y_resolution => 72/1,
+# :resolution_unit => 2,
+# :software => "10.3.2",
+# :date_time => 2017-06-01 10:00:39 -0700,
+# :ycb_cr_positioning => 1,
+# :exposure_time => 1/1399,
+# :f_number => 11/5,
+# :exposure_program => 2,
+# :iso_speed_ratings => 25,
+# :date_time_original => 2017-06-01 10:00:39 -0700,
+# :date_time_digitized => 2017-06-01 10:00:39 -0700,
+# :shutter_speed_value => 1/1398,
+# :aperture_value => 2.2,
+# :brightness_value => 982/95,
+# :exposure_bias_value => 0/1,
+# :metering_mode => 5,
+# :flash => 24,
+# :focal_length => 83/20,
+# :subject_area => [
+# [0] 2015,
+# [1] 1511,
+# [2] 2217,
+# [3] 1330
+# ],
+# :subsec_time_original => "777",
+# :subsec_time_digitized => "777",
+# :color_space => 1,
+# :pixel_x_dimension => 4032,
+# :pixel_y_dimension => 3024,
+# :sensing_method => 2,
+# :exposure_mode => 0,
+# :white_balance => 0,
+# :focal_length_in_35mm_film => 29,
+# :scene_capture_type => 0,
+# :gps_latitude_ref => "N",
+# :gps_latitude => [
+# [0] 37/1,
+# [1] 25/1,
+# [2] 1731/100
+# ],
+# :gps_longitude_ref => "W",
+# :gps_longitude => [
+# [0] 121/1,
+# [1] 45/1,
+# [2] 1917/50
+# ],
+# :gps_altitude_ref => "\x00",
+# :gps_altitude => 459345/626,
+# :gps_time_stamp => [
+# [0] 17/1,
+# [1] 0/1,
+# [2] 39/1
+# ],
+# :gps_speed_ref => "K",
+# :gps_speed => 0/1,
+# :gps_img_direction_ref => "T",
+# :gps_img_direction => 50178/215,
+# :gps_dest_bearing_ref => "T",
+# :gps_dest_bearing => 50178/215,
+# :gps_date_stamp => "2017:06:01"
+# }
+  end
 
 end

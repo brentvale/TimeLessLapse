@@ -7,11 +7,7 @@ class PhotographsController < ApplicationController
   def create
     @photograph = Photograph.new(photograph_params)
     @photograph.user_id = current_user.id
-
-    photo = EXIFR::JPEG.new(photograph_params[:image])
-    @photograph.latitude = photo.gps.latitude.to_s
-    @photograph.longitude = photo.gps.longitutde.to_s
-    
+  
     if @photograph.save
       redirect_to set_location_photograph_path(@photograph)
     else
@@ -24,7 +20,7 @@ class PhotographsController < ApplicationController
       @photograph = Photograph.find(params[:id])
       @photograph_coords = @photograph.latitude.concat("***").concat(@photograph.longitude)
       @hubs = current_user.timelapse_hubs.map{|x| "#{x.hub_name}***#{x.latitude}***#{x.longitude}***#{x.id}"}
-    end
+  end
   
   def update
     @photograph = Photograph.find(params[:id])
