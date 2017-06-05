@@ -141,7 +141,7 @@
 			messageToUser = "Thanks for taking a picture at the " + NEAREST_CAMERA_SPOT_NAME + "! Want to view the whole timelapse now?";
 			buttonToCreateNewTimelapseHub = "<div></div>";
 		} else {
-			messageToUser = "You were only " + distanceInFeet + " feet away from the" + NEAREST_CAMERA_SPOT_NAME + " hub.  That seem correct? If not, you can create a new timelapse hub.";
+			messageToUser = "You were only " + distanceInFeet + " feet away from the " + NEAREST_CAMERA_SPOT_NAME + " hub.  That seem correct? If not, you can create a new timelapse hub.";
 			buttonToCreateNewTimelapseHub = "<div id='createNewHub' class='btn btn-primary btn-lg'>Create New Hub</div>";
 		}
 		$('#hubConfirmation').html(messageToUser);
@@ -231,7 +231,6 @@
 				spotId = pictureSpots[i][3];
 			}
 		}
-		
 		return [nameOfSpot, minDistance, spotId];
 	};
 	
