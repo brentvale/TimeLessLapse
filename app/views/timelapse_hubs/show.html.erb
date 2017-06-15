@@ -1,12 +1,16 @@
-<div class="col-xs-12">
-	<h2><%= @hub.hub_name %></h2>
-	<%= render partial: "partials/speed_display" %>
-	<div class="timelapse-display" data-hub-id="<%= @hub.id %>">
+<div class="col-xs-12" style="margin-top:4em">
+	<div class="col-xs-12 col-sm-6">
+		<h2 style="text-align:center"><%= @hub.hub_name %></h2>
+		<div style="text-align:right;padding-top:200px">
+			<%= render partial: "partials/speed_display" %>
+		</div>
+	</div>
+	<div class="timelapse-display col-xs-12 col-sm-6" data-hub-id="<%= @hub.id %>" style="border:1px solid #767676;border-radius:4px;text-align:center">
 		<% hub_length = @hub.photographs.length %>
 		<% @hub.photographs.each_with_index do |pic, idx| %>
 
 				<% if idx == 0 %>
-					<div class="timelapse-image active"  data-order-id="<%= idx %>">
+					<div class="timelapse-image active"  data-order-id="<%= idx %>" style="">
 						<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
 						<%= image_tag pic.image.url(:small), data: { order_id: idx} %>
 					</div>
