@@ -22,12 +22,12 @@
 						<% if idx == 0 %>
 							<div class="timelapse-image active"  data-order-id="<%= pic.order_number - 1 %>">
 								<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
-								<%= image_tag pic.image.url(:small), data: { order_id: idx} %>
+								<%= image_tag pic.image.url(:small), data: { order_id: 0} %>
 							</div>
 						<% else %>
 							<div class="display-none timelapse-image" data-order-id="<%= pic.order_number - 1 %>">
 								<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
-								<%= image_tag pic.image.url(:small), data: { order_id: idx} %>
+								<%= image_tag pic.image.url(:small), data: { order_id: (pic.order_number - 1)} %>
 							</div>
 						<% end %>
 				<% end %>
