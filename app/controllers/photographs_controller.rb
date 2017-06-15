@@ -30,7 +30,7 @@ class PhotographsController < ApplicationController
     @photograph = Photograph.find(params[:id])
     if @photograph.update_attributes(photograph_params)
       respond_to do |format|
-        format.html { redirect_to timelapse_hubs_path(@photograph.timelapse_hub_id) }
+        format.html { redirect_to timelapse_hub_path(@photograph.timelapse_hub_id) }
         format.json { render json: {photograph: @photograph} }
       end
     else
