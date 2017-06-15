@@ -1,4 +1,5 @@
 class PhotographsController < ApplicationController
+  before_action :authenticate_user!
   def new
     @photograph = Photograph.new
     @hubs = current_user.timelapse_hubs

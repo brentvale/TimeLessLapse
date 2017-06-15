@@ -1,4 +1,5 @@
 class TimelapseHubsController < ApplicationController
+  before_action :authenticate_user!
   def index
     @hubs = current_user.timelapse_hubs
   end

@@ -1,5 +1,21 @@
-<div class="col-xs-12">
-	<%= link_to "Take Photo ->", new_photograph_path %><br>
-	<%= link_to "Create Hub ->", create_hub_path %><br>
-	<%= link_to "View Your Timelapses ->", timelapse_hubs_path %><br>
-</div>
+<% if user_signed_in? %>
+	<div class="col-xs-12">
+		<%= link_to "Take Photo ->", new_photograph_path %><br>
+		<%= link_to "Create Hub ->", create_hub_path %><br>
+		<%= link_to "View Your Timelapses ->", timelapse_hubs_path %><br>
+	</div>
+<% else %>
+	<div class="col-xs-12" style="text-align:center;margin-top:50px">
+		<h2><%= @hub.hub_name %></h2>
+		<div style="width:50%;margin-left:auto;margin-right:auto">
+			<%= render partial: "partials/timelapse_hub_show", locals: {data: {class_name: "col-xs-12"}} %>
+		</div>		
+	</div>
+	
+	<div class="col-xs-12" style="text-align:center;">
+		<%= render partial: "partials/speed_display" %>
+	</div>
+	
+	<%= render partial: "partials/timelapse_javascript" %>
+<% end %>
+
