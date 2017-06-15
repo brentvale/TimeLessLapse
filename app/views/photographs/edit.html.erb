@@ -1,0 +1,12 @@
+<div class="col-xs-12">
+	<div class="center-block med-form" style="margin-top: 90px; text-align:center">
+		<%= form_for @photograph, url: photograph_path(@photograph) do |form| %>
+			<div style="font-size:1.5em;text-align:center;">
+				<%= form.file_field :image, class: "center-block small-form" %>
+			</div>
+			<%= form.label :order_number %>
+			<%= form.text_field :order_number %>
+			<%= form.submit 'Submit', class: 'btn btn-primary btn-lg center-block', style: "margin-top:20px" %>
+		<% end %>
+	</div>
+</div>

@@ -1,10 +1,38 @@
 <div class="col-xs-12">
 	<h2><%= @hub.hub_name %></h2>
+	<%= render partial: "partials/speed_display" %>
+	<div class="timelapse-display" data-hub-id="<%= @hub.id %>">
+		<% hub_length = @hub.photographs.length %>
+		<% @hub.photographs.each_with_index do |pic, idx| %>
+
+				<% if idx == 0 %>
+					<div class="timelapse-image active"  data-order-id="<%= idx %>">
+						<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
+						<%= image_tag pic.image.url(:small), data: { order_id: idx} %>
+					</div>
+				<% else %>
+					<div class="display-none timelapse-image" data-order-id="<%= idx %>">
+						<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
+						<%= image_tag pic.image.url(:small), data: { order_id: idx} %>
+					</div>
+				<% end %>
+		<% end %>
+	</div>
 	<ul>
 		<% @photographs.each do |photo| %>
 		<li class="timelapse-image-container">
-			<%= image_tag photo.image.url(:small) %>
+			<%= image_tag photo.image.url(:small) %>&nbsp;&nbsp;&nbsp;<%= link_to "Edit this image", edit_photograph_path(photo) %>&nbsp;&nbsp;&nbsp;
+			<div style="display:inline-block">
+				order number: <%= photo.order_number %>
+				lat: <%= photo.latitude %><br>
+				long: <%= photo.longitude %><br>
+				rotation: <%= photo.rotation %><br>
+				altitude: <%= photo.altitude %><br>
+				image_direction: <%= photo.image_direction %>
+			</div>
 		</li>
 		<% end %>
 	</ul>
 </div>
+
+<%= render partial: "partials/timelapse_javascript" %>

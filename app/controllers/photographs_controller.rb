@@ -22,10 +22,17 @@ class PhotographsController < ApplicationController
       @hubs = current_user.timelapse_hubs.map{|x| "#{x.hub_name}***#{x.latitude}***#{x.longitude}***#{x.id}"}
   end
   
+  def edit
+    @photograph = Photograph.find(params[:id])
+  end
+  
   def update
     @photograph = Photograph.find(params[:id])
     if @photograph.update_attributes(photograph_params)
-      render json: {photograph: @photograph}
+      respond_to do |format|
+        format.html { redirect_to timelapse_hubs_path(@photograph.timelapse_hub_id) }
+        format.json { render json: {photograph: @photograph} }
+      end
     else
       render json: {message: "something went wrong"}
     end
