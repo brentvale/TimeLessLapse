@@ -7,7 +7,7 @@
 	</div>
 	<div class="timelapse-display col-xs-12 col-sm-6" data-hub-id="<%= @hub.id %>" style="border:1px solid #767676;border-radius:4px;text-align:center">
 		<% hub_length = @hub.photographs.length %>
-		<% @hub.photographs.each_with_index do |pic, idx| %>
+		<% @photographs.each_with_index do |pic, idx| %>
 
 				<% if idx == 0 %>
 					<div class="timelapse-image active"  data-order-id="<%= pic.order_number - 1 %>" style="">
