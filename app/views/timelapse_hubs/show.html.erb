@@ -27,7 +27,7 @@
 		<li class="timelapse-image-container">
 			<%= image_tag photo.image.url(:small) %>&nbsp;&nbsp;&nbsp;<%= link_to "Edit this image", edit_photograph_path(photo) %>&nbsp;&nbsp;&nbsp;
 			<div style="display:inline-block">
-				order number: <%= photo.order_number %>
+				order number: <%= photo.order_number %><br>
 				lat: <%= photo.latitude %><br>
 				long: <%= photo.longitude %><br>
 				rotation: <%= photo.rotation %><br>

@@ -24,7 +24,7 @@ class TimelapseHubsController < ApplicationController
 
   def show
     @hub = TimelapseHub.find(params[:id])
-    @photographs = @hub.photographs
+    @photographs = @hub.photographs.sort_by {|x| x.order_number}
     respond_to :html, :json
   end
   

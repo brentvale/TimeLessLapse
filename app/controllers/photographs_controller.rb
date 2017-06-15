@@ -41,7 +41,7 @@ class PhotographsController < ApplicationController
   private
   
   def photograph_params
-    params.require(:photograph).permit(:timelapse_hub_id, :image)
+    params.require(:photograph).permit(:timelapse_hub_id, :image, :order_number)
   end
 
 end
