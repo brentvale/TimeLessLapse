@@ -17,9 +17,9 @@
 
 $fade-time: .5s;
 #map{
-	height: 100%;
+	display:block;
 	height: 85vh;
-	width: 100%;
+	width: 90%;
 }
 ul{
  list-style: none;
@@ -30,6 +30,9 @@ ul{
 }
 .active{
 	animation: fade-in $fade-time forwards;
+}
+.capitalize{
+	text-transform: capitalize;
 }
 .center-block{
 	margin-left: auto;
@@ -61,10 +64,16 @@ ul{
 .display-none{
 	animation: fade-out $fade-time forwards;
 }
+#formActions{
+	margin-bottom: 15px;
+}
 .hand-on-hover:hover{
 	cursor:hand;
 	cursor:pointer;
 	content: "New Photo";
+}
+.hub-button, .hub-select{
+	margin: 15px;
 }
 .timelapse-display{
 	position:relative;

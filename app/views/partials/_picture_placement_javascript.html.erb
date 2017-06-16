@@ -1,0 +1,241 @@
+<script>
+	var MIN_DISTANCE;
+	var NEAREST_CAMERA_SPOT_NAME;
+	var SPOT_ID;
+	var PHOTO_COORDS;
+	
+	var $map = $("#map");
+	
+	var HUBS = $map.data("hub-locations");
+	
+	var coordsArrayFromPhoto = $map.data("photo-coordinates").split("***");
+	var LAT = parseFloat(coordsArrayFromPhoto[0]);
+	var LNG = parseFloat(coordsArrayFromPhoto[1]);
+	
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: LAT, lng: LNG},
+      zoom: 18,
+			mapTypeId: 'hybrid'
+    });
+		
+		setMarkers(map);
+  }
+	
+	// Data for the markers consisting of a name, a LatLng and a zIndex for the
+  // order in which these markers should display on top of each other.
+	
+  function pictureSpotsFromHubs(){
+		var pictureSpotsArray = [];
+		for(var i = 0; i< HUBS.length; i ++){
+			pictureSpotsArray.push(JSON.parse(HUBS[i]));
+		}
+	  return pictureSpotsArray;
+  };
+	
+  function setMarkers(map) {
+    // Adds markers to the map.
+
+    // Marker sizes are expressed as a Size of X,Y where the origin of the image
+    // (0,0) is located in the top left of the image.
+
+    // Origins, anchor positions and coordinates of the marker increase in the X
+    // direction to the right and in the Y direction down.
+		var photoImageUrl = $('#map').data('photo-one-url');
+		var photoImageUrlRed = $('#map').data('photo-two-url');
+		
+    var image = {
+      url: photoImageUrl,
+      // This marker is 32 pixels wide by 32 pixels high.
+      size: new google.maps.Size(32, 32),
+      // The origin for this image is (0, 0).
+      origin: new google.maps.Point(0, 0),
+      // The anchor for this image is the base of the flagpole at (0, 32).
+      anchor: new google.maps.Point(0, 32)
+    };
+    var imageTwo = {
+      url: photoImageUrlRed,
+      // This marker is 32 pixels wide by 32 pixels high.
+      size: new google.maps.Size(32, 32),
+      // The origin for this image is (0, 0).
+      origin: new google.maps.Point(0, 0),
+      // The anchor for this image is the base of the flagpole at (0, 32).
+      anchor: new google.maps.Point(0, 32)
+    };
+    // Shapes define the clickable region of the icon. The type defines an HTML
+    // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+    // The final coordinate closes the poly by connecting to the first coordinate.
+    var shape = {
+      coords: [1, 1, 1, 20, 18, 20, 18, 1],
+      type: 'poly'
+    };
+		var pictureSpots = pictureSpotsFromHubs();
+		
+		//If user has no hubs and no previous pictures
+		if(pictureSpots.length > 0){
+			var returnedArray = findNearestCameraSpot(pictureSpots);
+		
+			NEAREST_CAMERA_SPOT_NAME = returnedArray[0]; 
+			MIN_DISTANCE = returnedArray[1];
+			SPOT_ID = returnedArray[2];
+
+	    for (var i = 0; i < pictureSpots.length; i++) {
+				var spot = pictureSpots[i];
+				if(NEAREST_CAMERA_SPOT_NAME === pictureSpots[i][0]){
+		      var marker = new google.maps.Marker({
+		        position: {lat: parseFloat(spot.latitude), lng: parseFloat(spot.longitude)},
+		        map: map,
+						//USE RED IMAGE FOR CLOSEST CAMERA SPOT
+		        icon: imageTwo,
+		        shape: shape,
+		        title: spot.hub_name
+		      });
+				} else {
+		      var marker = new google.maps.Marker({
+		        position: {lat: parseFloat(spot.latitude), lng: parseFloat(spot.longitude)},
+		        map: map,
+		        icon: image,
+		        shape: shape,
+		        title: spot.hub_name
+		      });
+				}
+	    }
+			populateTextToUser({firstHub: false});
+		}else{
+			//user's first picture
+      var marker = new google.maps.Marker({
+        position: {lat: LAT, lng: LNG},
+        map: map,
+				//USE RED IMAGE FOR CLOSEST CAMERA SPOT
+        icon: imageTwo,
+        shape: shape
+      });
+			populateTextToUser({firstHub: true});
+		}
+  };
+	
+	function populateTextToUser(obj){
+		var buttonToCreateNewTimelapseHub = "<div id='createNewHub' class='btn btn-success btn-lg hub-button'>Create New Hub</div>";
+		
+		if(!obj.firstHub){
+			//create button for each hub that exists for user
+			var buttonsArray = [];
+			for(var i = 0; i < HUBS.length; i ++){
+				var hubData = JSON.parse(HUBS[i]);
+				var div = document.createElement("div");
+				div.className = "btn btn-primary btn-lg capitalize hub-select";
+				div.setAttribute("data-hub-id", hubData.id);
+				div.setAttribute("data-hub-lat", hubData.latitude);
+				div.setAttribute("data-hub-lng", hubData.longitude);
+				div.innerHTML = "add to " + hubData.hub_name.toLowerCase();
+				buttonsArray.push(div)
+			}
+		}
+	
+		$('#formActions').append(buttonToCreateNewTimelapseHub).append(buttonsArray);
+		setCreationListeners();
+	};
+	
+	function setCreationListeners(){
+		$('#createNewHub').on("click", function(e){
+			e.preventDefault();
+			
+			$.ajax({
+				url: "/timelapse_hubs/new",
+				method: "GET",
+				data: {
+					timelapse_hub: {
+						latitude: LAT.toFixed(8),
+						longitude: LNG.toFixed(8)
+					}
+				},
+				success: function(resp){
+					document.open();
+					document.write(resp);
+					document.close();
+				}
+			});
+		});
+		
+		//changes to be which 
+		$('.hub-select').on("click", function(e){
+			e.preventDefault();
+			var photoId = $("#map").data("photo-id");
+
+			$.ajax({
+				url: "/photographs/" + photoId,
+				method: "PATCH",
+				data: {
+					photograph:{
+						timelapse_hub_id: parseInt($(e.currentTarget).attr("data-hub-id"))
+					}
+				},
+				dataType: 'json',
+				success: function(resp){
+					$.ajax({
+						url: "/timelapse_hubs/" + resp.photograph.timelapse_hub_id,
+						method: "GET",
+						success: function(resp){
+							document.open();
+							document.write(resp);
+							document.close();
+						},
+						error: function(){
+							console.log("unable to redirect to show the timelapse at the hub");
+						},
+					})
+				},
+				error: function(){
+					console.log("unable to update photo with timelapse hub id");
+				},
+			})
+		})
+	}
+	
+	function calculateFeetFromMinDistance(){
+		//1000 meters in a km
+		var meters = MIN_DISTANCE * 1000;
+		//3.28084 feet in a meter
+		var feetAway = meters * 3.28084;
+		
+		feetAway = parseInt(feetAway * 100)/100
+		return feetAway;
+	};
+	
+	function findNearestCameraSpot(pictureSpots){
+		PHOTO_COORDS = $('#map').data('photo-coordinates').split("***");
+		
+		var photoLat = parseFloat(PHOTO_COORDS[0]);
+		var photoLong = parseFloat(PHOTO_COORDS[1]);
+		var nameOfSpot = pictureSpots[0][0];
+		
+		var spotId = pictureSpots[0][3];
+		
+		var minDistance = distance(photoLat, photoLong, pictureSpots[0][1], pictureSpots[0][2]);
+		
+		for(var i = 1; i < pictureSpots.length; i++){
+			var newDistance = distance(photoLat, photoLong, pictureSpots[i][1], pictureSpots[i][2]);
+			if(newDistance < minDistance){
+				minDistance = newDistance;
+				nameOfSpot = pictureSpots[i][0];
+				spotId = pictureSpots[i][3];
+			}
+		}
+		return [nameOfSpot, minDistance, spotId];
+	};
+	
+	function distance(lat1, lon1, lat2, lon2) {
+		//returns distance between two lat longs IN KILOMETERS
+		var radlat1 = Math.PI * lat1/180
+		var radlat2 = Math.PI * lat2/180
+		var theta = lon1-lon2
+		var radtheta = Math.PI * theta/180
+		var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+		dist = Math.acos(dist)
+		dist = dist * 180/Math.PI
+		dist = dist * 60 * 1.1515
+		dist = dist * 1.609344
+		return dist
+	};
+	
+</script>

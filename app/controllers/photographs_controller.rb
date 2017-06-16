@@ -20,7 +20,7 @@ class PhotographsController < ApplicationController
   def set_location
       @photograph = Photograph.find(params[:id])
       @photograph_coords = @photograph.latitude.concat("***").concat(@photograph.longitude)
-      @hubs = current_user.timelapse_hubs.map{|x| "#{x.hub_name}***#{x.latitude}***#{x.longitude}***#{x.id}"}
+      @hubs = current_user.timelapse_hubs.map{|x| {hub_name: "#{x.hub_name}", latitude: "#{x.latitude}", longitude: "#{x.longitude}", id:"#{x.id}"}.to_json}
   end
   
   def edit
@@ -29,6 +29,8 @@ class PhotographsController < ApplicationController
   
   def update
     @photograph = Photograph.find(params[:id])
+    count = TimelapseHub.find(params[:photograph][:timelapse_hub_id]).photographs.count
+    @photograph.order_number = count + 1
     if @photograph.update_attributes(photograph_params)
       respond_to do |format|
         format.html { redirect_to timelapse_hub_path(@photograph.timelapse_hub_id) }
