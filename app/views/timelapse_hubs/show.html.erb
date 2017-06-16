@@ -6,9 +6,9 @@
 		</div>
 	</div>
 	
-	<%= render partial: "partials/timelapse_hub_show", locals: {data: {class_name: "col-xs-12 col-sm-6"}} %>
+	<%= render partial: "partials/timelapse_hub_show", locals: {data: {class_name: "col-xs-12 col-sm-6", hub: @hub, photographs: @photographs}} %>
 	
-	<ul>
+	<ul style="display:inline-block;margin-top:200px">
 		<% @photographs.each do |photo| %>
 		<li class="timelapse-image-container">
 			<%= image_tag photo.image.url(:small) %>&nbsp;&nbsp;&nbsp;<%= link_to "Edit this image", edit_photograph_path(photo) %>&nbsp;&nbsp;&nbsp;

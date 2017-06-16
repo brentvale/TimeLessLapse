@@ -1,17 +1,13 @@
-	<div class="timelapse-display <%= data[:class_name] %>" data-hub-id="<%= @hub.id %>" style="border:1px solid #767676;border-radius:4px;text-align:center;">
-		<% hub_length = @hub.photographs.length %>
-		<% @photographs.each_with_index do |pic, idx| %>
-
-				<% if idx == 0 %>
-					<div class="timelapse-image active"  data-order-id="<%= pic.order_number - 1 %>" >
-						<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
-						<%= image_tag pic.image.url(:small), data: { order_id: 0} %>
-					</div>
-				<% else %>
-					<div class="display-none timelapse-image" data-order-id="<%= pic.order_number - 1 %>">
-						<p>Picture <%= idx + 1 %> of <%= hub_length %></p>
-						<%= image_tag pic.image.url(:small), data: { order_id: (pic.order_number - 1)} %>
-					</div>
-				<% end %>
-		<% end %>
-	</div>
+<div class="timelapse-display <%= data[:class_name] %>" data-hub-id="<%= data[:hub].id %>" style="border:1px solid #767676;border-radius:4px;text-align:center;">
+	
+	<p id="picSequenceDisplay"></p>
+	
+	<% hub_length = data[:photographs].length %>
+	<% data[:photographs].each_with_index do |pic, idx| %>
+			<% if idx == 0 %>
+					<%= image_tag pic.image.url(:small), data: { order_id: 0}, class: "timelapse-image active" %>
+			<% else %>	
+					<%= image_tag pic.image.url(:small), data: { order_id: (pic.order_number - 1)}, class: "display-none timelapse-image" %>
+			<% end %>
+	<% end %>
+</div>
