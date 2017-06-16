@@ -75,25 +75,26 @@ ul{
 .hub-button, .hub-select{
 	margin: 15px;
 }
+#landingTimelapseContainer{
+	width:90%;
+	margin-left:auto;
+	margin-right:auto
+}
 .timelapse-display{
 	position:relative;
-	height:500px;
-	width: 500px;
+	height:300px;
+	width: 300px;
 	.timelapse-image{
 		left:0;
 		right:0;
 		margin-left:auto;
 		margin-right:auto;
 		position:absolute;
+		max-height:80%;
+		max-width: 80%;
 	}
 }
 
-.timelapse-image-container{
-	img{
-		max-height:100%;
-		max-width: 100%;
-	}
-}
 //FORMS
 .med-form{
 	width: 400px;
@@ -102,10 +103,30 @@ ul{
 	width: 300px;
 }
 
+//MEDIA QUERIES
+//SCREEN SIZES
+$screen-lg-min: 1200px;
+$screen-md-min: 992px;
+$screen-sm-min: 768px;
 
+$screen-xs-min: 500px;
 
+@media (min-width: $screen-xs-min){
+	.timelapse-display{
+		position:relative;
+		height:500px;
+		width: 500px;
+		.timelapse-image{
+			max-height:100%;
+			max-width: 100%;
+		}
+	}
+}
 
-
-
-
-
+@media (min-width: $screen-sm-min) { 
+	#landingTimelapseContainer{
+		width:60%;
+		margin-left:auto;
+		margin-right:auto
+	}
+}

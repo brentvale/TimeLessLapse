@@ -7,7 +7,7 @@
 <% else %>
 	<div class="col-xs-12" style="text-align:center;margin-top:50px">
 		<h2><%= @hub.hub_name %></h2>
-		<div style="width:50%;margin-left:auto;margin-right:auto">
+		<div id="landingTimelapseContainer">
 			<%= render partial: "partials/timelapse_hub_show", locals: {data: {class_name: "col-xs-12", hub: @hub, photographs: @photographs}} %>
 		</div>		
 	</div>
