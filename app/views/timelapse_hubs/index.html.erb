@@ -15,7 +15,7 @@
 		<div class="col-xs-12 col-sm-6">
 			<%= link_to "#{hub.hub_name}", timelapse_hub_path(hub) %>
 			
-			<%= render partial: "partials/timelapse_hub_show", locals: {data: {class_name: "col-xs-12 ", hub: hub, photographs: hub.photographs}} %>
+			<%= render partial: "partials/timelapse_hub_show", locals: {data: {class_name: "col-xs-12 ", hub: hub, photographs: @photographs[hub.id]}} %>
 		</div>
 		
 	<% end %>

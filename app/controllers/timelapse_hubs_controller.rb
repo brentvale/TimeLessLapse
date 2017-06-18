@@ -1,7 +1,11 @@
 class TimelapseHubsController < ApplicationController
   before_action :authenticate_user!
   def index
-    @hubs = current_user.timelapse_hubs
+    @hubs = current_user.timelapse_hubs.includes(:photographs)
+    @photographs = {}
+    @hubs.each do |hub|
+      @photographs[hub.id] = hub.photographs
+    end
   end
 
   def new
