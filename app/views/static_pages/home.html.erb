@@ -1,8 +1,6 @@
 <% if user_signed_in? %>
 	<div class="col-xs-12">
-		<%= link_to "Take Photo ->", new_photograph_path %><br>
-		<%= link_to "Create Hub ->", create_hub_path %><br>
-		<%= link_to "View Your Timelapses ->", timelapse_hubs_path %><br>
+		<div id="root"></div>
 	</div>
 <% else %>
 	<div class="col-xs-12" style="text-align:center;margin-top:50px">

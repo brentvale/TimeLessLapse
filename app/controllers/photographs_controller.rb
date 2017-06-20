@@ -10,7 +10,7 @@ class PhotographsController < ApplicationController
     @photograph.user_id = current_user.id
   
     if @photograph.save
-      redirect_to set_location_photograph_path(@photograph)
+      render json: {photograph: @photograph}
     else
       flash[:errors] = "Unable to Save Photograph"
       render :new
