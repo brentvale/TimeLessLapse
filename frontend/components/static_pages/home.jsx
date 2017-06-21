@@ -1,7 +1,7 @@
 import React from 'react';
 
 //COMPONENTS
-import {Link, Route} from 'react-router-dom';
+import { Link } from 'react-router';
 
 import TimelapseIndex from '../timelapse/index.jsx';
 
@@ -18,9 +18,9 @@ class Home extends React.Component{
 						Take Photo >>
 					</div>
 				</Link>
-				<Link to="/create_hub">
+				<Link to="/your_hubs">
 					<div className="text-3d heading" >
-						Create Hub >>
+						Your Hubs >>
 					</div>
 				</Link>
 				

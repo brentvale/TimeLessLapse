@@ -1,6 +1,6 @@
 import React from 'react';
 import {Navbar} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
+import {Link} from 'react-router';
 
 const NavHeader = () => (
   <Navbar.Header>

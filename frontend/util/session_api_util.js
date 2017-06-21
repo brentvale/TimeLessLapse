@@ -26,13 +26,4 @@ export const logout = () => (
   })
 );
 
-export const facebookLogin = () => {
-
-	
-	$.ajax({
-		url: "#{window.location.protocol}//connect.facebook.net/en_US/all.js",
-    dataType: 'script',
-    cache: true
-	})
-}
 	

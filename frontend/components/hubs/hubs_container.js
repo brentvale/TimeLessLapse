@@ -1,26 +1,19 @@
 import { connect } from 'react-redux';
+import * as HubActions from '../../actions/hub_actions';
+import { getAllHubs } from '../../reducers/selectors';
 
-import HubIndex from './hub_index.jsx';
+import HubIndex from './hub_index';
 
 
-const mapStateToProps = ({ session }) => {
-  // return {
-  //   loggedIn: Boolean(session.currentUser),
-  //   errors: session.errors
-  // }
-};
+const mapStateToProps = state => ({
+	hubs: getAllHubs(state)
+});
 
-const mapDispatchToProps = (dispatch, { location }) => {
-	//   const formType = location.pathname.slice(1);
-	// const processForm = (formType === 'login') ? login : signup;
-	//   return {
-	//     processForm: user => dispatch(processForm(user)),
-	// 	fbLogin: () => dispatch(facebookLogin()),
-	//     formType
-	//   };
-};
+const mapDispatchToProps = dispatch => ({
+  requestHubs: () => dispatch(HubActions.requestHubs())
+});
 
 export default connect(
-  null,
-  null
+  mapStateToProps,
+  mapDispatchToProps
 )(HubIndex);

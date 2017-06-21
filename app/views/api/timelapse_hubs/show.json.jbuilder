@@ -1,0 +1,1 @@
+json.partial! '/api/timelapse_hubs/hub', hub: @hub, photographs: @photographs

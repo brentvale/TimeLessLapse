@@ -8,4 +8,8 @@ class StaticPagesController < ApplicationController
   
   def new_hub_instructions
   end
+  
+  def fetch_map_image
+    render json: {image_url: ActionController::Base.helpers.asset_path('camera_image_32x32.png')}
+  end
 end

@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>TimeLessLapse</title>
+	
+	<%= javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyDRb8dyf99yBGaxLMSQUggf0ql4wV8yGTE"%>
   <%= stylesheet_link_tag    'application', media: 'all' %>
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
@@ -10,18 +12,24 @@
   
   <!-- Latest compiled and minified Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css">
+	
+	<link href='https://fonts.googleapis.com/css?family=Raleway:100,400' rel='stylesheet' type='text/css'>
 </head>
-<body>
+<body id="main">
 
 <div class="container-fluid" style="padding:0">
+	<%= render 'partials/navbar' %>
+	
 	<% if notice %>
-		<p class="notice"><%= notice %></p>
+		<p class="notice" role="alert"><%= notice %></p>
 	<% end %>
 	<% if alert %>
-		<p class="alert"><%= alert %></p>
+		<p class="alert" role="alert"><%= alert %></p>
 	<% end %>
-	<%= render 'partials/navbar' %>
-	<%= yield %>
+	<div style="margin-top: 50px">
+		<%= yield %>
+	</div>
+	
 </div>
 
 
@@ -29,10 +37,10 @@
   //manually remove alerts/notices from devise
   $(function(){
     setTimeout(function(){
-      $(".notice").addClass("display-none");
+      $(".notice").addClass("remove-element");
     }, 3000);
     setTimeout(function(){
-      $(".alert").addClass("display-none");
+      $(".alert").addClass("remove-element");
     }, 3000);
 		
   });

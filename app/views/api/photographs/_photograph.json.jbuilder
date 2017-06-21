@@ -1,0 +1,1 @@
+json.extract! photograph, :id, :user_id, :image, :created_at, :updated_at, :rotation, :latitude, :longitude, :altitude, :image_direction, :timelapse_hub_id
