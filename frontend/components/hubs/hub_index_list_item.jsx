@@ -93,8 +93,8 @@ class HubIndexListItem extends React.Component{
 																																 onChange={this.handleChange} /> : 
 																													<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
 																				
-		if(hub.photographs.count === 0){
-			
+		if(hub.photographs.length === 0){
+			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
 		}									
 		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/> : 
 																														<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>

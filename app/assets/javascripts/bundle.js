@@ -54895,7 +54895,14 @@
 					hub.hub_name
 				);
 	
-				if (hub.photographs.count === 0) {}
+				if (hub.photographs.length === 0) {
+					return _react2.default.createElement(
+						'div',
+						null,
+						'Not photographs with timelapse_hub with id ',
+						hub.id
+					);
+				}
 				var imageToUse = this.state.lessThanTabletBreakSize ? _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' }) : _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' });
 				var mainContent = _react2.default.createElement(
 					'div',
