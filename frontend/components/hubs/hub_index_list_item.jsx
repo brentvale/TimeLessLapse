@@ -92,7 +92,10 @@ class HubIndexListItem extends React.Component{
 																																 value={this.state.nameField} 
 																																 onChange={this.handleChange} /> : 
 																													<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
-																													
+																				
+		if(hub.photographs.count === 0){
+			
+		}									
 		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/> : 
 																														<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
 		let mainContent = <div className={klass} onMouseEnter={this.handleNextImage} 

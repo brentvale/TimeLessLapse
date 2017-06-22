@@ -50,8 +50,6 @@ class HubShow extends React.Component{
 		let spanKlass = "bold";
 		let that = this;
 		
-		
-		debugger
 		return(
 			<div>
 				<TakePhotoLink />

@@ -14,19 +14,20 @@ class HubIndex extends React.Component{
 	render(){
 		let {hubs} = this.props;
 		if(hubs.length === 0){
-			return <div>
+			return (<div>
 									<p>No Hubs Have Been Created Yet, Take a photo to create your first hub.</p>
 									<TakePhotoLink />
-						 </div>
+				</div>);
+		} else {
+			return(
+				<div>
+					<TakePhotoLink />
+					{hubs.map((hub) => {
+						return <HubIndexListItem key={hub.id} hub={hub} klass="col-xs-12 col-md-6 align-center" onIndexView={true}/>
+					})}
+				</div>
+			);
 		}
-		return(
-			<div>
-				<TakePhotoLink />
-				{hubs.map((hub) => {
-					return <HubIndexListItem key={hub.id} hub={hub} klass="col-xs-12 col-md-6 align-center" onIndexView={true}/>
-				})}
-			</div>
-		)
 	}
 };
 
