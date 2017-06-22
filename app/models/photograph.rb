@@ -16,6 +16,8 @@
 #  longitude          :string
 #  altitude           :string
 #  image_direction    :string
+#  order_number       :integer
+#  datetime_digitized :datetime
 #
 
 class Photograph < ActiveRecord::Base
@@ -45,6 +47,8 @@ class Photograph < ActiveRecord::Base
     self.longitude = exif.exif.gps.longitude.to_s
     self.altitude = exif.exif.gps.altitude.to_s
     self.image_direction = exif.exif.gps.image_direction.to_s
+    self.datetime_digitized = exif.exif.date_time_digitized.to_datetime.in_time_zone('Pacific Time (US & Canada)')
+    
     #EXIF DATA
 # {
 # :make => "Apple",

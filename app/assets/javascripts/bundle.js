@@ -55351,6 +55351,18 @@
 					'div',
 					{ style: { padding: "1em" } },
 					_react2.default.createElement('i', { className: 'fa fa-spinner fa-pulse fa-3x fa-fw' }),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'span',
+						null,
+						'Uploading Image...'
+					),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'span',
+						null,
+						'This can take a while, check your browser for upload progress (bottom left)'
+					),
 					_react2.default.createElement(
 						'span',
 						{ className: 'sr-only' },

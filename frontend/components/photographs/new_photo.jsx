@@ -213,7 +213,9 @@ class NewPhoto extends React.Component{
 		let yourHubsLink = (this.state.step === 1) ? <YourHubsLink /> : ""
 		
 		let spinnerUploadDisplay = (this.state.spinning) ? <div style={{padding:"1em"}}>
-																													<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+																													<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
+																													<span>Uploading Image...</span><br/>
+																													<span>This can take a while, check your browser for upload progress (bottom left)</span>
 																													<span className="sr-only">Uploading Image...</span>
 																											</div>: "";
 		return(

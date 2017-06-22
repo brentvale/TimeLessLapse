@@ -16,6 +16,8 @@
 #  longitude          :string
 #  altitude           :string
 #  image_direction    :string
+#  order_number       :integer
+#  datetime_digitized :datetime
 #
 
 require 'rails_helper'

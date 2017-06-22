@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170622042846) do
+ActiveRecord::Schema.define(version: 20170622181149) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,6 +31,7 @@ ActiveRecord::Schema.define(version: 20170622042846) do
     t.string   "altitude"
     t.string   "image_direction"
     t.integer  "order_number"
+    t.datetime "datetime_digitized"
   end
 
   add_index "photographs", ["timelapse_hub_id"], name: "index_photographs_on_timelapse_hub_id", using: :btree
