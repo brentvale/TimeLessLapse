@@ -55083,17 +55083,6 @@
 									_react2.default.createElement(
 										'span',
 										{ className: spanKlass },
-										'rotation:'
-									),
-									' ',
-									photo.rotation
-								),
-								_react2.default.createElement(
-									'p',
-									null,
-									_react2.default.createElement(
-										'span',
-										{ className: spanKlass },
 										'photo taken at:'
 									),
 									' ',
