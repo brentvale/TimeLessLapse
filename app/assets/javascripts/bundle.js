@@ -55027,6 +55027,7 @@
 					);
 				}
 	
+				var spanKlass = "bold";
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -55057,26 +55058,55 @@
 								_react2.default.createElement(
 									'p',
 									{ style: { marginTop: "1em" } },
-									'latitude: ',
+									_react2.default.createElement(
+										'span',
+										{ className: spanKlass },
+										'latitude:'
+									),
+									' ',
 									photo.latitude
 								),
 								_react2.default.createElement(
 									'p',
 									null,
-									'longitude: ',
+									_react2.default.createElement(
+										'span',
+										{ className: spanKlass },
+										'longitude:'
+									),
+									' ',
 									photo.longitude
 								),
 								_react2.default.createElement(
 									'p',
 									null,
-									'rotation: ',
+									_react2.default.createElement(
+										'span',
+										{ className: spanKlass },
+										'rotation:'
+									),
+									' ',
 									photo.rotation
 								),
 								_react2.default.createElement(
 									'p',
 									null,
-									'created date: ',
-									photo.created_at.slice(0, 10)
+									_react2.default.createElement(
+										'span',
+										{ className: spanKlass },
+										'photo taken at:'
+									),
+									' ',
+									photo.datetime_digitized.slice(11, 19),
+									' ',
+									_react2.default.createElement(
+										'span',
+										{ className: spanKlass },
+										'on'
+									),
+									' ',
+									photo.datetime_digitized.slice(0, 10),
+									' '
 								)
 							);
 						})
