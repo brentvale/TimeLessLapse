@@ -77,7 +77,7 @@ class HubIndexListItem extends React.Component{
 		let mainContent = <div className={klass} onMouseEnter={this.handleNextImage} 
 																						 onMouseLeave={this.stopFlipping} 
 																						 onTouchStart={this.handleNextImage} 
-																						 onTouchCancel={this.stopFlipping}>
+																						 onTouchEnd={this.stopFlipping}>
 												{titleEditingField}
 												<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
 											</div>;

@@ -54875,7 +54875,7 @@
 					{ className: klass, onMouseEnter: this.handleNextImage,
 						onMouseLeave: this.stopFlipping,
 						onTouchStart: this.handleNextImage,
-						onTouchCancel: this.stopFlipping },
+						onTouchEnd: this.stopFlipping },
 					titleEditingField,
 					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' })
 				);
