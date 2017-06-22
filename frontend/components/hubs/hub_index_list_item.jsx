@@ -74,7 +74,10 @@ class HubIndexListItem extends React.Component{
 																																 value={this.state.nameField} 
 																																 onChange={this.handleChange} /> : 
 																													<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
-		let mainContent = <div className={klass} onMouseEnter={this.handleNextImage} onMouseLeave={this.stopFlipping}>
+		let mainContent = <div className={klass} onMouseEnter={this.handleNextImage} 
+																						 onMouseLeave={this.stopFlipping} 
+																						 onTouchStart={this.handleNextImage} 
+																						 onTouchCancel={this.stopFlipping}>
 												{titleEditingField}
 												<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
 											</div>;
