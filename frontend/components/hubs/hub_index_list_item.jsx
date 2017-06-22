@@ -1,6 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+//GLOBAL VARIABLES
+import { tabletBreakPoint } from '../../util/global_variables';
+
 class HubIndexListItem extends React.Component{
 	constructor(){
 		super();
@@ -8,7 +11,8 @@ class HubIndexListItem extends React.Component{
 			currentImageIndex: 0,
 			interval: 500,
 			editingHubName: false,
-			nameField: ""
+			nameField: "",
+			lessThanTabletBreakSize: window.innerWidth < tabletBreakPoint
 		}
 		this.stopFlipping = this.stopFlipping.bind(this);
 		this.handleNextImage = this.handleNextImage.bind(this);
@@ -16,14 +20,28 @@ class HubIndexListItem extends React.Component{
 		this.changeHubName = this.changeHubName.bind(this);
 		this.handleFocus = this.handleFocus.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
+		this.changeStateSizeIfBreakpointReached = this.changeStateSizeIfBreakpointReached.bind(this);
 	}
 	
 	componentDidMount(){
+		window.addEventListener('resize', this.changeStateSizeIfBreakpointReached);
 		this.setState({nameField: this.props.hub.hub_name});
+	}
+	
+	componentWillUnmount(){
+		window.removeEventListener('resize', this.changeStateSizeIfBreakpointReached);
 	}
 	
 	changeHubName(){
 		this.setState({editingHubName: true})
+	}
+	
+	changeStateSizeIfBreakpointReached(){
+		if(window.innerWidth < tabletBreakPoint){
+			this.setState({lessThanTabletBreakSize: true});
+		} else {
+			this.setState({lessThanTabletBreakSize: false});
+		}
 	}
 	
 	handleChange(e){
@@ -74,12 +92,15 @@ class HubIndexListItem extends React.Component{
 																																 value={this.state.nameField} 
 																																 onChange={this.handleChange} /> : 
 																													<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
+																													
+		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/> : 
+																														<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
 		let mainContent = <div className={klass} onMouseEnter={this.handleNextImage} 
 																						 onMouseLeave={this.stopFlipping} 
 																						 onTouchStart={this.handleNextImage} 
 																						 onTouchEnd={this.stopFlipping}>
 												{titleEditingField}
-												<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
+												{imageToUse}
 											</div>;
 											
 		if(onIndexView){

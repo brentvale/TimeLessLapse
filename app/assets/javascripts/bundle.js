@@ -54765,6 +54765,8 @@
 	
 	var _reactRouter = __webpack_require__(217);
 	
+	var _global_variables = __webpack_require__(580);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54772,6 +54774,9 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	//GLOBAL VARIABLES
+	
 	
 	var HubIndexListItem = function (_React$Component) {
 		_inherits(HubIndexListItem, _React$Component);
@@ -54785,7 +54790,8 @@
 				currentImageIndex: 0,
 				interval: 500,
 				editingHubName: false,
-				nameField: ""
+				nameField: "",
+				lessThanTabletBreakSize: window.innerWidth < _global_variables.tabletBreakPoint
 			};
 			_this.stopFlipping = _this.stopFlipping.bind(_this);
 			_this.handleNextImage = _this.handleNextImage.bind(_this);
@@ -54793,18 +54799,34 @@
 			_this.changeHubName = _this.changeHubName.bind(_this);
 			_this.handleFocus = _this.handleFocus.bind(_this);
 			_this.handleKeyPress = _this.handleKeyPress.bind(_this);
+			_this.changeStateSizeIfBreakpointReached = _this.changeStateSizeIfBreakpointReached.bind(_this);
 			return _this;
 		}
 	
 		_createClass(HubIndexListItem, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				window.addEventListener('resize', this.changeStateSizeIfBreakpointReached);
 				this.setState({ nameField: this.props.hub.hub_name });
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				window.removeEventListener('resize', this.changeStateSizeIfBreakpointReached);
 			}
 		}, {
 			key: 'changeHubName',
 			value: function changeHubName() {
 				this.setState({ editingHubName: true });
+			}
+		}, {
+			key: 'changeStateSizeIfBreakpointReached',
+			value: function changeStateSizeIfBreakpointReached() {
+				if (window.innerWidth < _global_variables.tabletBreakPoint) {
+					this.setState({ lessThanTabletBreakSize: true });
+				} else {
+					this.setState({ lessThanTabletBreakSize: false });
+				}
 			}
 		}, {
 			key: 'handleChange',
@@ -54870,6 +54892,8 @@
 					{ className: 'heading-block', onClick: this.changeHubName },
 					hub.hub_name
 				);
+	
+				var imageToUse = this.state.lessThanTabletBreakSize ? _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' }) : _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' });
 				var mainContent = _react2.default.createElement(
 					'div',
 					{ className: klass, onMouseEnter: this.handleNextImage,
@@ -54877,7 +54901,7 @@
 						onTouchStart: this.handleNextImage,
 						onTouchEnd: this.stopFlipping },
 					titleEditingField,
-					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' })
+					imageToUse
 				);
 	
 				if (onIndexView) {
@@ -54985,6 +55009,12 @@
 	
 	var _hub_map2 = _interopRequireDefault(_hub_map);
 	
+	var _hub_show_photo_display = __webpack_require__(701);
+	
+	var _hub_show_photo_display2 = _interopRequireDefault(_hub_show_photo_display);
+	
+	var _global_variables = __webpack_require__(580);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -54992,6 +55022,9 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	//GLOBAL VARIABLES
+	
 	
 	var HubShow = function (_React$Component) {
 		_inherits(HubShow, _React$Component);
@@ -55001,15 +55034,33 @@
 	
 			var _this = _possibleConstructorReturn(this, (HubShow.__proto__ || Object.getPrototypeOf(HubShow)).call(this));
 	
-			_this.state = {};
+			_this.state = {
+				lessThanTabletBreakSize: window.innerWidth < _global_variables.tabletBreakPoint
+			};
 			_this.saveHubName = _this.saveHubName.bind(_this);
+			_this.changeStateSizeIfBreakpointReached = _this.changeStateSizeIfBreakpointReached.bind(_this);
 			return _this;
 		}
 	
 		_createClass(HubShow, [{
 			key: 'componentDidMount',
 			value: function componentDidMount() {
+				window.addEventListener('resize', this.changeStateSizeIfBreakpointReached);
 				this.props.requestHub(this.props.hubId);
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				window.removeEventListener('resize', this.changeStateSizeIfBreakpointReached);
+			}
+		}, {
+			key: 'changeStateSizeIfBreakpointReached',
+			value: function changeStateSizeIfBreakpointReached() {
+				if (window.innerWidth < _global_variables.tabletBreakPoint) {
+					this.setState({ lessThanTabletBreakSize: true });
+				} else {
+					this.setState({ lessThanTabletBreakSize: false });
+				}
 			}
 		}, {
 			key: 'saveHubName',
@@ -55031,6 +55082,7 @@
 				}
 	
 				var spanKlass = "bold";
+				var that = this;
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -55054,53 +55106,7 @@
 						'div',
 						{ className: 'col-xs-12' },
 						hub.photographs.map(function (photo) {
-							return _react2.default.createElement(
-								'div',
-								{ className: 'col-xs-12', key: photo.id, style: { textAlign: "center", marginBottom: "4em" } },
-								_react2.default.createElement('img', { src: photo.small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' }),
-								_react2.default.createElement(
-									'p',
-									{ style: { marginTop: "1em" } },
-									_react2.default.createElement(
-										'span',
-										{ className: spanKlass },
-										'latitude:'
-									),
-									' ',
-									photo.latitude
-								),
-								_react2.default.createElement(
-									'p',
-									null,
-									_react2.default.createElement(
-										'span',
-										{ className: spanKlass },
-										'longitude:'
-									),
-									' ',
-									photo.longitude
-								),
-								_react2.default.createElement(
-									'p',
-									null,
-									_react2.default.createElement(
-										'span',
-										{ className: spanKlass },
-										'photo taken at:'
-									),
-									' ',
-									photo.datetime_digitized.slice(11, 19),
-									' ',
-									_react2.default.createElement(
-										'span',
-										{ className: spanKlass },
-										'on'
-									),
-									' ',
-									photo.datetime_digitized.slice(0, 10),
-									' '
-								)
-							);
+							return _react2.default.createElement(_hub_show_photo_display2.default, { key: photo.id, photo: photo, lessThanTabletBreakSize: that.state.lessThanTabletBreakSize, spanKlass: spanKlass });
 						})
 					)
 				);
@@ -77559,6 +77565,103 @@
 	};
 	
 	exports.default = hubsReducer;
+
+/***/ }),
+/* 701 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	var HubShowPhotoDisplay = function (_Component) {
+		_inherits(HubShowPhotoDisplay, _Component);
+	
+		function HubShowPhotoDisplay() {
+			_classCallCheck(this, HubShowPhotoDisplay);
+	
+			return _possibleConstructorReturn(this, (HubShowPhotoDisplay.__proto__ || Object.getPrototypeOf(HubShowPhotoDisplay)).apply(this, arguments));
+		}
+	
+		_createClass(HubShowPhotoDisplay, [{
+			key: "render",
+			value: function render() {
+				var _props = this.props,
+				    photo = _props.photo,
+				    spanKlass = _props.spanKlass,
+				    lessThanTabletBreakSize = _props.lessThanTabletBreakSize;
+	
+				var imageDisplay = lessThanTabletBreakSize ? _react2.default.createElement("img", { src: photo.thumbnail_image, style: { height: "150px", width: "200px" }, className: "drop-shadow" }) : _react2.default.createElement("img", { src: photo.small_image, style: { height: "300px", width: "400px" }, className: "drop-shadow" });
+				return _react2.default.createElement(
+					"div",
+					{ className: "col-xs-12", style: { textAlign: "center", marginBottom: "4em" } },
+					imageDisplay,
+					_react2.default.createElement(
+						"p",
+						{ style: { marginTop: "1em" } },
+						_react2.default.createElement(
+							"span",
+							{ className: spanKlass },
+							"latitude:"
+						),
+						" ",
+						photo.latitude
+					),
+					_react2.default.createElement(
+						"p",
+						null,
+						_react2.default.createElement(
+							"span",
+							{ className: spanKlass },
+							"longitude:"
+						),
+						" ",
+						photo.longitude
+					),
+					_react2.default.createElement(
+						"p",
+						null,
+						_react2.default.createElement(
+							"span",
+							{ className: spanKlass },
+							"photo taken at:"
+						),
+						" ",
+						photo.datetime_digitized.slice(11, 19),
+						" ",
+						_react2.default.createElement(
+							"span",
+							{ className: spanKlass },
+							"on"
+						),
+						" ",
+						photo.datetime_digitized.slice(0, 10),
+						" "
+					)
+				);
+			}
+		}]);
+	
+		return HubShowPhotoDisplay;
+	}(_react.Component);
+	
+	exports.default = HubShowPhotoDisplay;
 
 /***/ })
 /******/ ]);
