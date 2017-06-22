@@ -55080,9 +55080,10 @@
 						'Fetching Hub'
 					);
 				}
-	
 				var spanKlass = "bold";
 				var that = this;
+	
+				debugger;
 				return _react2.default.createElement(
 					'div',
 					null,

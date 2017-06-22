@@ -47,9 +47,11 @@ class HubShow extends React.Component{
 		if(!hub){
 			return <div>Fetching Hub</div>
 		}
-		
 		let spanKlass = "bold";
 		let that = this;
+		
+		
+		debugger
 		return(
 			<div>
 				<TakePhotoLink />
