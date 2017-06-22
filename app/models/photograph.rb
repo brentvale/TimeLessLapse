@@ -55,7 +55,7 @@ class Photograph < ActiveRecord::Base
     self.longitude = exif.exif.gps.longitude.to_s
     self.altitude = exif.exif.gps.altitude.to_s
     self.image_direction = exif.exif.gps.image_direction.to_s
-    self.datetime_digitized = exif.exif.date_time_digitized.to_datetime.in_time_zone('Pacific Time (US & Canada)')
+    self.datetime_digitized = exif.exif.date_time_digitized.to_datetime
     
     #EXIF DATA
 # {
