@@ -54686,6 +54686,7 @@
 			value: function render() {
 				var hubs = this.props.hubs;
 	
+				console.log('hubs.length is ' + hubs.length);
 				if (hubs.length === 0) {
 					return _react2.default.createElement(
 						'div',

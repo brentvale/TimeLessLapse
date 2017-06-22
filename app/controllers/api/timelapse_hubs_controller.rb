@@ -3,7 +3,7 @@ class Api::TimelapseHubsController < ApplicationController
     @hubs = current_user.timelapse_hubs.includes(:photographs)
     @photographs = {}
     @hubs.each do |hub|
-      @photographs[hub.id] = hub.photographs.sort_by {|x| x.order_number}
+      @photographs[hub.id] = hub.photographs
     end
     render :index
   end
