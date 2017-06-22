@@ -196,7 +196,7 @@ class NewPhoto extends React.Component{
 		let marginTop, photographDisplay;
 		if(this.state.photograph){
 			photographDisplay = <div className="photo-container" style={{}}>
-														<img src={this.state.photograph.image} 
+														<img src={this.state.photograph.small_image} 
 															 alt="Newly Uploaded Image" 
 															 style={{height:"150px", width:"200px"}}/>
 														<div style={{marginTop: "0.5em"}}>

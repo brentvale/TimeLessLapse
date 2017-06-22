@@ -14,7 +14,10 @@ class HubIndex extends React.Component{
 	render(){
 		let {hubs} = this.props;
 		if(hubs.length === 0){
-			return <div>No Hubs Have Been Created Yet</div>
+			return <div>
+									<p>No Hubs Have Been Created Yet, Take a photo to create your first hub.</p>
+									<TakePhotoLink />
+						 </div>
 		}
 		return(
 			<div>

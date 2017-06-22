@@ -45,7 +45,7 @@ class HubShow extends React.Component{
 				<div className="col-xs-12">
 					{hub.photographs.map((photo) => {
 						return <div className="col-xs-12" key={photo.id} style={{textAlign:"center", marginBottom: "4em"}}>
-											<img src={photo.image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
+											<img src={photo.small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
 											<p style={{marginTop: "1em"}}>latitude: {photo.latitude}</p>
 											<p>longitude: {photo.longitude}</p>
 											<p>rotation: {photo.rotation}</p>

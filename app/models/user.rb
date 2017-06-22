@@ -27,4 +27,5 @@ class User < ActiveRecord::Base
          
   has_many :timelapse_hubs
   has_many :photographs
+  
 end

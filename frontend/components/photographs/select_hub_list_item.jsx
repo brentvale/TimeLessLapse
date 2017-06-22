@@ -19,7 +19,7 @@ class SelectHubListItem extends React.Component {
 	
 	render(){
 		let { hub } = this.props;
-		let hubImageSrc = (typeof hub.photographs[0] === "undefined") ? "" : hub.photographs[0].image;
+		let hubImageSrc = (typeof hub.photographs[0] === "undefined") ? "" : hub.photographs[0].thumbnail_image;
 		
 		let containerKlass = "center-block hub-select-container box-with-shadow";
 		let circleButtonKlass = "circle-button center-block hand-on-hover";
