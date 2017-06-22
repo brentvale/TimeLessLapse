@@ -13,3 +13,18 @@ export const fetchHub = (id) => (
     url: `/api/timelapse_hubs/${id}`
   })
 );
+
+export const updateHub = ({hub, hubName}) => (
+	$.ajax({
+		url: `api/timelapse_hubs/${hub.id}`,
+		method: 'PATCH',
+		data: {
+			timelapse_hub: {
+				hub_name: hubName
+			}
+		}
+	})
+);
+	
+
+

@@ -16,6 +16,12 @@ export function requestHub(id){
 	};
 }
 
+export function updateHub(hubObj){
+	return(dispatch) => {
+		return util.updateHub(hubObj).then(obj => dispatch(receiveHub(obj))).then(hubObj.callback());
+	}
+}
+
 //sync actions
 export const receiveHubs = (obj) => ({
   type: RECEIVE_HUBS,

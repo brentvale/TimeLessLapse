@@ -15,7 +15,8 @@ const mapStateToProps = (state, { params }) => {
 };
 
 const mapDispatchToProps = dispatch => ({
-	requestHub: (id) => dispatch(HubActions.requestHub(id))
+	requestHub: (id) => dispatch(HubActions.requestHub(id)),
+	updateHub: (obj) => dispatch(HubActions.updateHub(obj))
 });
 
 export default connect(

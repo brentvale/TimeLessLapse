@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   
   namespace :api do 
     resources :photographs, only: [:create, :index, :update]
-    resources :timelapse_hubs, only: [:index, :show]
+    resources :timelapse_hubs, only: [:index, :show, :create, :update]
   end
   
   get "static_pages/new_hub_instructions", to: "static_pages#new_hub_instructions", as: "/create_hub"

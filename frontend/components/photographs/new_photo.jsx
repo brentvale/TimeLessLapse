@@ -8,6 +8,7 @@ import {Button, Modal} from 'react-bootstrap';
 import FileInput from 'react-file-input';
 import * as ReactKonva from 'react-konva';
 import SelectHub from './select_hub';
+import YourHubsLink from '../shared/links/your_hubs_link';
 
 class NewPhoto extends React.Component{
 	constructor(){
@@ -18,15 +19,18 @@ class NewPhoto extends React.Component{
 			imagePreview: null,
 			photograph: null,
 			showModal: false,
-			selectedHubId: null
+			selectedHubId: null,
+			spinning: false
 		};
 		this.close = this.close.bind(this);
+		this.createNewHub = this.createNewHub.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleConfirmed = this.handleConfirmed.bind(this);
 		this.handleUnConfirmed = this.handleUnConfirmed.bind(this);
 		this.handleSelectHub = this.handleSelectHub.bind(this);
 		this.navigateToTimelapseHub = this.navigateToTimelapseHub.bind(this);
+		this.navigateToTimelapseHubs = this.navigateToTimelapseHub.bind(this);
 		this.open = this.open.bind(this);
 		this.updatePhotographWithHubId = this.updatePhotographWithHubId.bind(this);
 	}
@@ -39,7 +43,30 @@ class NewPhoto extends React.Component{
   	this.setState({ showModal: true });
   }
 	
+  navigateToTimelapseHub(hubId) {
+    this.props.router.push(`hubs/${hubId}`);
+  }
+	
 	createNewHub(e){
+		let that = this;
+		$.ajax({
+			url: "api/timelapse_hubs",
+			method: "POST",
+			data: {
+				timelapse_hub: {
+					latitude: this.state.photograph.latitude.slice(0,13),
+					longitude: this.state.photograph.longitude.slice(0,13),
+					hub_name: "Click to Add Hub Name",
+					first_photograph_id: this.state.photograph.id
+				}
+			},
+			success: (resp) => {	
+			  that.navigateToTimelapseHub(resp);
+			},
+			error: (resp) => {
+				
+			}
+		});
 		alert(`creating new hub and using photograph with id: ${this.state.photograph.id}
 																							  latitude: ${this.state.photograph.latitude}
 																							 longitude: ${this.state.photograph.longitude}`);
@@ -67,8 +94,10 @@ class NewPhoto extends React.Component{
 		this.setState({selectedHub: null, showModal: false})
 	}
 	
-	handleSelectHub(e){
-		const targetHubId = $(e.currentTarget).data("hub-id");
+	handleSelectHub(obj){
+		const targetHubId = $(obj.e.currentTarget).data("hub-id");
+		console.log(targetHubId);
+		obj.callback();
 		this.setState({selectedHubId: targetHubId, showModal: true});
 	}
 	
@@ -91,7 +120,7 @@ class NewPhoto extends React.Component{
 	      contentType: false,
 	      dataType: 'json',
 				success: (resp) => {
-					that.setState({step: 2, photograph: resp})
+					that.setState({step: 2, photograph: resp, spinning: false})
 				},
 				error: (resp) => {
 					console.log("errored out creating the photo")
@@ -102,10 +131,11 @@ class NewPhoto extends React.Component{
     if (this.state.uploadedFile) {
       reader.readAsDataURL(this.state.uploadedFile);
     } 
+		this.setState({spinning: true});
   }
 	
-  navigateToTimelapseHub() {
-    this.props.router.push("/your_hubs");
+  navigateToTimelapseHubs() {
+    this.props.router.push("/");
   }
 	
 	stepFromState(){
@@ -128,7 +158,7 @@ class NewPhoto extends React.Component{
 									{imagePreview}
 				          <FileInput name="companyDocument"
 				                     accept=".jpg,.jpeg,.pdf"
-				                     className="image-upload"
+				                     className="image-upload hand-on-hover"
 				                     onChange={this.handleChange}
 														 placeholder="Upload Photograph"/>
 									
@@ -153,7 +183,7 @@ class NewPhoto extends React.Component{
       	}
       },
 			success: (resp) => {
-				that.navigateToTimelapseHub();
+				that.navigateToTimelapseHub(resp.timelapse_hub_id);
 			},
 			error: (resp) => {
 				console.log(resp.message);
@@ -172,7 +202,7 @@ class NewPhoto extends React.Component{
 														<div style={{marginTop: "0.5em"}}>
 															<p>Select the timelapse hub this photo goes with or...</p>
 															<hr style={{marginTop: 0, marginBottom: 0}}/>
-															<div className="button button-med button-create">Create New Hub</div>
+															<div className="button button-med button-create hand-on-hover" onClick={this.createNewHub}>Create New Hub</div>
 														</div>
 													</div>;
 			marginTop = "18em";
@@ -180,30 +210,44 @@ class NewPhoto extends React.Component{
 			photographDisplay = "";
 			marginTop = "0em";
 		}
-
+		let yourHubsLink = (this.state.step === 1) ? <YourHubsLink /> : ""
+		
+		let spinnerUploadDisplay = (this.state.spinning) ? <div style={{padding:"1em"}}>
+																													<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+																													<span className="sr-only">Uploading Image...</span>
+																											</div>: "";
 		return(
-			<div style={{textAlign:"center", paddingTop: "3em"}}>
-				
-				{photographDisplay}
-				
-				<div style={{marginTop: marginTop}}>{display}</div>
-				
-				<Modal show={this.state.showModal} onHide={this.close}>
-          <Modal.Header closeButton>
-            <Modal.Title style={{textAlign:"center"}}>Are you sure this picture goes with the hub: {this.state.selectedHub}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body style={{height: "10em"}}>
-						<div className="col-xs-12">
-							<div className="col-xs-6" style={{textAlign: "center"}}>
-								<div className="button button-med button-create" onClick={this.handleConfirmed}>Yes</div>
+			<div>
+				<div style={{textAlign:"left"}}>
+					{yourHubsLink}
+				</div>
+				<div style={{textAlign:"center", paddingTop: "3em"}}>
+			
+					{photographDisplay}
+					
+					<div style={{marginTop: marginTop}}>
+						{display}
+						{spinnerUploadDisplay}
+					</div>
+			
+					<Modal show={this.state.showModal} onHide={this.close}>
+		        <Modal.Header closeButton>
+		          <Modal.Title style={{textAlign:"center"}}>Are you sure this picture goes with this hub?</Modal.Title>
+		        </Modal.Header>
+		        <Modal.Body style={{height: "10em"}}>
+							<div className="col-xs-12">
+								<div className="col-xs-6" style={{textAlign: "center"}}>
+									<div className="button button-med button-create" onClick={this.handleConfirmed}>Yes</div>
+								</div>
+								<div className="col-xs-6" style={{textAlign: "center"}}>
+									<div className="button button-med button-undo" onClick={this.handleUnConfirmed}>No</div>
+								</div>
 							</div>
-							<div className="col-xs-6" style={{textAlign: "center"}}>
-								<div className="button button-med button-undo" onClick={this.handleUnConfirmed}>No</div>
-							</div>
-						</div>
-          </Modal.Body>
-        </Modal>
-				
+		        </Modal.Body>
+		      </Modal>
+			
+				</div>
+						
 			</div>
 		)
 	}

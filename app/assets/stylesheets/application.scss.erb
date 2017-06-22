@@ -27,6 +27,9 @@ $boulder: #767676; //darker gray
 $tundora: #363636; //darkest gray
 
 $carnation: #FD5C63; //pink;
+$light-carnation: #fff5f6;
+$dark-carnation: #e1494f;
+$neon-green: #39FF14;
 
 html{
 	font-size: 16px;
@@ -51,6 +54,9 @@ ul{
 .active{
 	animation: fade-in $fade-time forwards;
 }
+.align-center{
+	text-align:center;
+}
 .align-left{
 	text-align:left;
 }
@@ -61,6 +67,10 @@ ul{
 	margin: 0px 0px 1.4em 0px;
 	max-width:25em;
   padding:1em 3em 1em 3em;
+}
+.box-with-shadow-selected{
+  background: $wild-sand;
+  box-shadow: 0 3px 10px rgba(0,0,0,.23);
 }
 .box-with-shadow-mobile{
 	padding:1em 1em 1em 1em;
@@ -80,25 +90,20 @@ ul{
 .image-upload{
 	text-align:center;
 }
-.map {
-  width: 400px;
-  height: 400px;
-}
 #map{
-	display:block;
-	height: 85vh;
-	width: 90%;
+  width: 400px;
+  height: 300px;
 }
 .photo-container{
-	text-align:center;
-	position: fixed; 
-	z-index: 10;
-	top: 50px;
-	left: 0px; 
-	width: 100%; 
 	background-color: white;
+	border-bottom:1px solid $alto;
+	left: 0px; 
 	padding: 1em 3em 0em 3em;
-	border-bottom: 1px solid #d3d3d3;
+	position: fixed; 
+	text-align:center;
+	top: 50px;
+	width: 100%;
+	z-index: 10;
 }
 //BLOCK ELEMENTS
 .border-block{
@@ -120,6 +125,11 @@ ul{
 	left:0;
 	right:0;
 }
+.heading-block{
+	margin-top: 0;
+	margin-bottom: 1em;
+	padding-top: 0.5em;
+}
 //BUTTONS
 .button{
 	border-radius:.4em	;
@@ -131,6 +141,11 @@ ul{
 .button-create{
 	border: 2px solid $carnation;
 	color: $carnation;
+}
+.button-create:hover{
+	border: 2px solid $dark-carnation;
+	color: $dark-carnation;
+	background-color:$light-carnation;
 }
 .button-med{
 	line-height: 2.5em;
@@ -153,6 +168,13 @@ ul{
 	width: 3em;
 	border-radius: 1.5em;
 	border: 2px solid $alto;
+	-moz-box-shadow:    5px 5px 5px 6px #ccc;
+	-webkit-box-shadow: 5px 5px 5px 6px #ccc;
+	box-shadow:         5px 5px 5px 6px #ccc;
+}
+.circle-button:hover{
+	transform: translate(3px, 3px);
+	
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
 	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
 	box-shadow:         3px 3px 5px 6px #ccc;

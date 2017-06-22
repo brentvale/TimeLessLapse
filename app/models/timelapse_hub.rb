@@ -16,4 +16,10 @@ class TimelapseHub < ActiveRecord::Base
   belongs_to :user
   
   validates :hub_name, :longitude, :latitude, presence: true
+  
+  def save_first_photograph(photo_id)
+    photo = Photograph.find(photo_id)
+    photo.timelapse_hub_id = self.id
+    photo.save!
+  end
 end

@@ -34,9 +34,8 @@ const Root = ({ store }) => {
     <Provider store={store}>
       <Router history={hashHistory}>
         <Route path="/" component={App}>
-          <IndexRoute component={Home} />
-          
-          <Route path="/your_hubs" component={HubsContainer} />
+          <IndexRoute component={HubsContainer} />
+         
 					<Route path="/take_photo" component={NewPhoto} />
 					<Route path="/hubs/:hubId" component={HubShowContainer} />
         </Route>

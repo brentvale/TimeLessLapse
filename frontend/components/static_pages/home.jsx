@@ -3,8 +3,6 @@ import React from 'react';
 //COMPONENTS
 import { Link } from 'react-router';
 
-import TimelapseIndex from '../timelapse/index.jsx';
-
 class Home extends React.Component{
 	constructor(){
 		super();
@@ -23,10 +21,7 @@ class Home extends React.Component{
 						Your Hubs >>
 					</div>
 				</Link>
-				
-				<div>SHOW USER THEY CAN SET UP Places to timelapse from</div>
-				<TimelapseIndex />
-				
+
 			</div>
 		)
 	}
