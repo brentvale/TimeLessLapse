@@ -55661,6 +55661,7 @@
 					photographDisplay = "";
 					marginTop = "0em";
 				}
+				var yourHubsLink = this.state.step === 1 ? _react2.default.createElement(_your_hubs_link2.default, null) : "";
 	
 				var spinnerUploadDisplay = this.state.spinning ? _react2.default.createElement(
 					'div',
