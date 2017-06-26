@@ -32,9 +32,9 @@ class Photograph < ActiveRecord::Base
                         :small => "-gravity center -extent 400x300",
                         :large => "-gravity center -extent 800x600"}
       
-  validates_attachment :image, 
+  validates :image, 
     content_type: { content_type: ["image/jpeg", "image/jpg"] },
-    attachment_size: {less_than: 5.megabytes}
+    attachment_size: {less_than: 10.megabytes}
     
   after_image_post_process :load_exif
   

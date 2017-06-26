@@ -55314,6 +55314,7 @@
 				    lessThanTabletBreakSize = _props.lessThanTabletBreakSize;
 	
 				var imageDisplay = lessThanTabletBreakSize ? _react2.default.createElement("img", { src: photo.thumbnail_image, style: { height: "150px", width: "200px" }, className: "drop-shadow" }) : _react2.default.createElement("img", { src: photo.small_image, style: { height: "300px", width: "400px" }, className: "drop-shadow" });
+				console.log(photo.thumbnail_image);
 				return _react2.default.createElement(
 					"div",
 					{ className: "col-xs-12", style: { textAlign: "center", marginBottom: "4em" } },
@@ -55660,7 +55661,6 @@
 					photographDisplay = "";
 					marginTop = "0em";
 				}
-				var yourHubsLink = this.state.step === 1 ? _react2.default.createElement(_your_hubs_link2.default, null) : "";
 	
 				var spinnerUploadDisplay = this.state.spinning ? _react2.default.createElement(
 					'div',

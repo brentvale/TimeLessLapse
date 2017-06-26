@@ -7,6 +7,7 @@ class HubShowPhotoDisplay extends Component{
 		let { photo, spanKlass, lessThanTabletBreakSize } = this.props;
 		let imageDisplay = (lessThanTabletBreakSize) ? <img src={photo.thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/> :
 																										<img src={photo.small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
+		console.log(photo.thumbnail_image);
 		return(
 			 <div className="col-xs-12" style={{textAlign:"center", marginBottom: "4em"}}>
 					{imageDisplay}
