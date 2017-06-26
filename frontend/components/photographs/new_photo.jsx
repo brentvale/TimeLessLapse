@@ -210,6 +210,7 @@ class NewPhoto extends React.Component{
 			photographDisplay = "";
 			marginTop = "0em";
 		}
+		let yourHubsLink = (this.state.step === 1) ? <YourHubsLink /> : "";
 		
 		let spinnerUploadDisplay = (this.state.spinning) ? <div style={{padding:"1em"}}>
 																													<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
