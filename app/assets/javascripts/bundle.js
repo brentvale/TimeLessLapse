@@ -54860,7 +54860,8 @@
 			}
 		}, {
 			key: 'handleNextImage',
-			value: function handleNextImage() {
+			value: function handleNextImage(e) {
+				e.preventDefault();
 				var that = this;
 				var photosLength = this.props.hub.photographs.length;
 				this.interval = setInterval(function () {
@@ -55314,7 +55315,6 @@
 				    lessThanTabletBreakSize = _props.lessThanTabletBreakSize;
 	
 				var imageDisplay = lessThanTabletBreakSize ? _react2.default.createElement("img", { src: photo.thumbnail_image, style: { height: "150px", width: "200px" }, className: "drop-shadow" }) : _react2.default.createElement("img", { src: photo.small_image, style: { height: "300px", width: "400px" }, className: "drop-shadow" });
-				console.log(photo.thumbnail_image);
 				return _react2.default.createElement(
 					"div",
 					{ className: "col-xs-12", style: { textAlign: "center", marginBottom: "4em" } },

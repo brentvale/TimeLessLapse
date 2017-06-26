@@ -67,7 +67,8 @@ class HubIndexListItem extends React.Component{
 		}
 	}
 	
-	handleNextImage(){
+	handleNextImage(e){
+		e.preventDefault();
 		let that = this;
 		let photosLength = this.props.hub.photographs.length;
 		this.interval = setInterval(() => {
