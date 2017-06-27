@@ -102,13 +102,13 @@ class HubIndexListItem extends React.Component{
 																						 										onMouseLeave={this.stopFlipping} 
 																						 									  onTouchStart={this.startFlipping} 
 																						 									  onTouchEnd={this.stopFlipping}>
-																																<img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/>;
+																																<img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/>
 																														</div> : 
 																														<div onMouseEnter={this.startFlipping} 
 																						 										onMouseLeave={this.stopFlipping} 
 																						 									  onTouchStart={this.startFlipping} 
 																						 									  onTouchEnd={this.stopFlipping}>
-																																<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>;
+																																<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
 																														</div>
 		
 		let linkToHub = (onIndexView) ? <div style={{marginTop: "20px"}}>
