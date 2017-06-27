@@ -54861,7 +54861,7 @@
 		}, {
 			key: 'startFlipping',
 			value: function startFlipping(e) {
-				e.stopPropagation();
+				e.preventDefault();
 				var that = this;
 				var photosLength = this.props.hub.photographs.length;
 				this.interval = setInterval(function () {

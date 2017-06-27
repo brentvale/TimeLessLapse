@@ -68,7 +68,7 @@ class HubIndexListItem extends React.Component{
 	}
 	
 	startFlipping(e){
-		e.stopPropagation();
+		e.preventDefault();
 		let that = this;
 		let photosLength = this.props.hub.photographs.length;
 		this.interval = setInterval(() => {
