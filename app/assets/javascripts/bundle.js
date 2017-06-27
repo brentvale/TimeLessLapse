@@ -58,7 +58,7 @@
 	
 	var _root2 = _interopRequireDefault(_root);
 	
-	var _store = __webpack_require__(612);
+	var _store = __webpack_require__(613);
 	
 	var _store2 = _interopRequireDefault(_store);
 	
@@ -22258,7 +22258,7 @@
 	
 	var _new_photo2 = _interopRequireDefault(_new_photo);
 	
-	var _session_form_container = __webpack_require__(608);
+	var _session_form_container = __webpack_require__(609);
 	
 	var _session_form_container2 = _interopRequireDefault(_session_form_container);
 	
@@ -54686,7 +54686,6 @@
 			value: function render() {
 				var hubs = this.props.hubs;
 	
-				console.log('hubs.length is ' + hubs.length);
 				if (hubs.length === 0) {
 					return _react2.default.createElement(
 						'div',
@@ -54846,7 +54845,6 @@
 			key: 'handleKeyPress',
 			value: function handleKeyPress(e) {
 				if (e.keyCode == 13 || e.keyCode == 9) {
-					console.log('key code was ' + e.keyCode);
 					if (this.state.nameField !== "") {
 						e.preventDefault();
 						var that = this;
@@ -54911,16 +54909,14 @@
 						onMouseLeave: this.stopFlipping,
 						onTouchStart: this.startFlipping,
 						onTouchEnd: this.stopFlipping },
-					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' }),
-					';'
+					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' })
 				) : _react2.default.createElement(
 					'div',
 					{ onMouseEnter: this.startFlipping,
 						onMouseLeave: this.stopFlipping,
 						onTouchStart: this.startFlipping,
 						onTouchEnd: this.stopFlipping },
-					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' }),
-					';'
+					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' })
 				);
 	
 				var linkToHub = onIndexView ? _react2.default.createElement(
@@ -55409,17 +55405,21 @@
 	
 	var _reactDom2 = _interopRequireDefault(_reactDom);
 	
+	var _exifJs = __webpack_require__(600);
+	
+	var _exifJs2 = _interopRequireDefault(_exifJs);
+	
 	var _reactBootstrap = __webpack_require__(283);
 	
-	var _reactFileInput = __webpack_require__(600);
+	var _reactFileInput = __webpack_require__(601);
 	
 	var _reactFileInput2 = _interopRequireDefault(_reactFileInput);
 	
-	var _reactKonva = __webpack_require__(601);
+	var _reactKonva = __webpack_require__(602);
 	
 	var ReactKonva = _interopRequireWildcard(_reactKonva);
 	
-	var _select_hub = __webpack_require__(606);
+	var _select_hub = __webpack_require__(607);
 	
 	var _select_hub2 = _interopRequireDefault(_select_hub);
 	
@@ -55436,6 +55436,8 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 	
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	
+	window.EXIF_IMAGE = _exifJs2.default;
 	
 	var NewPhoto = function (_React$Component) {
 		_inherits(NewPhoto, _React$Component);
@@ -55542,33 +55544,61 @@
 			key: 'handleSubmit',
 			value: function handleSubmit(e) {
 				e.preventDefault();
+	
 				var reader = new FileReader();
 				var that = this;
 	
-				reader.onloadend = function () {
-					var formData = new FormData();
+				reader.onloadend = function (e) {
 	
-					formData.append("photograph[image]", that.state.uploadedFile);
+					EXIF_IMAGE.getData(that.state.uploadedFile, function () {
+						var lat = EXIF_IMAGE.getTag(this, "GPSLatitude");
+						var lng = EXIF_IMAGE.getTag(this, "GPSLongitude");
+						var imgDir = EXIF_IMAGE.getTag(this, "GPSImgDirection");
+						var altitude = EXIF_IMAGE.getTag(this, "GPSAltitude");
+						var dateTimeDigitized = EXIF_IMAGE.getTag(this, "DateTimeDigitized");
 	
-					//CREATE IMAGE
-					$.ajax({
-						url: "api/photographs",
-						method: "POST",
-						data: formData,
-						processData: false,
-						contentType: false,
-						dataType: 'json',
-						success: function success(resp) {
-							that.setState({ step: 2, photograph: resp, spinning: false });
-						},
-						error: function error(resp) {
-							console.log("errored out creating the photo");
-						}
+						var formData = new FormData();
+	
+						var canvas = document.createElement("canvas");
+						var height = that.state.imagePreview.height / 5;
+						var width = that.state.imagePreview.width / 5;
+	
+						canvas.width = width;
+						canvas.height = height;
+	
+						var ctx = canvas.getContext("2d");
+						ctx.drawImage(that.state.imagePreview, 0, 0, width, height);
+	
+						var dataurl = canvas.toDataURL("image/jpeg");
+	
+						formData.append("photograph[image]", dataurl);
+	
+						formData.append("photograph[latitude]", lat);
+						formData.append("photograph[longitude]", lng);
+						formData.append("photograph[image_direction]", imgDir);
+						formData.append("photograph[altitude]", altitude);
+						formData.append("photograph[datetime_digitized]", dateTimeDigitized);
+	
+						//CREATE IMAGE
+						$.ajax({
+							url: "api/photographs",
+							method: "POST",
+							data: formData,
+							processData: false,
+							contentType: false,
+							dataType: 'json',
+							success: function success(resp) {
+								that.setState({ step: 2, photograph: resp, spinning: false });
+							},
+							error: function error(resp) {
+								console.log("errored out creating the photo");
+							}
+						});
 					});
 				};
 	
 				if (this.state.uploadedFile) {
-					reader.readAsDataURL(this.state.uploadedFile);
+					reader.readAsArrayBuffer(this.state.uploadedFile);
 				}
 				this.setState({ spinning: true });
 			}
@@ -55719,42 +55749,42 @@
 							{ style: { marginTop: marginTop } },
 							display,
 							spinnerUploadDisplay
+						)
+					),
+					_react2.default.createElement(
+						_reactBootstrap.Modal,
+						{ show: this.state.showModal, onHide: this.close },
+						_react2.default.createElement(
+							_reactBootstrap.Modal.Header,
+							{ closeButton: true },
+							_react2.default.createElement(
+								_reactBootstrap.Modal.Title,
+								{ style: { textAlign: "center" } },
+								'Are you sure this picture goes with this hub?'
+							)
 						),
 						_react2.default.createElement(
-							_reactBootstrap.Modal,
-							{ show: this.state.showModal, onHide: this.close },
+							_reactBootstrap.Modal.Body,
+							{ style: { height: "10em" } },
 							_react2.default.createElement(
-								_reactBootstrap.Modal.Header,
-								{ closeButton: true },
-								_react2.default.createElement(
-									_reactBootstrap.Modal.Title,
-									{ style: { textAlign: "center" } },
-									'Are you sure this picture goes with this hub?'
-								)
-							),
-							_react2.default.createElement(
-								_reactBootstrap.Modal.Body,
-								{ style: { height: "10em" } },
+								'div',
+								{ className: 'col-xs-12' },
 								_react2.default.createElement(
 									'div',
-									{ className: 'col-xs-12' },
+									{ className: 'col-xs-6', style: { textAlign: "center" } },
 									_react2.default.createElement(
 										'div',
-										{ className: 'col-xs-6', style: { textAlign: "center" } },
-										_react2.default.createElement(
-											'div',
-											{ className: 'button button-med button-create', onClick: this.handleConfirmed },
-											'Yes'
-										)
-									),
+										{ className: 'button button-med button-create', onClick: this.handleConfirmed },
+										'Yes'
+									)
+								),
+								_react2.default.createElement(
+									'div',
+									{ className: 'col-xs-6', style: { textAlign: "center" } },
 									_react2.default.createElement(
 										'div',
-										{ className: 'col-xs-6', style: { textAlign: "center" } },
-										_react2.default.createElement(
-											'div',
-											{ className: 'button button-med button-undo', onClick: this.handleUnConfirmed },
-											'No'
-										)
+										{ className: 'button button-med button-undo', onClick: this.handleUnConfirmed },
+										'No'
 									)
 								)
 							)
@@ -55771,6 +55801,1025 @@
 
 /***/ }),
 /* 600 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;(function() {
+	
+	    var debug = false;
+	
+	    var root = this;
+	
+	    var EXIF = function(obj) {
+	        if (obj instanceof EXIF) return obj;
+	        if (!(this instanceof EXIF)) return new EXIF(obj);
+	        this.EXIFwrapped = obj;
+	    };
+	
+	    if (true) {
+	        if (typeof module !== 'undefined' && module.exports) {
+	            exports = module.exports = EXIF;
+	        }
+	        exports.EXIF = EXIF;
+	    } else {
+	        root.EXIF = EXIF;
+	    }
+	
+	    var ExifTags = EXIF.Tags = {
+	
+	        // version tags
+	        0x9000 : "ExifVersion",             // EXIF version
+	        0xA000 : "FlashpixVersion",         // Flashpix format version
+	
+	        // colorspace tags
+	        0xA001 : "ColorSpace",              // Color space information tag
+	
+	        // image configuration
+	        0xA002 : "PixelXDimension",         // Valid width of meaningful image
+	        0xA003 : "PixelYDimension",         // Valid height of meaningful image
+	        0x9101 : "ComponentsConfiguration", // Information about channels
+	        0x9102 : "CompressedBitsPerPixel",  // Compressed bits per pixel
+	
+	        // user information
+	        0x927C : "MakerNote",               // Any desired information written by the manufacturer
+	        0x9286 : "UserComment",             // Comments by user
+	
+	        // related file
+	        0xA004 : "RelatedSoundFile",        // Name of related sound file
+	
+	        // date and time
+	        0x9003 : "DateTimeOriginal",        // Date and time when the original image was generated
+	        0x9004 : "DateTimeDigitized",       // Date and time when the image was stored digitally
+	        0x9290 : "SubsecTime",              // Fractions of seconds for DateTime
+	        0x9291 : "SubsecTimeOriginal",      // Fractions of seconds for DateTimeOriginal
+	        0x9292 : "SubsecTimeDigitized",     // Fractions of seconds for DateTimeDigitized
+	
+	        // picture-taking conditions
+	        0x829A : "ExposureTime",            // Exposure time (in seconds)
+	        0x829D : "FNumber",                 // F number
+	        0x8822 : "ExposureProgram",         // Exposure program
+	        0x8824 : "SpectralSensitivity",     // Spectral sensitivity
+	        0x8827 : "ISOSpeedRatings",         // ISO speed rating
+	        0x8828 : "OECF",                    // Optoelectric conversion factor
+	        0x9201 : "ShutterSpeedValue",       // Shutter speed
+	        0x9202 : "ApertureValue",           // Lens aperture
+	        0x9203 : "BrightnessValue",         // Value of brightness
+	        0x9204 : "ExposureBias",            // Exposure bias
+	        0x9205 : "MaxApertureValue",        // Smallest F number of lens
+	        0x9206 : "SubjectDistance",         // Distance to subject in meters
+	        0x9207 : "MeteringMode",            // Metering mode
+	        0x9208 : "LightSource",             // Kind of light source
+	        0x9209 : "Flash",                   // Flash status
+	        0x9214 : "SubjectArea",             // Location and area of main subject
+	        0x920A : "FocalLength",             // Focal length of the lens in mm
+	        0xA20B : "FlashEnergy",             // Strobe energy in BCPS
+	        0xA20C : "SpatialFrequencyResponse",    //
+	        0xA20E : "FocalPlaneXResolution",   // Number of pixels in width direction per FocalPlaneResolutionUnit
+	        0xA20F : "FocalPlaneYResolution",   // Number of pixels in height direction per FocalPlaneResolutionUnit
+	        0xA210 : "FocalPlaneResolutionUnit",    // Unit for measuring FocalPlaneXResolution and FocalPlaneYResolution
+	        0xA214 : "SubjectLocation",         // Location of subject in image
+	        0xA215 : "ExposureIndex",           // Exposure index selected on camera
+	        0xA217 : "SensingMethod",           // Image sensor type
+	        0xA300 : "FileSource",              // Image source (3 == DSC)
+	        0xA301 : "SceneType",               // Scene type (1 == directly photographed)
+	        0xA302 : "CFAPattern",              // Color filter array geometric pattern
+	        0xA401 : "CustomRendered",          // Special processing
+	        0xA402 : "ExposureMode",            // Exposure mode
+	        0xA403 : "WhiteBalance",            // 1 = auto white balance, 2 = manual
+	        0xA404 : "DigitalZoomRation",       // Digital zoom ratio
+	        0xA405 : "FocalLengthIn35mmFilm",   // Equivalent foacl length assuming 35mm film camera (in mm)
+	        0xA406 : "SceneCaptureType",        // Type of scene
+	        0xA407 : "GainControl",             // Degree of overall image gain adjustment
+	        0xA408 : "Contrast",                // Direction of contrast processing applied by camera
+	        0xA409 : "Saturation",              // Direction of saturation processing applied by camera
+	        0xA40A : "Sharpness",               // Direction of sharpness processing applied by camera
+	        0xA40B : "DeviceSettingDescription",    //
+	        0xA40C : "SubjectDistanceRange",    // Distance to subject
+	
+	        // other tags
+	        0xA005 : "InteroperabilityIFDPointer",
+	        0xA420 : "ImageUniqueID"            // Identifier assigned uniquely to each image
+	    };
+	
+	    var TiffTags = EXIF.TiffTags = {
+	        0x0100 : "ImageWidth",
+	        0x0101 : "ImageHeight",
+	        0x8769 : "ExifIFDPointer",
+	        0x8825 : "GPSInfoIFDPointer",
+	        0xA005 : "InteroperabilityIFDPointer",
+	        0x0102 : "BitsPerSample",
+	        0x0103 : "Compression",
+	        0x0106 : "PhotometricInterpretation",
+	        0x0112 : "Orientation",
+	        0x0115 : "SamplesPerPixel",
+	        0x011C : "PlanarConfiguration",
+	        0x0212 : "YCbCrSubSampling",
+	        0x0213 : "YCbCrPositioning",
+	        0x011A : "XResolution",
+	        0x011B : "YResolution",
+	        0x0128 : "ResolutionUnit",
+	        0x0111 : "StripOffsets",
+	        0x0116 : "RowsPerStrip",
+	        0x0117 : "StripByteCounts",
+	        0x0201 : "JPEGInterchangeFormat",
+	        0x0202 : "JPEGInterchangeFormatLength",
+	        0x012D : "TransferFunction",
+	        0x013E : "WhitePoint",
+	        0x013F : "PrimaryChromaticities",
+	        0x0211 : "YCbCrCoefficients",
+	        0x0214 : "ReferenceBlackWhite",
+	        0x0132 : "DateTime",
+	        0x010E : "ImageDescription",
+	        0x010F : "Make",
+	        0x0110 : "Model",
+	        0x0131 : "Software",
+	        0x013B : "Artist",
+	        0x8298 : "Copyright"
+	    };
+	
+	    var GPSTags = EXIF.GPSTags = {
+	        0x0000 : "GPSVersionID",
+	        0x0001 : "GPSLatitudeRef",
+	        0x0002 : "GPSLatitude",
+	        0x0003 : "GPSLongitudeRef",
+	        0x0004 : "GPSLongitude",
+	        0x0005 : "GPSAltitudeRef",
+	        0x0006 : "GPSAltitude",
+	        0x0007 : "GPSTimeStamp",
+	        0x0008 : "GPSSatellites",
+	        0x0009 : "GPSStatus",
+	        0x000A : "GPSMeasureMode",
+	        0x000B : "GPSDOP",
+	        0x000C : "GPSSpeedRef",
+	        0x000D : "GPSSpeed",
+	        0x000E : "GPSTrackRef",
+	        0x000F : "GPSTrack",
+	        0x0010 : "GPSImgDirectionRef",
+	        0x0011 : "GPSImgDirection",
+	        0x0012 : "GPSMapDatum",
+	        0x0013 : "GPSDestLatitudeRef",
+	        0x0014 : "GPSDestLatitude",
+	        0x0015 : "GPSDestLongitudeRef",
+	        0x0016 : "GPSDestLongitude",
+	        0x0017 : "GPSDestBearingRef",
+	        0x0018 : "GPSDestBearing",
+	        0x0019 : "GPSDestDistanceRef",
+	        0x001A : "GPSDestDistance",
+	        0x001B : "GPSProcessingMethod",
+	        0x001C : "GPSAreaInformation",
+	        0x001D : "GPSDateStamp",
+	        0x001E : "GPSDifferential"
+	    };
+	
+	     // EXIF 2.3 Spec
+	    var IFD1Tags = EXIF.IFD1Tags = {
+	        0x0100: "ImageWidth",
+	        0x0101: "ImageHeight",
+	        0x0102: "BitsPerSample",
+	        0x0103: "Compression",
+	        0x0106: "PhotometricInterpretation",
+	        0x0111: "StripOffsets",
+	        0x0112: "Orientation",
+	        0x0115: "SamplesPerPixel",
+	        0x0116: "RowsPerStrip",
+	        0x0117: "StripByteCounts",
+	        0x011A: "XResolution",
+	        0x011B: "YResolution",
+	        0x011C: "PlanarConfiguration",
+	        0x0128: "ResolutionUnit",
+	        0x0201: "JpegIFOffset",    // When image format is JPEG, this value show offset to JPEG data stored.(aka "ThumbnailOffset" or "JPEGInterchangeFormat")
+	        0x0202: "JpegIFByteCount", // When image format is JPEG, this value shows data size of JPEG image (aka "ThumbnailLength" or "JPEGInterchangeFormatLength")
+	        0x0211: "YCbCrCoefficients",
+	        0x0212: "YCbCrSubSampling",
+	        0x0213: "YCbCrPositioning",
+	        0x0214: "ReferenceBlackWhite"
+	    };
+	
+	    var StringValues = EXIF.StringValues = {
+	        ExposureProgram : {
+	            0 : "Not defined",
+	            1 : "Manual",
+	            2 : "Normal program",
+	            3 : "Aperture priority",
+	            4 : "Shutter priority",
+	            5 : "Creative program",
+	            6 : "Action program",
+	            7 : "Portrait mode",
+	            8 : "Landscape mode"
+	        },
+	        MeteringMode : {
+	            0 : "Unknown",
+	            1 : "Average",
+	            2 : "CenterWeightedAverage",
+	            3 : "Spot",
+	            4 : "MultiSpot",
+	            5 : "Pattern",
+	            6 : "Partial",
+	            255 : "Other"
+	        },
+	        LightSource : {
+	            0 : "Unknown",
+	            1 : "Daylight",
+	            2 : "Fluorescent",
+	            3 : "Tungsten (incandescent light)",
+	            4 : "Flash",
+	            9 : "Fine weather",
+	            10 : "Cloudy weather",
+	            11 : "Shade",
+	            12 : "Daylight fluorescent (D 5700 - 7100K)",
+	            13 : "Day white fluorescent (N 4600 - 5400K)",
+	            14 : "Cool white fluorescent (W 3900 - 4500K)",
+	            15 : "White fluorescent (WW 3200 - 3700K)",
+	            17 : "Standard light A",
+	            18 : "Standard light B",
+	            19 : "Standard light C",
+	            20 : "D55",
+	            21 : "D65",
+	            22 : "D75",
+	            23 : "D50",
+	            24 : "ISO studio tungsten",
+	            255 : "Other"
+	        },
+	        Flash : {
+	            0x0000 : "Flash did not fire",
+	            0x0001 : "Flash fired",
+	            0x0005 : "Strobe return light not detected",
+	            0x0007 : "Strobe return light detected",
+	            0x0009 : "Flash fired, compulsory flash mode",
+	            0x000D : "Flash fired, compulsory flash mode, return light not detected",
+	            0x000F : "Flash fired, compulsory flash mode, return light detected",
+	            0x0010 : "Flash did not fire, compulsory flash mode",
+	            0x0018 : "Flash did not fire, auto mode",
+	            0x0019 : "Flash fired, auto mode",
+	            0x001D : "Flash fired, auto mode, return light not detected",
+	            0x001F : "Flash fired, auto mode, return light detected",
+	            0x0020 : "No flash function",
+	            0x0041 : "Flash fired, red-eye reduction mode",
+	            0x0045 : "Flash fired, red-eye reduction mode, return light not detected",
+	            0x0047 : "Flash fired, red-eye reduction mode, return light detected",
+	            0x0049 : "Flash fired, compulsory flash mode, red-eye reduction mode",
+	            0x004D : "Flash fired, compulsory flash mode, red-eye reduction mode, return light not detected",
+	            0x004F : "Flash fired, compulsory flash mode, red-eye reduction mode, return light detected",
+	            0x0059 : "Flash fired, auto mode, red-eye reduction mode",
+	            0x005D : "Flash fired, auto mode, return light not detected, red-eye reduction mode",
+	            0x005F : "Flash fired, auto mode, return light detected, red-eye reduction mode"
+	        },
+	        SensingMethod : {
+	            1 : "Not defined",
+	            2 : "One-chip color area sensor",
+	            3 : "Two-chip color area sensor",
+	            4 : "Three-chip color area sensor",
+	            5 : "Color sequential area sensor",
+	            7 : "Trilinear sensor",
+	            8 : "Color sequential linear sensor"
+	        },
+	        SceneCaptureType : {
+	            0 : "Standard",
+	            1 : "Landscape",
+	            2 : "Portrait",
+	            3 : "Night scene"
+	        },
+	        SceneType : {
+	            1 : "Directly photographed"
+	        },
+	        CustomRendered : {
+	            0 : "Normal process",
+	            1 : "Custom process"
+	        },
+	        WhiteBalance : {
+	            0 : "Auto white balance",
+	            1 : "Manual white balance"
+	        },
+	        GainControl : {
+	            0 : "None",
+	            1 : "Low gain up",
+	            2 : "High gain up",
+	            3 : "Low gain down",
+	            4 : "High gain down"
+	        },
+	        Contrast : {
+	            0 : "Normal",
+	            1 : "Soft",
+	            2 : "Hard"
+	        },
+	        Saturation : {
+	            0 : "Normal",
+	            1 : "Low saturation",
+	            2 : "High saturation"
+	        },
+	        Sharpness : {
+	            0 : "Normal",
+	            1 : "Soft",
+	            2 : "Hard"
+	        },
+	        SubjectDistanceRange : {
+	            0 : "Unknown",
+	            1 : "Macro",
+	            2 : "Close view",
+	            3 : "Distant view"
+	        },
+	        FileSource : {
+	            3 : "DSC"
+	        },
+	
+	        Components : {
+	            0 : "",
+	            1 : "Y",
+	            2 : "Cb",
+	            3 : "Cr",
+	            4 : "R",
+	            5 : "G",
+	            6 : "B"
+	        }
+	    };
+	
+	    function addEvent(element, event, handler) {
+	        if (element.addEventListener) {
+	            element.addEventListener(event, handler, false);
+	        } else if (element.attachEvent) {
+	            element.attachEvent("on" + event, handler);
+	        }
+	    }
+	
+	    function imageHasData(img) {
+	        return !!(img.exifdata);
+	    }
+	
+	
+	    function base64ToArrayBuffer(base64, contentType) {
+	        contentType = contentType || base64.match(/^data\:([^\;]+)\;base64,/mi)[1] || ''; // e.g. 'data:image/jpeg;base64,...' => 'image/jpeg'
+	        base64 = base64.replace(/^data\:([^\;]+)\;base64,/gmi, '');
+	        var binary = atob(base64);
+	        var len = binary.length;
+	        var buffer = new ArrayBuffer(len);
+	        var view = new Uint8Array(buffer);
+	        for (var i = 0; i < len; i++) {
+	            view[i] = binary.charCodeAt(i);
+	        }
+	        return buffer;
+	    }
+	
+	    function objectURLToBlob(url, callback) {
+	        var http = new XMLHttpRequest();
+	        http.open("GET", url, true);
+	        http.responseType = "blob";
+	        http.onload = function(e) {
+	            if (this.status == 200 || this.status === 0) {
+	                callback(this.response);
+	            }
+	        };
+	        http.send();
+	    }
+	
+	    function getImageData(img, callback) {
+	        function handleBinaryFile(binFile) {
+	            var data = findEXIFinJPEG(binFile);
+	            var iptcdata = findIPTCinJPEG(binFile);
+	            var xmpdata= findXMPinJPEG(binFile);
+	            img.exifdata = data || {};
+	            img.iptcdata = iptcdata || {};
+	            img.xmpdata = xmpdata || {};
+	            if (callback) {
+	                callback.call(img);
+	            }
+	        }
+	
+	        if (img.src) {
+	            if (/^data\:/i.test(img.src)) { // Data URI
+	                var arrayBuffer = base64ToArrayBuffer(img.src);
+	                handleBinaryFile(arrayBuffer);
+	
+	            } else if (/^blob\:/i.test(img.src)) { // Object URL
+	                var fileReader = new FileReader();
+	                fileReader.onload = function(e) {
+	                    handleBinaryFile(e.target.result);
+	                };
+	                objectURLToBlob(img.src, function (blob) {
+	                    fileReader.readAsArrayBuffer(blob);
+	                });
+	            } else {
+	                var http = new XMLHttpRequest();
+	                http.onload = function() {
+	                    if (this.status == 200 || this.status === 0) {
+	                        handleBinaryFile(http.response);
+	                    } else {
+	                        throw "Could not load image";
+	                    }
+	                    http = null;
+	                };
+	                http.open("GET", img.src, true);
+	                http.responseType = "arraybuffer";
+	                http.send(null);
+	            }
+	        } else if (self.FileReader && (img instanceof self.Blob || img instanceof self.File)) {
+	            var fileReader = new FileReader();
+	            fileReader.onload = function(e) {
+	                if (debug) console.log("Got file of length " + e.target.result.byteLength);
+	                handleBinaryFile(e.target.result);
+	            };
+	
+	            fileReader.readAsArrayBuffer(img);
+	        }
+	    }
+	
+	    function findEXIFinJPEG(file) {
+	        var dataView = new DataView(file);
+	
+	        if (debug) console.log("Got file of length " + file.byteLength);
+	        if ((dataView.getUint8(0) != 0xFF) || (dataView.getUint8(1) != 0xD8)) {
+	            if (debug) console.log("Not a valid JPEG");
+	            return false; // not a valid jpeg
+	        }
+	
+	        var offset = 2,
+	            length = file.byteLength,
+	            marker;
+	
+	        while (offset < length) {
+	            if (dataView.getUint8(offset) != 0xFF) {
+	                if (debug) console.log("Not a valid marker at offset " + offset + ", found: " + dataView.getUint8(offset));
+	                return false; // not a valid marker, something is wrong
+	            }
+	
+	            marker = dataView.getUint8(offset + 1);
+	            if (debug) console.log(marker);
+	
+	            // we could implement handling for other markers here,
+	            // but we're only looking for 0xFFE1 for EXIF data
+	
+	            if (marker == 225) {
+	                if (debug) console.log("Found 0xFFE1 marker");
+	
+	                return readEXIFData(dataView, offset + 4, dataView.getUint16(offset + 2) - 2);
+	
+	                // offset += 2 + file.getShortAt(offset+2, true);
+	
+	            } else {
+	                offset += 2 + dataView.getUint16(offset+2);
+	            }
+	
+	        }
+	
+	    }
+	
+	    function findIPTCinJPEG(file) {
+	        var dataView = new DataView(file);
+	
+	        if (debug) console.log("Got file of length " + file.byteLength);
+	        if ((dataView.getUint8(0) != 0xFF) || (dataView.getUint8(1) != 0xD8)) {
+	            if (debug) console.log("Not a valid JPEG");
+	            return false; // not a valid jpeg
+	        }
+	
+	        var offset = 2,
+	            length = file.byteLength;
+	
+	
+	        var isFieldSegmentStart = function(dataView, offset){
+	            return (
+	                dataView.getUint8(offset) === 0x38 &&
+	                dataView.getUint8(offset+1) === 0x42 &&
+	                dataView.getUint8(offset+2) === 0x49 &&
+	                dataView.getUint8(offset+3) === 0x4D &&
+	                dataView.getUint8(offset+4) === 0x04 &&
+	                dataView.getUint8(offset+5) === 0x04
+	            );
+	        };
+	
+	        while (offset < length) {
+	
+	            if ( isFieldSegmentStart(dataView, offset )){
+	
+	                // Get the length of the name header (which is padded to an even number of bytes)
+	                var nameHeaderLength = dataView.getUint8(offset+7);
+	                if(nameHeaderLength % 2 !== 0) nameHeaderLength += 1;
+	                // Check for pre photoshop 6 format
+	                if(nameHeaderLength === 0) {
+	                    // Always 4
+	                    nameHeaderLength = 4;
+	                }
+	
+	                var startOffset = offset + 8 + nameHeaderLength;
+	                var sectionLength = dataView.getUint16(offset + 6 + nameHeaderLength);
+	
+	                return readIPTCData(file, startOffset, sectionLength);
+	
+	                break;
+	
+	            }
+	
+	
+	            // Not the marker, continue searching
+	            offset++;
+	
+	        }
+	
+	    }
+	    var IptcFieldMap = {
+	        0x78 : 'caption',
+	        0x6E : 'credit',
+	        0x19 : 'keywords',
+	        0x37 : 'dateCreated',
+	        0x50 : 'byline',
+	        0x55 : 'bylineTitle',
+	        0x7A : 'captionWriter',
+	        0x69 : 'headline',
+	        0x74 : 'copyright',
+	        0x0F : 'category'
+	    };
+	    function readIPTCData(file, startOffset, sectionLength){
+	        var dataView = new DataView(file);
+	        var data = {};
+	        var fieldValue, fieldName, dataSize, segmentType, segmentSize;
+	        var segmentStartPos = startOffset;
+	        while(segmentStartPos < startOffset+sectionLength) {
+	            if(dataView.getUint8(segmentStartPos) === 0x1C && dataView.getUint8(segmentStartPos+1) === 0x02){
+	                segmentType = dataView.getUint8(segmentStartPos+2);
+	                if(segmentType in IptcFieldMap) {
+	                    dataSize = dataView.getInt16(segmentStartPos+3);
+	                    segmentSize = dataSize + 5;
+	                    fieldName = IptcFieldMap[segmentType];
+	                    fieldValue = getStringFromDB(dataView, segmentStartPos+5, dataSize);
+	                    // Check if we already stored a value with this name
+	                    if(data.hasOwnProperty(fieldName)) {
+	                        // Value already stored with this name, create multivalue field
+	                        if(data[fieldName] instanceof Array) {
+	                            data[fieldName].push(fieldValue);
+	                        }
+	                        else {
+	                            data[fieldName] = [data[fieldName], fieldValue];
+	                        }
+	                    }
+	                    else {
+	                        data[fieldName] = fieldValue;
+	                    }
+	                }
+	
+	            }
+	            segmentStartPos++;
+	        }
+	        return data;
+	    }
+	
+	
+	
+	    function readTags(file, tiffStart, dirStart, strings, bigEnd) {
+	        var entries = file.getUint16(dirStart, !bigEnd),
+	            tags = {},
+	            entryOffset, tag,
+	            i;
+	
+	        for (i=0;i<entries;i++) {
+	            entryOffset = dirStart + i*12 + 2;
+	            tag = strings[file.getUint16(entryOffset, !bigEnd)];
+	            if (!tag && debug) console.log("Unknown tag: " + file.getUint16(entryOffset, !bigEnd));
+	            tags[tag] = readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd);
+	        }
+	        return tags;
+	    }
+	
+	
+	    function readTagValue(file, entryOffset, tiffStart, dirStart, bigEnd) {
+	        var type = file.getUint16(entryOffset+2, !bigEnd),
+	            numValues = file.getUint32(entryOffset+4, !bigEnd),
+	            valueOffset = file.getUint32(entryOffset+8, !bigEnd) + tiffStart,
+	            offset,
+	            vals, val, n,
+	            numerator, denominator;
+	
+	        switch (type) {
+	            case 1: // byte, 8-bit unsigned int
+	            case 7: // undefined, 8-bit byte, value depending on field
+	                if (numValues == 1) {
+	                    return file.getUint8(entryOffset + 8, !bigEnd);
+	                } else {
+	                    offset = numValues > 4 ? valueOffset : (entryOffset + 8);
+	                    vals = [];
+	                    for (n=0;n<numValues;n++) {
+	                        vals[n] = file.getUint8(offset + n);
+	                    }
+	                    return vals;
+	                }
+	
+	            case 2: // ascii, 8-bit byte
+	                offset = numValues > 4 ? valueOffset : (entryOffset + 8);
+	                return getStringFromDB(file, offset, numValues-1);
+	
+	            case 3: // short, 16 bit int
+	                if (numValues == 1) {
+	                    return file.getUint16(entryOffset + 8, !bigEnd);
+	                } else {
+	                    offset = numValues > 2 ? valueOffset : (entryOffset + 8);
+	                    vals = [];
+	                    for (n=0;n<numValues;n++) {
+	                        vals[n] = file.getUint16(offset + 2*n, !bigEnd);
+	                    }
+	                    return vals;
+	                }
+	
+	            case 4: // long, 32 bit int
+	                if (numValues == 1) {
+	                    return file.getUint32(entryOffset + 8, !bigEnd);
+	                } else {
+	                    vals = [];
+	                    for (n=0;n<numValues;n++) {
+	                        vals[n] = file.getUint32(valueOffset + 4*n, !bigEnd);
+	                    }
+	                    return vals;
+	                }
+	
+	            case 5:    // rational = two long values, first is numerator, second is denominator
+	                if (numValues == 1) {
+	                    numerator = file.getUint32(valueOffset, !bigEnd);
+	                    denominator = file.getUint32(valueOffset+4, !bigEnd);
+	                    val = new Number(numerator / denominator);
+	                    val.numerator = numerator;
+	                    val.denominator = denominator;
+	                    return val;
+	                } else {
+	                    vals = [];
+	                    for (n=0;n<numValues;n++) {
+	                        numerator = file.getUint32(valueOffset + 8*n, !bigEnd);
+	                        denominator = file.getUint32(valueOffset+4 + 8*n, !bigEnd);
+	                        vals[n] = new Number(numerator / denominator);
+	                        vals[n].numerator = numerator;
+	                        vals[n].denominator = denominator;
+	                    }
+	                    return vals;
+	                }
+	
+	            case 9: // slong, 32 bit signed int
+	                if (numValues == 1) {
+	                    return file.getInt32(entryOffset + 8, !bigEnd);
+	                } else {
+	                    vals = [];
+	                    for (n=0;n<numValues;n++) {
+	                        vals[n] = file.getInt32(valueOffset + 4*n, !bigEnd);
+	                    }
+	                    return vals;
+	                }
+	
+	            case 10: // signed rational, two slongs, first is numerator, second is denominator
+	                if (numValues == 1) {
+	                    return file.getInt32(valueOffset, !bigEnd) / file.getInt32(valueOffset+4, !bigEnd);
+	                } else {
+	                    vals = [];
+	                    for (n=0;n<numValues;n++) {
+	                        vals[n] = file.getInt32(valueOffset + 8*n, !bigEnd) / file.getInt32(valueOffset+4 + 8*n, !bigEnd);
+	                    }
+	                    return vals;
+	                }
+	        }
+	    }
+	
+	    /**
+	    * Given an IFD (Image File Directory) start offset
+	    * returns an offset to next IFD or 0 if it's the last IFD.
+	    */
+	    function getNextIFDOffset(dataView, dirStart, bigEnd){
+	        //the first 2bytes means the number of directory entries contains in this IFD
+	        var entries = dataView.getUint16(dirStart, !bigEnd);
+	
+	        // After last directory entry, there is a 4bytes of data,
+	        // it means an offset to next IFD.
+	        // If its value is '0x00000000', it means this is the last IFD and there is no linked IFD.
+	
+	        return dataView.getUint32(dirStart + 2 + entries * 12, !bigEnd); // each entry is 12 bytes long
+	    }
+	
+	    function readThumbnailImage(dataView, tiffStart, firstIFDOffset, bigEnd){
+	        // get the IFD1 offset
+	        var IFD1OffsetPointer = getNextIFDOffset(dataView, tiffStart+firstIFDOffset, bigEnd);
+	
+	        if (!IFD1OffsetPointer) {
+	            // console.log('******** IFD1Offset is empty, image thumb not found ********');
+	            return {};
+	        }
+	        else if (IFD1OffsetPointer > dataView.byteLength) { // this should not happen
+	            // console.log('******** IFD1Offset is outside the bounds of the DataView ********');
+	            return {};
+	        }
+	        // console.log('*******  thumbnail IFD offset (IFD1) is: %s', IFD1OffsetPointer);
+	
+	        var thumbTags = readTags(dataView, tiffStart, tiffStart + IFD1OffsetPointer, IFD1Tags, bigEnd)
+	
+	        // EXIF 2.3 specification for JPEG format thumbnail
+	
+	        // If the value of Compression(0x0103) Tag in IFD1 is '6', thumbnail image format is JPEG.
+	        // Most of Exif image uses JPEG format for thumbnail. In that case, you can get offset of thumbnail
+	        // by JpegIFOffset(0x0201) Tag in IFD1, size of thumbnail by JpegIFByteCount(0x0202) Tag.
+	        // Data format is ordinary JPEG format, starts from 0xFFD8 and ends by 0xFFD9. It seems that
+	        // JPEG format and 160x120pixels of size are recommended thumbnail format for Exif2.1 or later.
+	
+	        if (thumbTags['Compression']) {
+	            // console.log('Thumbnail image found!');
+	
+	            switch (thumbTags['Compression']) {
+	                case 6:
+	                    // console.log('Thumbnail image format is JPEG');
+	                    if (thumbTags.JpegIFOffset && thumbTags.JpegIFByteCount) {
+	                    // extract the thumbnail
+	                        var tOffset = tiffStart + thumbTags.JpegIFOffset;
+	                        var tLength = thumbTags.JpegIFByteCount;
+	                        thumbTags['blob'] = new Blob([new Uint8Array(dataView.buffer, tOffset, tLength)], {
+	                            type: 'image/jpeg'
+	                        });
+	                    }
+	                break;
+	
+	            case 1:
+	                console.log("Thumbnail image format is TIFF, which is not implemented.");
+	                break;
+	            default:
+	                console.log("Unknown thumbnail image format '%s'", thumbTags['Compression']);
+	            }
+	        }
+	        else if (thumbTags['PhotometricInterpretation'] == 2) {
+	            console.log("Thumbnail image format is RGB, which is not implemented.");
+	        }
+	        return thumbTags;
+	    }
+	
+	    function getStringFromDB(buffer, start, length) {
+	        var outstr = "";
+	        for (n = start; n < start+length; n++) {
+	            outstr += String.fromCharCode(buffer.getUint8(n));
+	        }
+	        return outstr;
+	    }
+	
+	    function readEXIFData(file, start) {
+	        if (getStringFromDB(file, start, 4) != "Exif") {
+	            if (debug) console.log("Not valid EXIF data! " + getStringFromDB(file, start, 4));
+	            return false;
+	        }
+	
+	        var bigEnd,
+	            tags, tag,
+	            exifData, gpsData,
+	            tiffOffset = start + 6;
+	
+	        // test for TIFF validity and endianness
+	        if (file.getUint16(tiffOffset) == 0x4949) {
+	            bigEnd = false;
+	        } else if (file.getUint16(tiffOffset) == 0x4D4D) {
+	            bigEnd = true;
+	        } else {
+	            if (debug) console.log("Not valid TIFF data! (no 0x4949 or 0x4D4D)");
+	            return false;
+	        }
+	
+	        if (file.getUint16(tiffOffset+2, !bigEnd) != 0x002A) {
+	            if (debug) console.log("Not valid TIFF data! (no 0x002A)");
+	            return false;
+	        }
+	
+	        var firstIFDOffset = file.getUint32(tiffOffset+4, !bigEnd);
+	
+	        if (firstIFDOffset < 0x00000008) {
+	            if (debug) console.log("Not valid TIFF data! (First offset less than 8)", file.getUint32(tiffOffset+4, !bigEnd));
+	            return false;
+	        }
+	
+	        tags = readTags(file, tiffOffset, tiffOffset + firstIFDOffset, TiffTags, bigEnd);
+	
+	        if (tags.ExifIFDPointer) {
+	            exifData = readTags(file, tiffOffset, tiffOffset + tags.ExifIFDPointer, ExifTags, bigEnd);
+	            for (tag in exifData) {
+	                switch (tag) {
+	                    case "LightSource" :
+	                    case "Flash" :
+	                    case "MeteringMode" :
+	                    case "ExposureProgram" :
+	                    case "SensingMethod" :
+	                    case "SceneCaptureType" :
+	                    case "SceneType" :
+	                    case "CustomRendered" :
+	                    case "WhiteBalance" :
+	                    case "GainControl" :
+	                    case "Contrast" :
+	                    case "Saturation" :
+	                    case "Sharpness" :
+	                    case "SubjectDistanceRange" :
+	                    case "FileSource" :
+	                        exifData[tag] = StringValues[tag][exifData[tag]];
+	                        break;
+	
+	                    case "ExifVersion" :
+	                    case "FlashpixVersion" :
+	                        exifData[tag] = String.fromCharCode(exifData[tag][0], exifData[tag][1], exifData[tag][2], exifData[tag][3]);
+	                        break;
+	
+	                    case "ComponentsConfiguration" :
+	                        exifData[tag] =
+	                            StringValues.Components[exifData[tag][0]] +
+	                            StringValues.Components[exifData[tag][1]] +
+	                            StringValues.Components[exifData[tag][2]] +
+	                            StringValues.Components[exifData[tag][3]];
+	                        break;
+	                }
+	                tags[tag] = exifData[tag];
+	            }
+	        }
+	
+	        if (tags.GPSInfoIFDPointer) {
+	            gpsData = readTags(file, tiffOffset, tiffOffset + tags.GPSInfoIFDPointer, GPSTags, bigEnd);
+	            for (tag in gpsData) {
+	                switch (tag) {
+	                    case "GPSVersionID" :
+	                        gpsData[tag] = gpsData[tag][0] +
+	                            "." + gpsData[tag][1] +
+	                            "." + gpsData[tag][2] +
+	                            "." + gpsData[tag][3];
+	                        break;
+	                }
+	                tags[tag] = gpsData[tag];
+	            }
+	        }
+	
+	        // extract thumbnail
+	        tags['thumbnail'] = readThumbnailImage(file, tiffOffset, firstIFDOffset, bigEnd);
+	
+	        return tags;
+	    }
+	
+	   function findXMPinJPEG(file) {
+	
+	        if (!('DOMParser' in self)) {
+	            // console.warn('XML parsing not supported without DOMParser');
+	            return;
+	        }
+	        var dataView = new DataView(file);
+	
+	        if (debug) console.log("Got file of length " + file.byteLength);
+	        if ((dataView.getUint8(0) != 0xFF) || (dataView.getUint8(1) != 0xD8)) {
+	           if (debug) console.log("Not a valid JPEG");
+	           return false; // not a valid jpeg
+	        }
+	
+	        var offset = 2,
+	            length = file.byteLength,
+	            dom = new DOMParser();
+	
+	        while (offset < (length-4)) {
+	            if (getStringFromDB(dataView, offset, 4) == "http") {
+	                var startOffset = offset - 1;
+	                var sectionLength = dataView.getUint16(offset - 2) - 1;
+	                var xmpString = getStringFromDB(dataView, startOffset, sectionLength)
+	                var xmpEndIndex = xmpString.indexOf('xmpmeta>') + 8;
+	                xmpString = xmpString.substring( xmpString.indexOf( '<x:xmpmeta' ), xmpEndIndex );
+	
+	                var indexOfXmp = xmpString.indexOf('x:xmpmeta') + 10
+	                //Many custom written programs embed xmp/xml without any namespace. Following are some of them.
+	                //Without these namespaces, XML is thought to be invalid by parsers
+	                xmpString = xmpString.slice(0, indexOfXmp)
+	                            + 'xmlns:Iptc4xmpCore="http://iptc.org/std/Iptc4xmpCore/1.0/xmlns/" '
+	                            + 'xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" '
+	                            + 'xmlns:tiff="http://ns.adobe.com/tiff/1.0/" '
+	                            + 'xmlns:plus="http://schemas.android.com/apk/lib/com.google.android.gms.plus" '
+	                            + 'xmlns:ext="http://www.gettyimages.com/xsltExtension/1.0" '
+	                            + 'xmlns:exif="http://ns.adobe.com/exif/1.0/" '
+	                            + 'xmlns:stEvt="http://ns.adobe.com/xap/1.0/sType/ResourceEvent#" '
+	                            + 'xmlns:stRef="http://ns.adobe.com/xap/1.0/sType/ResourceRef#" '
+	                            + 'xmlns:crs="http://ns.adobe.com/camera-raw-settings/1.0/" '
+	                            + 'xmlns:xapGImg="http://ns.adobe.com/xap/1.0/g/img/" '
+	                            + 'xmlns:Iptc4xmpExt="http://iptc.org/std/Iptc4xmpExt/2008-02-29/" '
+	                            + xmpString.slice(indexOfXmp)
+	
+	                var domDocument = dom.parseFromString( xmpString, 'text/xml' );
+	                return xml2Object(domDocument);
+	            } else{
+	             offset++;
+	            }
+	        }
+	    }
+	
+	    function xml2Object(xml) {
+	        try {
+	            var obj = {};
+	            if (xml.children.length > 0) {
+	              for (var i = 0; i < xml.children.length; i++) {
+	                var item = xml.children.item(i);
+	                var attributes = item.attributes;
+	                for(var idx in attributes) {
+	                    var itemAtt = attributes[idx];
+	                    var dataKey = itemAtt.nodeName;
+	                    var dataValue = itemAtt.nodeValue;
+	
+	                    if(dataKey !== undefined) {
+	                        obj[dataKey] = dataValue;
+	                    }
+	                }
+	                var nodeName = item.nodeName;
+	
+	                if (typeof (obj[nodeName]) == "undefined") {
+	                  obj[nodeName] = xml2json(item);
+	                } else {
+	                  if (typeof (obj[nodeName].push) == "undefined") {
+	                    var old = obj[nodeName];
+	
+	                    obj[nodeName] = [];
+	                    obj[nodeName].push(old);
+	                  }
+	                  obj[nodeName].push(xml2json(item));
+	                }
+	              }
+	            } else {
+	              obj = xml.textContent;
+	            }
+	            return obj;
+	          } catch (e) {
+	              console.log(e.message);
+	          }
+	    }
+	
+	    EXIF.getData = function(img, callback) {
+	        if ((self.Image && img instanceof self.Image)
+	            || (self.HTMLImageElement && img instanceof self.HTMLImageElement)
+	            && !img.complete)
+	            return false;
+	
+	        if (!imageHasData(img)) {
+	            getImageData(img, callback);
+	        } else {
+	            if (callback) {
+	                callback.call(img);
+	            }
+	        }
+	        return true;
+	    }
+	
+	    EXIF.getTag = function(img, tag) {
+	        if (!imageHasData(img)) return;
+	        return img.exifdata[tag];
+	    }
+	    
+	    EXIF.getIptcTag = function(img, tag) {
+	        if (!imageHasData(img)) return;
+	        return img.iptcdata[tag];
+	    }
+	
+	    EXIF.getAllTags = function(img) {
+	        if (!imageHasData(img)) return {};
+	        var a,
+	            data = img.exifdata,
+	            tags = {};
+	        for (a in data) {
+	            if (data.hasOwnProperty(a)) {
+	                tags[a] = data[a];
+	            }
+	        }
+	        return tags;
+	    }
+	    
+	    EXIF.getAllIptcTags = function(img) {
+	        if (!imageHasData(img)) return {};
+	        var a,
+	            data = img.iptcdata,
+	            tags = {};
+	        for (a in data) {
+	            if (data.hasOwnProperty(a)) {
+	                tags[a] = data[a];
+	            }
+	        }
+	        return tags;
+	    }
+	
+	    EXIF.pretty = function(img) {
+	        if (!imageHasData(img)) return "";
+	        var a,
+	            data = img.exifdata,
+	            strPretty = "";
+	        for (a in data) {
+	            if (data.hasOwnProperty(a)) {
+	                if (typeof data[a] == "object") {
+	                    if (data[a] instanceof Number) {
+	                        strPretty += a + " : " + data[a] + " [" + data[a].numerator + "/" + data[a].denominator + "]\r\n";
+	                    } else {
+	                        strPretty += a + " : [" + data[a].length + " values]\r\n";
+	                    }
+	                } else {
+	                    strPretty += a + " : " + data[a] + "\r\n";
+	                }
+	            }
+	        }
+	        return strPretty;
+	    }
+	
+	    EXIF.readFromBinaryFile = function(file) {
+	        return findEXIFinJPEG(file);
+	    }
+	
+	    if (true) {
+	        !(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function() {
+	            return EXIF;
+	        }.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+	    }
+	}.call(this));
+	
+
+
+/***/ }),
+/* 601 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -55841,17 +56890,17 @@
 
 
 /***/ }),
-/* 601 */
+/* 602 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	// Adapted from ReactART:
 	// https://github.com/reactjs/react-art
 	
-	var Konva = __webpack_require__(602);
+	var Konva = __webpack_require__(603);
 	var React = __webpack_require__(2);
 	
 	var PropTypes = __webpack_require__(187);
-	var createClass = __webpack_require__(605);
+	var createClass = __webpack_require__(606);
 	
 	var ReactInstanceMap = __webpack_require__(122);
 	var ReactMultiChild = __webpack_require__(120);
@@ -56236,7 +57285,7 @@
 
 
 /***/ }),
-/* 602 */
+/* 603 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/*
@@ -56489,8 +57538,8 @@
 	      // Node. Does not work with strict CommonJS, but
 	      // only CommonJS-like enviroments that support module.exports,
 	      // like Node.
-	      var Canvas = __webpack_require__(603);
-	      var jsdom = __webpack_require__(604).jsdom;
+	      var Canvas = __webpack_require__(604);
+	      var jsdom = __webpack_require__(605).jsdom;
 	
 	      Konva.window = jsdom(
 	        '<!DOCTYPE html><html><head></head><body></body></html>'
@@ -74289,12 +75338,6 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 603 */
-/***/ (function(module, exports) {
-
-	/* (ignored) */
-
-/***/ }),
 /* 604 */
 /***/ (function(module, exports) {
 
@@ -74302,6 +75345,12 @@
 
 /***/ }),
 /* 605 */
+/***/ (function(module, exports) {
+
+	/* (ignored) */
+
+/***/ }),
+/* 606 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/**
@@ -74337,7 +75386,7 @@
 
 
 /***/ }),
-/* 606 */
+/* 607 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74352,7 +75401,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _select_hub_list_item = __webpack_require__(607);
+	var _select_hub_list_item = __webpack_require__(608);
 	
 	var _select_hub_list_item2 = _interopRequireDefault(_select_hub_list_item);
 	
@@ -74428,7 +75477,7 @@
 	exports.default = SelectHub;
 
 /***/ }),
-/* 607 */
+/* 608 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -74532,7 +75581,7 @@
 	exports.default = SelectHubListItem;
 
 /***/ }),
-/* 608 */
+/* 609 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74543,9 +75592,9 @@
 	
 	var _reactRedux = __webpack_require__(185);
 	
-	var _session_actions = __webpack_require__(609);
+	var _session_actions = __webpack_require__(610);
 	
-	var _session_form = __webpack_require__(611);
+	var _session_form = __webpack_require__(612);
 	
 	var _session_form2 = _interopRequireDefault(_session_form);
 	
@@ -74576,7 +75625,7 @@
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_session_form2.default);
 
 /***/ }),
-/* 609 */
+/* 610 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74586,7 +75635,7 @@
 	});
 	exports.logout = exports.login = exports.facebookLogin = exports.signup = exports.receiveErrors = exports.receiveCurrentUser = exports.RECEIVE_ERRORS = exports.RECEIVE_CURRENT_USER = undefined;
 	
-	var _session_api_util = __webpack_require__(610);
+	var _session_api_util = __webpack_require__(611);
 	
 	var APIUtil = _interopRequireWildcard(_session_api_util);
 	
@@ -74648,7 +75697,7 @@
 	};
 
 /***/ }),
-/* 610 */
+/* 611 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74658,7 +75707,7 @@
 	});
 	exports.logout = exports.signup = exports.login = undefined;
 	
-	var _session_actions = __webpack_require__(609);
+	var _session_actions = __webpack_require__(610);
 	
 	var login = exports.login = function login(user) {
 	  return $.ajax({
@@ -74684,7 +75733,7 @@
 	};
 
 /***/ }),
-/* 611 */
+/* 612 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74850,7 +75899,7 @@
 	exports.default = (0, _reactRouter.withRouter)(SessionForm);
 
 /***/ }),
-/* 612 */
+/* 613 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74861,11 +75910,11 @@
 	
 	var _redux = __webpack_require__(194);
 	
-	var _reduxThunk = __webpack_require__(613);
+	var _reduxThunk = __webpack_require__(614);
 	
 	var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
 	
-	var _root_reducer = __webpack_require__(614);
+	var _root_reducer = __webpack_require__(615);
 	
 	var _root_reducer2 = _interopRequireDefault(_root_reducer);
 	
@@ -74879,7 +75928,7 @@
 	exports.default = configureStore;
 
 /***/ }),
-/* 613 */
+/* 614 */
 /***/ (function(module, exports) {
 
 	'use strict';
@@ -74907,7 +75956,7 @@
 	exports['default'] = thunk;
 
 /***/ }),
-/* 614 */
+/* 615 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74918,11 +75967,11 @@
 	
 	var _redux = __webpack_require__(194);
 	
-	var _session_reducer = __webpack_require__(615);
+	var _session_reducer = __webpack_require__(616);
 	
 	var _session_reducer2 = _interopRequireDefault(_session_reducer);
 	
-	var _hubs_reducer = __webpack_require__(701);
+	var _hubs_reducer = __webpack_require__(702);
 	
 	var _hubs_reducer2 = _interopRequireDefault(_hubs_reducer);
 	
@@ -74936,7 +75985,7 @@
 	exports.default = RootReducer;
 
 /***/ }),
-/* 615 */
+/* 616 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -74945,11 +75994,11 @@
 	  value: true
 	});
 	
-	var _merge = __webpack_require__(616);
+	var _merge = __webpack_require__(617);
 	
 	var _merge2 = _interopRequireDefault(_merge);
 	
-	var _session_actions = __webpack_require__(609);
+	var _session_actions = __webpack_require__(610);
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
@@ -74982,11 +76031,11 @@
 	exports.default = sessionReducer;
 
 /***/ }),
-/* 616 */
+/* 617 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseMerge = __webpack_require__(617),
-	    createAssigner = __webpack_require__(691);
+	var baseMerge = __webpack_require__(618),
+	    createAssigner = __webpack_require__(692);
 	
 	/**
 	 * This method is like `_.assign` except that it recursively merges own and
@@ -75027,15 +76076,15 @@
 
 
 /***/ }),
-/* 617 */
+/* 618 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Stack = __webpack_require__(618),
-	    assignMergeValue = __webpack_require__(656),
-	    baseFor = __webpack_require__(659),
-	    baseMergeDeep = __webpack_require__(661),
-	    isObject = __webpack_require__(636),
-	    keysIn = __webpack_require__(685);
+	var Stack = __webpack_require__(619),
+	    assignMergeValue = __webpack_require__(657),
+	    baseFor = __webpack_require__(660),
+	    baseMergeDeep = __webpack_require__(662),
+	    isObject = __webpack_require__(637),
+	    keysIn = __webpack_require__(686);
 	
 	/**
 	 * The base implementation of `_.merge` without support for multiple sources.
@@ -75074,15 +76123,15 @@
 
 
 /***/ }),
-/* 618 */
+/* 619 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var ListCache = __webpack_require__(619),
-	    stackClear = __webpack_require__(627),
-	    stackDelete = __webpack_require__(628),
-	    stackGet = __webpack_require__(629),
-	    stackHas = __webpack_require__(630),
-	    stackSet = __webpack_require__(631);
+	var ListCache = __webpack_require__(620),
+	    stackClear = __webpack_require__(628),
+	    stackDelete = __webpack_require__(629),
+	    stackGet = __webpack_require__(630),
+	    stackHas = __webpack_require__(631),
+	    stackSet = __webpack_require__(632);
 	
 	/**
 	 * Creates a stack cache object to store key-value pairs.
@@ -75107,14 +76156,14 @@
 
 
 /***/ }),
-/* 619 */
+/* 620 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var listCacheClear = __webpack_require__(620),
-	    listCacheDelete = __webpack_require__(621),
-	    listCacheGet = __webpack_require__(624),
-	    listCacheHas = __webpack_require__(625),
-	    listCacheSet = __webpack_require__(626);
+	var listCacheClear = __webpack_require__(621),
+	    listCacheDelete = __webpack_require__(622),
+	    listCacheGet = __webpack_require__(625),
+	    listCacheHas = __webpack_require__(626),
+	    listCacheSet = __webpack_require__(627);
 	
 	/**
 	 * Creates an list cache object.
@@ -75145,7 +76194,7 @@
 
 
 /***/ }),
-/* 620 */
+/* 621 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75164,10 +76213,10 @@
 
 
 /***/ }),
-/* 621 */
+/* 622 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(622);
+	var assocIndexOf = __webpack_require__(623);
 	
 	/** Used for built-in method references. */
 	var arrayProto = Array.prototype;
@@ -75205,10 +76254,10 @@
 
 
 /***/ }),
-/* 622 */
+/* 623 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(623);
+	var eq = __webpack_require__(624);
 	
 	/**
 	 * Gets the index at which the `key` is found in `array` of key-value pairs.
@@ -75232,7 +76281,7 @@
 
 
 /***/ }),
-/* 623 */
+/* 624 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75275,10 +76324,10 @@
 
 
 /***/ }),
-/* 624 */
+/* 625 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(622);
+	var assocIndexOf = __webpack_require__(623);
 	
 	/**
 	 * Gets the list cache value for `key`.
@@ -75300,10 +76349,10 @@
 
 
 /***/ }),
-/* 625 */
+/* 626 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(622);
+	var assocIndexOf = __webpack_require__(623);
 	
 	/**
 	 * Checks if a list cache value for `key` exists.
@@ -75322,10 +76371,10 @@
 
 
 /***/ }),
-/* 626 */
+/* 627 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var assocIndexOf = __webpack_require__(622);
+	var assocIndexOf = __webpack_require__(623);
 	
 	/**
 	 * Sets the list cache `key` to `value`.
@@ -75354,10 +76403,10 @@
 
 
 /***/ }),
-/* 627 */
+/* 628 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var ListCache = __webpack_require__(619);
+	var ListCache = __webpack_require__(620);
 	
 	/**
 	 * Removes all key-value entries from the stack.
@@ -75375,7 +76424,7 @@
 
 
 /***/ }),
-/* 628 */
+/* 629 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75399,7 +76448,7 @@
 
 
 /***/ }),
-/* 629 */
+/* 630 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75419,7 +76468,7 @@
 
 
 /***/ }),
-/* 630 */
+/* 631 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75439,12 +76488,12 @@
 
 
 /***/ }),
-/* 631 */
+/* 632 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var ListCache = __webpack_require__(619),
-	    Map = __webpack_require__(632),
-	    MapCache = __webpack_require__(641);
+	var ListCache = __webpack_require__(620),
+	    Map = __webpack_require__(633),
+	    MapCache = __webpack_require__(642);
 	
 	/** Used as the size to enable large array optimizations. */
 	var LARGE_ARRAY_SIZE = 200;
@@ -75479,10 +76528,10 @@
 
 
 /***/ }),
-/* 632 */
+/* 633 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(633),
+	var getNative = __webpack_require__(634),
 	    root = __webpack_require__(199);
 	
 	/* Built-in method references that are verified to be native. */
@@ -75492,11 +76541,11 @@
 
 
 /***/ }),
-/* 633 */
+/* 634 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseIsNative = __webpack_require__(634),
-	    getValue = __webpack_require__(640);
+	var baseIsNative = __webpack_require__(635),
+	    getValue = __webpack_require__(641);
 	
 	/**
 	 * Gets the native function at `key` of `object`.
@@ -75515,13 +76564,13 @@
 
 
 /***/ }),
-/* 634 */
+/* 635 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(635),
-	    isMasked = __webpack_require__(637),
-	    isObject = __webpack_require__(636),
-	    toSource = __webpack_require__(639);
+	var isFunction = __webpack_require__(636),
+	    isMasked = __webpack_require__(638),
+	    isObject = __webpack_require__(637),
+	    toSource = __webpack_require__(640);
 	
 	/**
 	 * Used to match `RegExp`
@@ -75568,11 +76617,11 @@
 
 
 /***/ }),
-/* 635 */
+/* 636 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var baseGetTag = __webpack_require__(197),
-	    isObject = __webpack_require__(636);
+	    isObject = __webpack_require__(637);
 	
 	/** `Object#toString` result references. */
 	var asyncTag = '[object AsyncFunction]',
@@ -75611,7 +76660,7 @@
 
 
 /***/ }),
-/* 636 */
+/* 637 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75648,10 +76697,10 @@
 
 
 /***/ }),
-/* 637 */
+/* 638 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var coreJsData = __webpack_require__(638);
+	var coreJsData = __webpack_require__(639);
 	
 	/** Used to detect methods masquerading as native. */
 	var maskSrcKey = (function() {
@@ -75674,7 +76723,7 @@
 
 
 /***/ }),
-/* 638 */
+/* 639 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var root = __webpack_require__(199);
@@ -75686,7 +76735,7 @@
 
 
 /***/ }),
-/* 639 */
+/* 640 */
 /***/ (function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -75718,7 +76767,7 @@
 
 
 /***/ }),
-/* 640 */
+/* 641 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75737,14 +76786,14 @@
 
 
 /***/ }),
-/* 641 */
+/* 642 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var mapCacheClear = __webpack_require__(642),
-	    mapCacheDelete = __webpack_require__(650),
-	    mapCacheGet = __webpack_require__(653),
-	    mapCacheHas = __webpack_require__(654),
-	    mapCacheSet = __webpack_require__(655);
+	var mapCacheClear = __webpack_require__(643),
+	    mapCacheDelete = __webpack_require__(651),
+	    mapCacheGet = __webpack_require__(654),
+	    mapCacheHas = __webpack_require__(655),
+	    mapCacheSet = __webpack_require__(656);
 	
 	/**
 	 * Creates a map cache object to store key-value pairs.
@@ -75775,12 +76824,12 @@
 
 
 /***/ }),
-/* 642 */
+/* 643 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Hash = __webpack_require__(643),
-	    ListCache = __webpack_require__(619),
-	    Map = __webpack_require__(632);
+	var Hash = __webpack_require__(644),
+	    ListCache = __webpack_require__(620),
+	    Map = __webpack_require__(633);
 	
 	/**
 	 * Removes all key-value entries from the map.
@@ -75802,14 +76851,14 @@
 
 
 /***/ }),
-/* 643 */
+/* 644 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var hashClear = __webpack_require__(644),
-	    hashDelete = __webpack_require__(646),
-	    hashGet = __webpack_require__(647),
-	    hashHas = __webpack_require__(648),
-	    hashSet = __webpack_require__(649);
+	var hashClear = __webpack_require__(645),
+	    hashDelete = __webpack_require__(647),
+	    hashGet = __webpack_require__(648),
+	    hashHas = __webpack_require__(649),
+	    hashSet = __webpack_require__(650);
 	
 	/**
 	 * Creates a hash object.
@@ -75840,10 +76889,10 @@
 
 
 /***/ }),
-/* 644 */
+/* 645 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(645);
+	var nativeCreate = __webpack_require__(646);
 	
 	/**
 	 * Removes all key-value entries from the hash.
@@ -75861,10 +76910,10 @@
 
 
 /***/ }),
-/* 645 */
+/* 646 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(633);
+	var getNative = __webpack_require__(634);
 	
 	/* Built-in method references that are verified to be native. */
 	var nativeCreate = getNative(Object, 'create');
@@ -75873,7 +76922,7 @@
 
 
 /***/ }),
-/* 646 */
+/* 647 */
 /***/ (function(module, exports) {
 
 	/**
@@ -75896,10 +76945,10 @@
 
 
 /***/ }),
-/* 647 */
+/* 648 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(645);
+	var nativeCreate = __webpack_require__(646);
 	
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -75932,10 +76981,10 @@
 
 
 /***/ }),
-/* 648 */
+/* 649 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(645);
+	var nativeCreate = __webpack_require__(646);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -75961,10 +77010,10 @@
 
 
 /***/ }),
-/* 649 */
+/* 650 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var nativeCreate = __webpack_require__(645);
+	var nativeCreate = __webpack_require__(646);
 	
 	/** Used to stand-in for `undefined` hash values. */
 	var HASH_UNDEFINED = '__lodash_hash_undefined__';
@@ -75990,10 +77039,10 @@
 
 
 /***/ }),
-/* 650 */
+/* 651 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(651);
+	var getMapData = __webpack_require__(652);
 	
 	/**
 	 * Removes `key` and its value from the map.
@@ -76014,10 +77063,10 @@
 
 
 /***/ }),
-/* 651 */
+/* 652 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isKeyable = __webpack_require__(652);
+	var isKeyable = __webpack_require__(653);
 	
 	/**
 	 * Gets the data for `map`.
@@ -76038,7 +77087,7 @@
 
 
 /***/ }),
-/* 652 */
+/* 653 */
 /***/ (function(module, exports) {
 
 	/**
@@ -76059,10 +77108,10 @@
 
 
 /***/ }),
-/* 653 */
+/* 654 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(651);
+	var getMapData = __webpack_require__(652);
 	
 	/**
 	 * Gets the map value for `key`.
@@ -76081,10 +77130,10 @@
 
 
 /***/ }),
-/* 654 */
+/* 655 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(651);
+	var getMapData = __webpack_require__(652);
 	
 	/**
 	 * Checks if a map value for `key` exists.
@@ -76103,10 +77152,10 @@
 
 
 /***/ }),
-/* 655 */
+/* 656 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getMapData = __webpack_require__(651);
+	var getMapData = __webpack_require__(652);
 	
 	/**
 	 * Sets the map `key` to `value`.
@@ -76131,11 +77180,11 @@
 
 
 /***/ }),
-/* 656 */
+/* 657 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseAssignValue = __webpack_require__(657),
-	    eq = __webpack_require__(623);
+	var baseAssignValue = __webpack_require__(658),
+	    eq = __webpack_require__(624);
 	
 	/**
 	 * This function is like `assignValue` except that it doesn't assign
@@ -76157,10 +77206,10 @@
 
 
 /***/ }),
-/* 657 */
+/* 658 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var defineProperty = __webpack_require__(658);
+	var defineProperty = __webpack_require__(659);
 	
 	/**
 	 * The base implementation of `assignValue` and `assignMergeValue` without
@@ -76188,10 +77237,10 @@
 
 
 /***/ }),
-/* 658 */
+/* 659 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var getNative = __webpack_require__(633);
+	var getNative = __webpack_require__(634);
 	
 	var defineProperty = (function() {
 	  try {
@@ -76205,10 +77254,10 @@
 
 
 /***/ }),
-/* 659 */
+/* 660 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var createBaseFor = __webpack_require__(660);
+	var createBaseFor = __webpack_require__(661);
 	
 	/**
 	 * The base implementation of `baseForOwn` which iterates over `object`
@@ -76227,7 +77276,7 @@
 
 
 /***/ }),
-/* 660 */
+/* 661 */
 /***/ (function(module, exports) {
 
 	/**
@@ -76258,23 +77307,23 @@
 
 
 /***/ }),
-/* 661 */
+/* 662 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var assignMergeValue = __webpack_require__(656),
-	    cloneBuffer = __webpack_require__(662),
-	    cloneTypedArray = __webpack_require__(663),
-	    copyArray = __webpack_require__(666),
-	    initCloneObject = __webpack_require__(667),
-	    isArguments = __webpack_require__(670),
-	    isArray = __webpack_require__(672),
-	    isArrayLikeObject = __webpack_require__(673),
-	    isBuffer = __webpack_require__(676),
-	    isFunction = __webpack_require__(635),
-	    isObject = __webpack_require__(636),
+	var assignMergeValue = __webpack_require__(657),
+	    cloneBuffer = __webpack_require__(663),
+	    cloneTypedArray = __webpack_require__(664),
+	    copyArray = __webpack_require__(667),
+	    initCloneObject = __webpack_require__(668),
+	    isArguments = __webpack_require__(671),
+	    isArray = __webpack_require__(673),
+	    isArrayLikeObject = __webpack_require__(674),
+	    isBuffer = __webpack_require__(677),
+	    isFunction = __webpack_require__(636),
+	    isObject = __webpack_require__(637),
 	    isPlainObject = __webpack_require__(196),
-	    isTypedArray = __webpack_require__(678),
-	    toPlainObject = __webpack_require__(682);
+	    isTypedArray = __webpack_require__(679),
+	    toPlainObject = __webpack_require__(683);
 	
 	/**
 	 * A specialized version of `baseMerge` for arrays and objects which performs
@@ -76357,7 +77406,7 @@
 
 
 /***/ }),
-/* 662 */
+/* 663 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(199);
@@ -76399,10 +77448,10 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(208)(module)))
 
 /***/ }),
-/* 663 */
+/* 664 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var cloneArrayBuffer = __webpack_require__(664);
+	var cloneArrayBuffer = __webpack_require__(665);
 	
 	/**
 	 * Creates a clone of `typedArray`.
@@ -76421,10 +77470,10 @@
 
 
 /***/ }),
-/* 664 */
+/* 665 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var Uint8Array = __webpack_require__(665);
+	var Uint8Array = __webpack_require__(666);
 	
 	/**
 	 * Creates a clone of `arrayBuffer`.
@@ -76443,7 +77492,7 @@
 
 
 /***/ }),
-/* 665 */
+/* 666 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var root = __webpack_require__(199);
@@ -76455,7 +77504,7 @@
 
 
 /***/ }),
-/* 666 */
+/* 667 */
 /***/ (function(module, exports) {
 
 	/**
@@ -76481,12 +77530,12 @@
 
 
 /***/ }),
-/* 667 */
+/* 668 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseCreate = __webpack_require__(668),
+	var baseCreate = __webpack_require__(669),
 	    getPrototype = __webpack_require__(203),
-	    isPrototype = __webpack_require__(669);
+	    isPrototype = __webpack_require__(670);
 	
 	/**
 	 * Initializes an object clone.
@@ -76505,10 +77554,10 @@
 
 
 /***/ }),
-/* 668 */
+/* 669 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(636);
+	var isObject = __webpack_require__(637);
 	
 	/** Built-in value references. */
 	var objectCreate = Object.create;
@@ -76541,7 +77590,7 @@
 
 
 /***/ }),
-/* 669 */
+/* 670 */
 /***/ (function(module, exports) {
 
 	/** Used for built-in method references. */
@@ -76565,10 +77614,10 @@
 
 
 /***/ }),
-/* 670 */
+/* 671 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseIsArguments = __webpack_require__(671),
+	var baseIsArguments = __webpack_require__(672),
 	    isObjectLike = __webpack_require__(205);
 	
 	/** Used for built-in method references. */
@@ -76607,7 +77656,7 @@
 
 
 /***/ }),
-/* 671 */
+/* 672 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var baseGetTag = __webpack_require__(197),
@@ -76631,7 +77680,7 @@
 
 
 /***/ }),
-/* 672 */
+/* 673 */
 /***/ (function(module, exports) {
 
 	/**
@@ -76663,10 +77712,10 @@
 
 
 /***/ }),
-/* 673 */
+/* 674 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isArrayLike = __webpack_require__(674),
+	var isArrayLike = __webpack_require__(675),
 	    isObjectLike = __webpack_require__(205);
 	
 	/**
@@ -76702,11 +77751,11 @@
 
 
 /***/ }),
-/* 674 */
+/* 675 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isFunction = __webpack_require__(635),
-	    isLength = __webpack_require__(675);
+	var isFunction = __webpack_require__(636),
+	    isLength = __webpack_require__(676);
 	
 	/**
 	 * Checks if `value` is array-like. A value is considered array-like if it's
@@ -76741,7 +77790,7 @@
 
 
 /***/ }),
-/* 675 */
+/* 676 */
 /***/ (function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -76782,11 +77831,11 @@
 
 
 /***/ }),
-/* 676 */
+/* 677 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {var root = __webpack_require__(199),
-	    stubFalse = __webpack_require__(677);
+	    stubFalse = __webpack_require__(678);
 	
 	/** Detect free variable `exports`. */
 	var freeExports = typeof exports == 'object' && exports && !exports.nodeType && exports;
@@ -76827,7 +77876,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(208)(module)))
 
 /***/ }),
-/* 677 */
+/* 678 */
 /***/ (function(module, exports) {
 
 	/**
@@ -76851,12 +77900,12 @@
 
 
 /***/ }),
-/* 678 */
+/* 679 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseIsTypedArray = __webpack_require__(679),
-	    baseUnary = __webpack_require__(680),
-	    nodeUtil = __webpack_require__(681);
+	var baseIsTypedArray = __webpack_require__(680),
+	    baseUnary = __webpack_require__(681),
+	    nodeUtil = __webpack_require__(682);
 	
 	/* Node.js helper references. */
 	var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
@@ -76884,11 +77933,11 @@
 
 
 /***/ }),
-/* 679 */
+/* 680 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var baseGetTag = __webpack_require__(197),
-	    isLength = __webpack_require__(675),
+	    isLength = __webpack_require__(676),
 	    isObjectLike = __webpack_require__(205);
 	
 	/** `Object#toString` result references. */
@@ -76950,7 +77999,7 @@
 
 
 /***/ }),
-/* 680 */
+/* 681 */
 /***/ (function(module, exports) {
 
 	/**
@@ -76970,7 +78019,7 @@
 
 
 /***/ }),
-/* 681 */
+/* 682 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(module) {var freeGlobal = __webpack_require__(200);
@@ -76999,11 +78048,11 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(208)(module)))
 
 /***/ }),
-/* 682 */
+/* 683 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var copyObject = __webpack_require__(683),
-	    keysIn = __webpack_require__(685);
+	var copyObject = __webpack_require__(684),
+	    keysIn = __webpack_require__(686);
 	
 	/**
 	 * Converts `value` to a plain object flattening inherited enumerable string
@@ -77037,11 +78086,11 @@
 
 
 /***/ }),
-/* 683 */
+/* 684 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var assignValue = __webpack_require__(684),
-	    baseAssignValue = __webpack_require__(657);
+	var assignValue = __webpack_require__(685),
+	    baseAssignValue = __webpack_require__(658);
 	
 	/**
 	 * Copies properties of `source` to `object`.
@@ -77083,11 +78132,11 @@
 
 
 /***/ }),
-/* 684 */
+/* 685 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseAssignValue = __webpack_require__(657),
-	    eq = __webpack_require__(623);
+	var baseAssignValue = __webpack_require__(658),
+	    eq = __webpack_require__(624);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -77117,12 +78166,12 @@
 
 
 /***/ }),
-/* 685 */
+/* 686 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var arrayLikeKeys = __webpack_require__(686),
-	    baseKeysIn = __webpack_require__(689),
-	    isArrayLike = __webpack_require__(674);
+	var arrayLikeKeys = __webpack_require__(687),
+	    baseKeysIn = __webpack_require__(690),
+	    isArrayLike = __webpack_require__(675);
 	
 	/**
 	 * Creates an array of the own and inherited enumerable property names of `object`.
@@ -77155,15 +78204,15 @@
 
 
 /***/ }),
-/* 686 */
+/* 687 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseTimes = __webpack_require__(687),
-	    isArguments = __webpack_require__(670),
-	    isArray = __webpack_require__(672),
-	    isBuffer = __webpack_require__(676),
-	    isIndex = __webpack_require__(688),
-	    isTypedArray = __webpack_require__(678);
+	var baseTimes = __webpack_require__(688),
+	    isArguments = __webpack_require__(671),
+	    isArray = __webpack_require__(673),
+	    isBuffer = __webpack_require__(677),
+	    isIndex = __webpack_require__(689),
+	    isTypedArray = __webpack_require__(679);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -77210,7 +78259,7 @@
 
 
 /***/ }),
-/* 687 */
+/* 688 */
 /***/ (function(module, exports) {
 
 	/**
@@ -77236,7 +78285,7 @@
 
 
 /***/ }),
-/* 688 */
+/* 689 */
 /***/ (function(module, exports) {
 
 	/** Used as references for various `Number` constants. */
@@ -77264,12 +78313,12 @@
 
 
 /***/ }),
-/* 689 */
+/* 690 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isObject = __webpack_require__(636),
-	    isPrototype = __webpack_require__(669),
-	    nativeKeysIn = __webpack_require__(690);
+	var isObject = __webpack_require__(637),
+	    isPrototype = __webpack_require__(670),
+	    nativeKeysIn = __webpack_require__(691);
 	
 	/** Used for built-in method references. */
 	var objectProto = Object.prototype;
@@ -77303,7 +78352,7 @@
 
 
 /***/ }),
-/* 690 */
+/* 691 */
 /***/ (function(module, exports) {
 
 	/**
@@ -77329,11 +78378,11 @@
 
 
 /***/ }),
-/* 691 */
+/* 692 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseRest = __webpack_require__(692),
-	    isIterateeCall = __webpack_require__(700);
+	var baseRest = __webpack_require__(693),
+	    isIterateeCall = __webpack_require__(701);
 	
 	/**
 	 * Creates a function like `_.assign`.
@@ -77372,12 +78421,12 @@
 
 
 /***/ }),
-/* 692 */
+/* 693 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(693),
-	    overRest = __webpack_require__(694),
-	    setToString = __webpack_require__(696);
+	var identity = __webpack_require__(694),
+	    overRest = __webpack_require__(695),
+	    setToString = __webpack_require__(697);
 	
 	/**
 	 * The base implementation of `_.rest` which doesn't validate or coerce arguments.
@@ -77395,7 +78444,7 @@
 
 
 /***/ }),
-/* 693 */
+/* 694 */
 /***/ (function(module, exports) {
 
 	/**
@@ -77422,10 +78471,10 @@
 
 
 /***/ }),
-/* 694 */
+/* 695 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var apply = __webpack_require__(695);
+	var apply = __webpack_require__(696);
 	
 	/* Built-in method references for those with the same name as other `lodash` methods. */
 	var nativeMax = Math.max;
@@ -77464,7 +78513,7 @@
 
 
 /***/ }),
-/* 695 */
+/* 696 */
 /***/ (function(module, exports) {
 
 	/**
@@ -77491,11 +78540,11 @@
 
 
 /***/ }),
-/* 696 */
+/* 697 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var baseSetToString = __webpack_require__(697),
-	    shortOut = __webpack_require__(699);
+	var baseSetToString = __webpack_require__(698),
+	    shortOut = __webpack_require__(700);
 	
 	/**
 	 * Sets the `toString` method of `func` to return `string`.
@@ -77511,12 +78560,12 @@
 
 
 /***/ }),
-/* 697 */
+/* 698 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var constant = __webpack_require__(698),
-	    defineProperty = __webpack_require__(658),
-	    identity = __webpack_require__(693);
+	var constant = __webpack_require__(699),
+	    defineProperty = __webpack_require__(659),
+	    identity = __webpack_require__(694);
 	
 	/**
 	 * The base implementation of `setToString` without support for hot loop shorting.
@@ -77539,7 +78588,7 @@
 
 
 /***/ }),
-/* 698 */
+/* 699 */
 /***/ (function(module, exports) {
 
 	/**
@@ -77571,7 +78620,7 @@
 
 
 /***/ }),
-/* 699 */
+/* 700 */
 /***/ (function(module, exports) {
 
 	/** Used to detect hot functions by number of calls within a span of milliseconds. */
@@ -77614,13 +78663,13 @@
 
 
 /***/ }),
-/* 700 */
+/* 701 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var eq = __webpack_require__(623),
-	    isArrayLike = __webpack_require__(674),
-	    isIndex = __webpack_require__(688),
-	    isObject = __webpack_require__(636);
+	var eq = __webpack_require__(624),
+	    isArrayLike = __webpack_require__(675),
+	    isIndex = __webpack_require__(689),
+	    isObject = __webpack_require__(637);
 	
 	/**
 	 * Checks if the given arguments are from an iteratee call.
@@ -77650,7 +78699,7 @@
 
 
 /***/ }),
-/* 701 */
+/* 702 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -77663,7 +78712,7 @@
 	
 	var HubActions = _interopRequireWildcard(_hub_actions);
 	
-	var _merge = __webpack_require__(616);
+	var _merge = __webpack_require__(617);
 	
 	var _merge2 = _interopRequireDefault(_merge);
 	

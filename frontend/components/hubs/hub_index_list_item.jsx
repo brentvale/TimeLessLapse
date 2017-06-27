@@ -56,7 +56,6 @@ class HubIndexListItem extends React.Component{
 	
 	handleKeyPress(e){
 		if(e.keyCode == 13 || e.keyCode == 9){
-			console.log(`key code was ${e.keyCode}`)
 			if(this.state.nameField !== ""){
 				e.preventDefault();
 				let that = this;

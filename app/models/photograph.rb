@@ -36,7 +36,7 @@ class Photograph < ActiveRecord::Base
     attachment_content_type: {:content_type => ["image/jpg", "image/jpeg", "image/png"]},
     attachment_size: {less_than: 10.megabytes}
     
-  after_image_post_process :load_exif
+  #after_image_post_process :load_exif
   
   def image_url_small
     self.image.url(:small)
@@ -51,6 +51,7 @@ class Photograph < ActiveRecord::Base
     if exif.nil?
       return
     end
+
     self.latitude = exif.exif.gps.latitude.to_s
     self.longitude = exif.exif.gps.longitude.to_s
     self.altitude = exif.exif.gps.altitude.to_s
