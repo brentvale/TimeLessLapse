@@ -54908,14 +54908,18 @@
 					{ onMouseEnter: this.startFlipping,
 						onMouseLeave: this.stopFlipping,
 						onTouchStart: this.startFlipping,
-						onTouchEnd: this.stopFlipping },
+						onTouchEnd: this.stopFlipping,
+						style: { width: "200px", height: "150px" },
+						className: 'center-block' },
 					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' })
 				) : _react2.default.createElement(
 					'div',
 					{ onMouseEnter: this.startFlipping,
 						onMouseLeave: this.stopFlipping,
 						onTouchStart: this.startFlipping,
-						onTouchEnd: this.stopFlipping },
+						onTouchEnd: this.stopFlipping,
+						style: { width: "400px", height: "300px" },
+						className: 'center-block' },
 					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' })
 				);
 	
