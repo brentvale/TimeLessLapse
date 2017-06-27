@@ -54904,7 +54904,21 @@
 						hub.id
 					);
 				}
+	
 				var imageToUse = this.state.lessThanTabletBreakSize ? _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' }) : _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' });
+	
+				var linkToHub = onIndexView ? _react2.default.createElement(
+					'div',
+					{ style: { marginTop: "20px" } },
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ to: '/hubs/' + hub.id, onClick: this.stopFlipping },
+						'View ',
+						hub.hub_name,
+						' Hub >>'
+					)
+				) : "";
+	
 				var mainContent = _react2.default.createElement(
 					'div',
 					{ className: klass, onMouseEnter: this.handleNextImage,
@@ -54912,22 +54926,15 @@
 						onTouchStart: this.handleNextImage,
 						onTouchEnd: this.stopFlipping },
 					titleEditingField,
-					imageToUse
+					imageToUse,
+					linkToHub
 				);
 	
-				if (onIndexView) {
-					return _react2.default.createElement(
-						_reactRouter.Link,
-						{ to: '/hubs/' + hub.id, onClick: this.stopFlipping },
-						mainContent
-					);
-				} else {
-					return _react2.default.createElement(
-						'div',
-						null,
-						mainContent
-					);
-				}
+				return _react2.default.createElement(
+					'div',
+					null,
+					mainContent
+				);
 			}
 		}]);
 	

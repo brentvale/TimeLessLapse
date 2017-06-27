@@ -97,23 +97,29 @@ class HubIndexListItem extends React.Component{
 		if(hub.photographs.length === 0){
 			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
 		}									
+		
 		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/> : 
 																														<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
+		
+		let linkToHub = (onIndexView) ? <div style={{marginTop: "20px"}}>
+																			<Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping}>View {hub.hub_name} Hub >></Link>
+																		</div> : "";
+																
 		let mainContent = <div className={klass} onMouseEnter={this.handleNextImage} 
 																						 onMouseLeave={this.stopFlipping} 
 																						 onTouchStart={this.handleNextImage} 
 																						 onTouchEnd={this.stopFlipping}>
 												{titleEditingField}
 												{imageToUse}
+												{linkToHub}
 											</div>;
 											
-		if(onIndexView){
-			return <Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping}>
-								{mainContent}
-						 </Link>;
-		} else {
-			return <div>{mainContent}</div>;
-		}
+		
+		
+		return (
+			<div>
+				{mainContent}
+			</div>);
 	}
 }
 export default HubIndexListItem;
