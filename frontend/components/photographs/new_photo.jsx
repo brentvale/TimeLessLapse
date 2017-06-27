@@ -54,10 +54,10 @@ class NewPhoto extends React.Component{
 			method: "POST",
 			data: {
 				timelapse_hub: {
-					latitude: this.state.photograph.latitude.slice(0,13),
-					longitude: this.state.photograph.longitude.slice(0,13),
+					latitude: that.state.photograph.latitude.slice(0,13),
+					longitude: that.state.photograph.longitude.slice(0,13),
 					hub_name: "Click to Add Hub Name",
-					first_photograph_id: this.state.photograph.id
+					first_photograph_id: that.state.photograph.id
 				}
 			},
 			success: (resp) => {	
