@@ -118,6 +118,24 @@ class NewPhoto extends React.Component{
 				let altitude = EXIF_IMAGE.getTag(this, "GPSAltitude");
 				let dateTimeDigitized = EXIF_IMAGE.getTag(this, "DateTimeDigitized");
 
+				//convert array of 3 numbers into decimal degrees
+				let latDegrees = lat[0] + lat[1]/60 + lat[2]/3600;
+				let lngDegrees = lng[0] + lng[1]/60 + lng[2]/3600
+
+				//if N, positive number
+				//if S, negative
+				let latRef = EXIF_IMAGE.getTag(this, "GPSLatitudeRef");
+				if(latRef === "S"){
+					latDegrees = "-" + latDegrees;
+				}
+				
+				//if E, positive number
+				//if W, negative
+				let lngRef = EXIF_IMAGE.getTag(this, "GPSLongitudeRef");
+				if(lngRef === "W"){
+					lngDegrees = "-" + lngDegrees;
+				}
+			
 	      let formData = new FormData();
 
 				let canvas = document.createElement("canvas");
@@ -134,8 +152,8 @@ class NewPhoto extends React.Component{
 
 	      formData.append("photograph[image]", dataurl);
 
-				formData.append("photograph[latitude]", lat);
-				formData.append("photograph[longitude]", lng);
+				formData.append("photograph[latitude]", latDegrees);
+				formData.append("photograph[longitude]", lngDegrees);
 				formData.append("photograph[image_direction]", imgDir);
 				formData.append("photograph[altitude]", altitude);
 				formData.append("photograph[datetime_digitized]", dateTimeDigitized);

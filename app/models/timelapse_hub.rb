@@ -13,7 +13,7 @@
 #
 
 class TimelapseHub < ActiveRecord::Base
-  has_many :photographs
+  has_many :photographs, dependent: :destroy
   belongs_to :user
   
   validates :hub_name, :longitude, :latitude, presence: true
@@ -21,6 +21,7 @@ class TimelapseHub < ActiveRecord::Base
   def save_first_photograph(photo_id)
     photo = Photograph.find(photo_id)
     photo.timelapse_hub_id = self.id
-    photo.save!
+    photo.order_number = 1
+    photo.save
   end
 end
