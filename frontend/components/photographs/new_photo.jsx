@@ -117,7 +117,7 @@ class NewPhoto extends React.Component{
 				let imgDir = EXIF_IMAGE.getTag(this, "GPSImgDirection");
 				let altitude = EXIF_IMAGE.getTag(this, "GPSAltitude");
 				let dateTimeDigitized = EXIF_IMAGE.getTag(this, "DateTimeDigitized");
-			
+
 	      let formData = new FormData();
 
 				let canvas = document.createElement("canvas");
