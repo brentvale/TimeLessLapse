@@ -2,6 +2,8 @@ import React from 'react';
 
 import { withRouter } from 'react-router';
 import ReactDOM from 'react-dom';
+import Exif from 'exif-js';
+window.EXIF_IMAGE = Exif;
 
 import {Button, Modal} from 'react-bootstrap';
 
@@ -103,33 +105,61 @@ class NewPhoto extends React.Component{
 	
   handleSubmit(e) {
     e.preventDefault();
-    var reader = new FileReader();
-    var that = this;
+		
+    let reader = new FileReader();
+    let that = this;
 
-    reader.onloadend = function() {
-      var formData = new FormData();
+    reader.onloadend = function(e) {
+			
+			EXIF_IMAGE.getData(that.state.uploadedFile, function() {
+	      let lat = EXIF_IMAGE.getTag(this, "GPSLatitude");
+	      let lng = EXIF_IMAGE.getTag(this, "GPSLongitude");
+				let imgDir = EXIF_IMAGE.getTag(this, "GPSImgDirection");
+				let altitude = EXIF_IMAGE.getTag(this, "GPSAltitude");
+				let dateTimeDigitized = EXIF_IMAGE.getTag(this, "DateTimeDigitized");
+			
+	      let formData = new FormData();
 
-      formData.append("photograph[image]", that.state.uploadedFile);
+				let canvas = document.createElement("canvas");
+				let height = that.state.imagePreview.height/5;
+				let width = that.state.imagePreview.width/5;
 
-			//CREATE IMAGE
-			$.ajax({
-				url: "api/photographs",
-	      method: "POST",
-	      data: formData,
-	      processData: false,
-	      contentType: false,
-	      dataType: 'json',
-				success: (resp) => {
-					that.setState({step: 2, photograph: resp, spinning: false})
-				},
-				error: (resp) => {
-					console.log("errored out creating the photo")
-				}
+				canvas.width = width;
+				canvas.height = height;
+
+				let ctx = canvas.getContext("2d");
+				ctx.drawImage(that.state.imagePreview, 0, 0, width, height);
+
+				let dataurl = canvas.toDataURL("image/jpeg");
+
+	      formData.append("photograph[image]", dataurl);
+
+				formData.append("photograph[latitude]", lat);
+				formData.append("photograph[longitude]", lng);
+				formData.append("photograph[image_direction]", imgDir);
+				formData.append("photograph[altitude]", altitude);
+				formData.append("photograph[datetime_digitized]", dateTimeDigitized);
+
+				//CREATE IMAGE
+				$.ajax({
+					url: "api/photographs",
+		      method: "POST",
+		      data: formData,
+		      processData: false,
+		      contentType: false,
+		      dataType: 'json',
+					success: (resp) => {
+						that.setState({step: 2, photograph: resp, spinning: false})
+					},
+					error: (resp) => {
+						console.log("errored out creating the photo")
+					}
+				});
 			});
     }
 
     if (this.state.uploadedFile) {
-      reader.readAsDataURL(this.state.uploadedFile);
+      reader.readAsArrayBuffer(this.state.uploadedFile);
     } 
 		this.setState({spinning: true});
   }
@@ -224,32 +254,28 @@ class NewPhoto extends React.Component{
 					{yourHubsLink}
 				</div>
 				<div style={{textAlign:"center", paddingTop: "3em"}}>
-			
 					{photographDisplay}
-					
 					<div style={{marginTop: marginTop}}>
 						{display}
 						{spinnerUploadDisplay}
-					</div>
-			
-					<Modal show={this.state.showModal} onHide={this.close}>
-		        <Modal.Header closeButton>
-		          <Modal.Title style={{textAlign:"center"}}>Are you sure this picture goes with this hub?</Modal.Title>
-		        </Modal.Header>
-		        <Modal.Body style={{height: "10em"}}>
-							<div className="col-xs-12">
-								<div className="col-xs-6" style={{textAlign: "center"}}>
-									<div className="button button-med button-create" onClick={this.handleConfirmed}>Yes</div>
-								</div>
-								<div className="col-xs-6" style={{textAlign: "center"}}>
-									<div className="button button-med button-undo" onClick={this.handleUnConfirmed}>No</div>
-								</div>
-							</div>
-		        </Modal.Body>
-		      </Modal>
-			
+					</div>	
 				</div>
 						
+				<Modal show={this.state.showModal} onHide={this.close}>
+	        <Modal.Header closeButton>
+	          <Modal.Title style={{textAlign:"center"}}>Are you sure this picture goes with this hub?</Modal.Title>
+	        </Modal.Header>
+	        <Modal.Body style={{height: "10em"}}>
+						<div className="col-xs-12">
+							<div className="col-xs-6" style={{textAlign: "center"}}>
+								<div className="button button-med button-create" onClick={this.handleConfirmed}>Yes</div>
+							</div>
+							<div className="col-xs-6" style={{textAlign: "center"}}>
+								<div className="button button-med button-undo" onClick={this.handleUnConfirmed}>No</div>
+							</div>
+						</div>
+	        </Modal.Body>
+	      </Modal>
 			</div>
 		)
 	}

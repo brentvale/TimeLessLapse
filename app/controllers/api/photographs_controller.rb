@@ -31,6 +31,6 @@ class Api::PhotographsController < ApplicationController
   private
   
   def photograph_params
-    params.require(:photograph).permit(:image, :timelapse_hub_id)
+    params.require(:photograph).permit(:image, :timelapse_hub_id, :latitude, :longitude, :datetime_digitized, :altitude, :image_direction)
   end
 end
