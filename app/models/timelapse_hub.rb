@@ -13,7 +13,7 @@
 #
 
 class TimelapseHub < ActiveRecord::Base
-  has_many :photographs, dependent: :delete
+  has_many :photographs, dependent: :destroy
   belongs_to :user
   
   validates :hub_name, :longitude, :latitude, presence: true

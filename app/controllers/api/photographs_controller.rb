@@ -30,6 +30,12 @@ class Api::PhotographsController < ApplicationController
     end
   end
   
+  def destroy
+    photograph = Photograph.find(params[:id])
+    photograph.destroy
+    render json: {photograph: photograph}
+  end
+  
   private
   
   def photograph_params
