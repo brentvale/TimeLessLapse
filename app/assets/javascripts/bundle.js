@@ -55612,11 +55612,11 @@
 			value: function updatePhotographWithHubId() {
 				var that = this;
 				$.ajax({
-					url: 'api/photographs/' + this.state.photograph.id,
+					url: 'api/photographs/' + that.state.photograph.id,
 					method: "PATCH",
 					data: {
 						photograph: {
-							timelapse_hub_id: this.state.selectedHubId
+							timelapse_hub_id: that.state.selectedHubId
 						}
 					},
 					success: function success(resp) {
