@@ -15,7 +15,7 @@ class HubIndexListItem extends React.Component{
 			lessThanTabletBreakSize: window.innerWidth < tabletBreakPoint
 		}
 		this.stopFlipping = this.stopFlipping.bind(this);
-		this.handleNextImage = this.handleNextImage.bind(this);
+		this.startFlipping = this.startFlipping.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.changeHubName = this.changeHubName.bind(this);
 		this.handleFocus = this.handleFocus.bind(this);
@@ -67,8 +67,8 @@ class HubIndexListItem extends React.Component{
 		}
 	}
 	
-	handleNextImage(e){
-		e.preventDefault();
+	startFlipping(e){
+		e.stopPropagation();
 		let that = this;
 		let photosLength = this.props.hub.photographs.length;
 		this.interval = setInterval(() => {
@@ -98,27 +98,29 @@ class HubIndexListItem extends React.Component{
 			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
 		}									
 		
-		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/> : 
-																														<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
+		let imageToUse = (this.state.lessThanTabletBreakSize)	? <div onMouseEnter={this.startFlipping} 
+																						 										onMouseLeave={this.stopFlipping} 
+																						 									  onTouchStart={this.startFlipping} 
+																						 									  onTouchEnd={this.stopFlipping}>
+																																<img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} style={{height:"150px", width:"200px"}} className="drop-shadow"/>;
+																														</div> : 
+																														<div onMouseEnter={this.startFlipping} 
+																						 										onMouseLeave={this.stopFlipping} 
+																						 									  onTouchStart={this.startFlipping} 
+																						 									  onTouchEnd={this.stopFlipping}>
+																																<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>;
+																														</div>
 		
 		let linkToHub = (onIndexView) ? <div style={{marginTop: "20px"}}>
 																			<Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping}>View {hub.hub_name} Hub >></Link>
-																		</div> : "";
-																
-		let mainContent = <div className={klass} onMouseEnter={this.handleNextImage} 
-																						 onMouseLeave={this.stopFlipping} 
-																						 onTouchStart={this.handleNextImage} 
-																						 onTouchEnd={this.stopFlipping}>
-												{titleEditingField}
-												{imageToUse}
-												{linkToHub}
-											</div>;
-											
-		
-		
+																		</div> : "";														
 		return (
 			<div>
-				{mainContent}
+				<div className={klass}>
+					{titleEditingField}
+					{imageToUse}
+					{linkToHub}
+				</div>
 			</div>);
 	}
 }

@@ -54796,7 +54796,7 @@
 				lessThanTabletBreakSize: window.innerWidth < _global_variables.tabletBreakPoint
 			};
 			_this.stopFlipping = _this.stopFlipping.bind(_this);
-			_this.handleNextImage = _this.handleNextImage.bind(_this);
+			_this.startFlipping = _this.startFlipping.bind(_this);
 			_this.handleChange = _this.handleChange.bind(_this);
 			_this.changeHubName = _this.changeHubName.bind(_this);
 			_this.handleFocus = _this.handleFocus.bind(_this);
@@ -54859,9 +54859,9 @@
 				}
 			}
 		}, {
-			key: 'handleNextImage',
-			value: function handleNextImage(e) {
-				e.preventDefault();
+			key: 'startFlipping',
+			value: function startFlipping(e) {
+				e.stopPropagation();
 				var that = this;
 				var photosLength = this.props.hub.photographs.length;
 				this.interval = setInterval(function () {
@@ -54905,7 +54905,23 @@
 					);
 				}
 	
-				var imageToUse = this.state.lessThanTabletBreakSize ? _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' }) : _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' });
+				var imageToUse = this.state.lessThanTabletBreakSize ? _react2.default.createElement(
+					'div',
+					{ onMouseEnter: this.startFlipping,
+						onMouseLeave: this.stopFlipping,
+						onTouchStart: this.startFlipping,
+						onTouchEnd: this.stopFlipping },
+					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, style: { height: "150px", width: "200px" }, className: 'drop-shadow' }),
+					';'
+				) : _react2.default.createElement(
+					'div',
+					{ onMouseEnter: this.startFlipping,
+						onMouseLeave: this.stopFlipping,
+						onTouchStart: this.startFlipping,
+						onTouchEnd: this.stopFlipping },
+					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' }),
+					';'
+				);
 	
 				var linkToHub = onIndexView ? _react2.default.createElement(
 					'div',
@@ -54918,22 +54934,16 @@
 						' Hub >>'
 					)
 				) : "";
-	
-				var mainContent = _react2.default.createElement(
-					'div',
-					{ className: klass, onMouseEnter: this.handleNextImage,
-						onMouseLeave: this.stopFlipping,
-						onTouchStart: this.handleNextImage,
-						onTouchEnd: this.stopFlipping },
-					titleEditingField,
-					imageToUse,
-					linkToHub
-				);
-	
 				return _react2.default.createElement(
 					'div',
 					null,
-					mainContent
+					_react2.default.createElement(
+						'div',
+						{ className: klass },
+						titleEditingField,
+						imageToUse,
+						linkToHub
+					)
 				);
 			}
 		}]);
