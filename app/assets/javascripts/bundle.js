@@ -54883,16 +54883,6 @@
 				    klass = _props.klass,
 				    onIndexView = _props.onIndexView;
 	
-				var titleEditingField = this.state.editingHubName ? _react2.default.createElement('input', { style: { marginTop: "0", marginBottom: "0.5em", display: "block", fontSize: "2em", width: "12em", height: "2em", textAlign: "center" },
-					onFocus: this.handleFocus,
-					onKeyDown: this.handleKeyPress,
-					className: 'center-block',
-					value: this.state.nameField,
-					onChange: this.handleChange }) : _react2.default.createElement(
-					'h2',
-					{ className: 'heading-block', onClick: this.changeHubName },
-					hub.hub_name
-				);
 	
 				if (hub.photographs.length === 0) {
 					return _react2.default.createElement(
@@ -54922,18 +54912,39 @@
 						className: 'center-block' },
 					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, style: { height: "300px", width: "400px" }, className: 'drop-shadow' })
 				);
+				var linkToHub = void 0,
+				    titleEditingField = void 0;
+				if (onIndexView) {
+					linkToHub = _react2.default.createElement(
+						'div',
+						{ style: { marginTop: "20px" } },
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: '/hubs/' + hub.id, onClick: this.stopFlipping },
+							'View ',
+							hub.hub_name,
+							' Hub >>'
+						)
+					);
+					titleEditingField = _react2.default.createElement(
+						'h2',
+						{ className: 'heading-block' },
+						hub.hub_name
+					);
+				} else {
+					linkToHub = "";
+					titleEditingField = this.state.editingHubName ? _react2.default.createElement('input', { style: { marginTop: "0", marginBottom: "0.5em", display: "block", fontSize: "2em", width: "12em", height: "2em", textAlign: "center" },
+						onFocus: this.handleFocus,
+						onKeyDown: this.handleKeyPress,
+						className: 'center-block',
+						value: this.state.nameField,
+						onChange: this.handleChange }) : _react2.default.createElement(
+						'h2',
+						{ className: 'heading-block', onClick: this.changeHubName },
+						hub.hub_name
+					);
+				}
 	
-				var linkToHub = onIndexView ? _react2.default.createElement(
-					'div',
-					{ style: { marginTop: "20px" } },
-					_react2.default.createElement(
-						_reactRouter.Link,
-						{ to: '/hubs/' + hub.id, onClick: this.stopFlipping },
-						'View ',
-						hub.hub_name,
-						' Hub >>'
-					)
-				) : "";
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -55377,6 +55388,17 @@
 						" ",
 						photo.datetime_digitized.slice(0, 10),
 						" "
+					),
+					_react2.default.createElement(
+						"p",
+						null,
+						_react2.default.createElement(
+							"span",
+							{ className: spanKlass },
+							"order:"
+						),
+						" ",
+						photo.order_number
 					)
 				);
 			}

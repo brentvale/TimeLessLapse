@@ -13,6 +13,7 @@ class HubShowPhotoDisplay extends Component{
 					<p style={{marginTop: "1em"}}><span className={spanKlass}>latitude:</span> {photo.latitude}</p>
 					<p><span className={spanKlass}>longitude:</span> {photo.longitude}</p>
 					<p><span className={spanKlass}>photo taken at:</span> {photo.datetime_digitized.slice(11,19)} <span className={spanKlass}>on</span> {photo.datetime_digitized.slice(0,10)} </p>
+					<p><span className={spanKlass}>order:</span> {photo.order_number}</p>
 			 </div>
 		)
 	}

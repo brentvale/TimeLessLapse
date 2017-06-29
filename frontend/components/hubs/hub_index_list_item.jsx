@@ -85,13 +85,6 @@ class HubIndexListItem extends React.Component{
 
 	render(){
 		let { hub, klass, onIndexView } = this.props;
-		let titleEditingField = (this.state.editingHubName) ? <input style={{marginTop: "0", marginBottom: "0.5em", display:"block", fontSize: "2em", width: "12em", height: "2em", textAlign:"center"}} 
-																																 onFocus={this.handleFocus} 
-																																 onKeyDown={this.handleKeyPress} 
-																																 className="center-block" 
-																																 value={this.state.nameField} 
-																																 onChange={this.handleChange} /> : 
-																													<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
 																				
 		if(hub.photographs.length === 0){
 			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
@@ -112,11 +105,24 @@ class HubIndexListItem extends React.Component{
 																																style={{width: "400px", height:"300px"}}
 																																className="center-block">
 																																<img src={hub.photographs[this.state.currentImageIndex].small_image} style={{height:"300px", width:"400px"}} className="drop-shadow"/>
-																														</div>
-		
-		let linkToHub = (onIndexView) ? <div style={{marginTop: "20px"}}>
+																														</div>;
+		let linkToHub, titleEditingField;																					
+		if(onIndexView){
+			linkToHub =  <div style={{marginTop: "20px"}}>
 																			<Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping}>View {hub.hub_name} Hub >></Link>
-																		</div> : "";														
+									</div>;
+			titleEditingField = <h2 className="heading-block">{hub.hub_name}</h2>;
+		} else {
+			linkToHub = "";
+			titleEditingField = (this.state.editingHubName) ? <input style={{marginTop: "0", marginBottom: "0.5em", display:"block", fontSize: "2em", width: "12em", height: "2em", textAlign:"center"}} 
+																																			 onFocus={this.handleFocus} 
+																																			 onKeyDown={this.handleKeyPress} 
+																																			 className="center-block" 
+																																			 value={this.state.nameField} 
+																																			 onChange={this.handleChange} /> : 
+																												<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
+		}
+													
 		return (
 			<div>
 				<div className={klass}>

@@ -1,4 +1,5 @@
 class Api::PhotographsController < ApplicationController
+  before_action :authenticate_user!
   def index 
     @photographs = Photograph.all
     render :index
