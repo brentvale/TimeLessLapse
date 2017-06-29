@@ -140,16 +140,16 @@ class NewPhoto extends React.Component{
 
 				let canvas = document.createElement("canvas");
 				
-				
+				let reduceByFactorOf;
 				switch(that.state.imagePreview.width){
 				case 1000:
-					const reduceByFactorOf = 1;
+					reduceByFactorOf = 1;
 					break;
 				case 4032:
-					const reduceByFactorOf = 5;
+					reduceByFactorOf = 5;
 					break;
 				default: 
-					const reduceByFactorOf = 1;
+					reduceByFactorOf = 1;
 				}
 				
 				
