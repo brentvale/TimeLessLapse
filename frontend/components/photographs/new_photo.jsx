@@ -139,8 +139,22 @@ class NewPhoto extends React.Component{
 	      let formData = new FormData();
 
 				let canvas = document.createElement("canvas");
-				let height = that.state.imagePreview.height/5;
-				let width = that.state.imagePreview.width/5;
+				
+				
+				switch(that.state.imagePreview.width){
+				case 1000:
+					const reduceByFactorOf = 1;
+					break;
+				case 4032:
+					const reduceByFactorOf = 5;
+					break;
+				default: 
+					const reduceByFactorOf = 1;
+				}
+				
+				
+				let height = that.state.imagePreview.height/reduceByFactorOf;
+				let width = that.state.imagePreview.width/reduceByFactorOf;
 
 				canvas.width = width;
 				canvas.height = height;

@@ -15,3 +15,7 @@ node_modules
 /log/*
 !/log/.keep
 /tmp
+
+# Ignore bundle
+bundle.js
+bundle.js.map
