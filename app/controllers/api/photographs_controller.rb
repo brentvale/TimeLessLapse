@@ -9,7 +9,9 @@ class Api::PhotographsController < ApplicationController
     @photograph = Photograph.new(photograph_params)
     @photograph.user_id = current_user.id
     
-    @photograph.datetime_digitized = DateTime.strptime(params[:photograph][:datetime_digitized], "%Y:%m:%d %H:%M:%S")
+    unless params[:photograph][:datetime_digitized] == "unknown"
+      @photograph.datetime_digitized = DateTime.strptime(params[:photograph][:datetime_digitized], "%Y:%m:%d %H:%M:%S")
+    end
     
     if @photograph.save
       render :show

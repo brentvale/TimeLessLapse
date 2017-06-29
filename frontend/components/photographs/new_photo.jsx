@@ -118,22 +118,33 @@ class NewPhoto extends React.Component{
 				let altitude = EXIF_IMAGE.getTag(this, "GPSAltitude");
 				let dateTimeDigitized = EXIF_IMAGE.getTag(this, "DateTimeDigitized");
 
-				//convert array of 3 numbers into decimal degrees
-				let latDegrees = lat[0] + lat[1]/60 + lat[2]/3600;
-				let lngDegrees = lng[0] + lng[1]/60 + lng[2]/3600
+				//uploading last years timelapses to production, use default values that don't require exif data
+				let latDegrees, lngDegrees;
+				if(typeof lat === "undefined"){
+					//if image comes from storage (no exif data present)
+					latDegrees = "37.42144722";
+					lngDegrees = "-121.7606277";
+					altitude = "745.5679012345679";
+					imgDir = "237.6705882352941";
+					dateTimeDigitized = "unknown";
+				} else {
+					//convert array of 3 numbers into decimal degrees
+					latDegrees = lat[0] + lat[1]/60 + lat[2]/3600;
+					lngDegrees = lng[0] + lng[1]/60 + lng[2]/3600;
 
-				//if N, positive number
-				//if S, negative
-				let latRef = EXIF_IMAGE.getTag(this, "GPSLatitudeRef");
-				if(latRef === "S"){
-					latDegrees = "-" + latDegrees;
-				}
+					//if N, positive number
+					//if S, negative
+					let latRef = EXIF_IMAGE.getTag(this, "GPSLatitudeRef");
+					if(latRef === "S"){
+						latDegrees = "-" + latDegrees;
+					}
 				
-				//if E, positive number
-				//if W, negative
-				let lngRef = EXIF_IMAGE.getTag(this, "GPSLongitudeRef");
-				if(lngRef === "W"){
-					lngDegrees = "-" + lngDegrees;
+					//if E, positive number
+					//if W, negative
+					let lngRef = EXIF_IMAGE.getTag(this, "GPSLongitudeRef");
+					if(lngRef === "W"){
+						lngDegrees = "-" + lngDegrees;
+					}
 				}
 			
 	      let formData = new FormData();
@@ -151,7 +162,6 @@ class NewPhoto extends React.Component{
 				default: 
 					reduceByFactorOf = 1;
 				}
-				
 				
 				let height = that.state.imagePreview.height/reduceByFactorOf;
 				let width = that.state.imagePreview.width/reduceByFactorOf;

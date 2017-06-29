@@ -55583,22 +55583,34 @@
 						var altitude = EXIF_IMAGE.getTag(this, "GPSAltitude");
 						var dateTimeDigitized = EXIF_IMAGE.getTag(this, "DateTimeDigitized");
 	
-						//convert array of 3 numbers into decimal degrees
-						var latDegrees = lat[0] + lat[1] / 60 + lat[2] / 3600;
-						var lngDegrees = lng[0] + lng[1] / 60 + lng[2] / 3600;
+						//uploading last years timelapses to production, use default values that don't require exif data
+						var latDegrees = void 0,
+						    lngDegrees = void 0;
+						if (typeof lat === "undefined") {
+							//if image comes from storage (no exif data present)
+							latDegrees = "37.42144722";
+							lngDegrees = "-121.7606277";
+							altitude = "745.5679012345679";
+							imgDir = "237.6705882352941";
+							dateTimeDigitized = "unknown";
+						} else {
+							//convert array of 3 numbers into decimal degrees
+							latDegrees = lat[0] + lat[1] / 60 + lat[2] / 3600;
+							lngDegrees = lng[0] + lng[1] / 60 + lng[2] / 3600;
 	
-						//if N, positive number
-						//if S, negative
-						var latRef = EXIF_IMAGE.getTag(this, "GPSLatitudeRef");
-						if (latRef === "S") {
-							latDegrees = "-" + latDegrees;
-						}
+							//if N, positive number
+							//if S, negative
+							var latRef = EXIF_IMAGE.getTag(this, "GPSLatitudeRef");
+							if (latRef === "S") {
+								latDegrees = "-" + latDegrees;
+							}
 	
-						//if E, positive number
-						//if W, negative
-						var lngRef = EXIF_IMAGE.getTag(this, "GPSLongitudeRef");
-						if (lngRef === "W") {
-							lngDegrees = "-" + lngDegrees;
+							//if E, positive number
+							//if W, negative
+							var lngRef = EXIF_IMAGE.getTag(this, "GPSLongitudeRef");
+							if (lngRef === "W") {
+								lngDegrees = "-" + lngDegrees;
+							}
 						}
 	
 						var formData = new FormData();
