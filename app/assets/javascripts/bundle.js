@@ -55343,6 +55343,23 @@
 				    lessThanTabletBreakSize = _props.lessThanTabletBreakSize;
 	
 				var imageDisplay = lessThanTabletBreakSize ? _react2.default.createElement("img", { src: photo.thumbnail_image, style: { height: "150px", width: "200px" }, className: "drop-shadow" }) : _react2.default.createElement("img", { src: photo.small_image, style: { height: "300px", width: "400px" }, className: "drop-shadow" });
+	
+				var takenAtBlock = this.props.photo.datetime_digitized ? _react2.default.createElement(
+					"p",
+					null,
+					_react2.default.createElement(
+						"span",
+						{ className: spanKlass },
+						"photo taken at:"
+					),
+					photo.datetime_digitized.slice(11, 19),
+					_react2.default.createElement(
+						"span",
+						{ className: spanKlass },
+						"on"
+					),
+					photo.datetime_digitized.slice(0, 10)
+				) : "";
 				return _react2.default.createElement(
 					"div",
 					{ className: "col-xs-12", style: { textAlign: "center", marginBottom: "4em" } },
@@ -55369,26 +55386,7 @@
 						" ",
 						photo.longitude
 					),
-					_react2.default.createElement(
-						"p",
-						null,
-						_react2.default.createElement(
-							"span",
-							{ className: spanKlass },
-							"photo taken at:"
-						),
-						" ",
-						photo.datetime_digitized.slice(11, 19),
-						" ",
-						_react2.default.createElement(
-							"span",
-							{ className: spanKlass },
-							"on"
-						),
-						" ",
-						photo.datetime_digitized.slice(0, 10),
-						" "
-					),
+					takenAtBlock,
 					_react2.default.createElement(
 						"p",
 						null,
