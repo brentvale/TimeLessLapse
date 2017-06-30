@@ -10,4 +10,8 @@ const getSingleHub = ({ hubs }, hubId) => {
 	return hubs[hubId];
 }
 
-export { getAllHubs, getSingleHub };
+const getCurrentUser = ({ users }) => {
+	return users.currentUser;
+}
+
+export { getAllHubs, getSingleHub, getCurrentUser };

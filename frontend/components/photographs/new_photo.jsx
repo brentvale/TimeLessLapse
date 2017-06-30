@@ -10,7 +10,6 @@ import {Button, Modal} from 'react-bootstrap';
 import FileInput from 'react-file-input';
 import * as ReactKonva from 'react-konva';
 import SelectHub from './select_hub';
-import YourHubsLink from '../shared/links/your_hubs_link';
 
 class NewPhoto extends React.Component{
 	constructor(){
@@ -282,7 +281,6 @@ class NewPhoto extends React.Component{
 			photographDisplay = "";
 			marginTop = "0em";
 		}
-		let yourHubsLink = (this.state.step === 1) ? <YourHubsLink /> : "";
 		
 		let spinnerUploadDisplay = (this.state.spinning) ? <div style={{padding:"1em"}}>
 																													<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
@@ -292,9 +290,6 @@ class NewPhoto extends React.Component{
 																											</div>: "";
 		return(
 			<div>
-				<div style={{textAlign:"left"}}>
-					{yourHubsLink}
-				</div>
 				<div style={{textAlign:"center", paddingTop: "3em"}}>
 					{photographDisplay}
 					<div style={{marginTop: marginTop}}>

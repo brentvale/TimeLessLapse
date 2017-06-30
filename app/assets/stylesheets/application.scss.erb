@@ -14,6 +14,8 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
 
 $fade-time: .5s;
 
@@ -136,6 +138,16 @@ h2{
 	margin-bottom: 0.6em;
 	padding-top: 0.5em;
 }
+.page-block{
+	max-width: 800px;
+	padding: 2em;
+	width: 100%;
+}
+.page-block-border{
+	border-bottom: 1px solid $wild-sand;
+	border-left: 1px solid $wild-sand;
+	border-right: 1px solid $wild-sand;
+}
 //BUTTONS
 .button{
 	border-radius:.4em	;
@@ -184,6 +196,16 @@ h2{
 	-moz-box-shadow:    3px 3px 5px 6px #ccc;
 	-webkit-box-shadow: 3px 3px 5px 6px #ccc;
 	box-shadow:         3px 3px 5px 6px #ccc;
+}
+//ICONS
+.fa-user-circle-o{
+	color: $boulder;
+	font-size: 60px;
+	height: 60px;
+	width: 60px;
+}
+.fa-user-circle-o:hover{
+	color: $tundora;
 }
 
 //FORMS

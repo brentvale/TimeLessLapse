@@ -8,7 +8,6 @@
   <%= javascript_include_tag 'application' %>
   <%= csrf_meta_tags %>
 	<%= favicon_link_tag 'favicon.ico' %>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
 	
 	<meta prefix="og: http://ogp.me/ns#" property="og:title" content="TimeLessLapse | Capture daily events in your life and stitch them together to make a timelapses. "/>
@@ -23,18 +22,15 @@
 </head>
 <body id="main">
 
-<div class="container-fluid" style="padding:0">
-	<%= render 'partials/navbar' %>
-	
+<div class="container-fluid" style="padding:0">	
 	<% if notice %>
 		<p class="notice" role="alert"><%= notice %></p>
 	<% end %>
 	<% if alert %>
 		<p class="alert" role="alert"><%= alert %></p>
 	<% end %>
-	<div style="margin-top: 50px">
-		<%= yield %>
-	</div>
+	
+	<%= yield %>
 	
 </div>
 

@@ -2,8 +2,6 @@ import React from 'react';
 
 import {Link} from 'react-router';
 import HubIndexListItem from './hub_index_list_item';
-import TakePhotoLink from '../shared/links/take_photo_link';
-import YourHubsLink from '../shared/links/your_hubs_link';
 import HubMap from './hub_map';
 import HubShowPhotoDisplay from './hub_show_photo_display';
 
@@ -52,8 +50,6 @@ class HubShow extends React.Component{
 		
 		return(
 			<div>
-				<TakePhotoLink />
-				<YourHubsLink />
 				<div className="col-xs-12" style={{paddingBottom: "2em", marginBottom: "4em"}}>
 					<div className="col-xs-12 col-sm-6">
 						<HubIndexListItem hub={hub} klass="col-xs-12 align-center" onIndexView={false} saveHubName={this.saveHubName}/>

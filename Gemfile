@@ -40,6 +40,8 @@ gem 'exifr'
 #awesome print for data formatting in the console
 gem 'awesome_print', require: "ap"
 
+gem 'font-awesome-sass'
+
 group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'
