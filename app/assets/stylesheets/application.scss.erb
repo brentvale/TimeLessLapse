@@ -25,6 +25,7 @@ $fade-time: .5s;
 $alabaster: #f9f9f9; //white-ish
 $wild-sand: #f4f4f4; //white-touch of gray
 $alto: #d3d3d3; //unclickable gray color
+$alto-hover: #b8b8b8;
 $boulder: #767676; //darker gray
 $tundora: #363636; //darkest gray
 
@@ -52,12 +53,30 @@ ul{
 h2{
 	font-size: 1.5em !important;
 }
+p.heading{
+	font-size: 0.9em;
+	margin-bottom: 0;
+}
 @keyframes fade-in {
     from {opacity: 0;}
     to {opacity: 1.0;}
 }
 .active{
 	animation: fade-in $fade-time forwards;
+}
+.active-hub .overlay{
+  display: none;
+}
+.inactive-hub .overlay{
+	display: block;
+}
+.overlay{
+	background-color: rgba(0,0,0,0.3);
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 .align-center{
 	text-align:center;
@@ -138,15 +157,28 @@ h2{
 	margin-bottom: 0.6em;
 	padding-top: 0.5em;
 }
+.one-third-block{
+	display:inline-block;
+	width: 33%;
+	>div{
+		padding:1px;
+	}
+	img{
+		width: 100%;
+		height: auto;
+	}
+}
 .page-block{
 	max-width: 800px;
-	padding: 2em;
 	width: 100%;
 }
 .page-block-border{
 	border-bottom: 1px solid $wild-sand;
 	border-left: 1px solid $wild-sand;
 	border-right: 1px solid $wild-sand;
+}
+.page-block-padded{
+	padding: 1em;
 }
 //BUTTONS
 .button{
@@ -199,13 +231,23 @@ h2{
 }
 //ICONS
 .fa-user-circle-o{
-	color: $boulder;
-	font-size: 60px;
-	height: 60px;
-	width: 60px;
+	color: $alto;
+	font-size: 80px;
 }
 .fa-user-circle-o:hover{
-	color: $tundora;
+	color: $alto-hover;
+}
+.fa-share-square{
+	bottom: 3px;
+	font-size: 30px;
+	position: absolute;
+	right: 4px;
+}
+.inactive-hub .fa-share-square{
+	color: rgba(54,54,54,0.7); //70% opacity on tundora
+}
+.active-hub .fa-share-square{
+	color: rgba(54,54,54,0.4);
 }
 
 //FORMS
@@ -301,6 +343,11 @@ $screen-xs-min: 500px;
 }
 
 @media (min-width: $screen-sm-min) { 
+	.fa-share-square{
+		bottom: 8px;
+		font-size: 50px;
+		right: 10px;
+	}
 	#landingTimelapseContainer{
 		width:60%;
 		margin-left:auto;

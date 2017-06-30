@@ -1,7 +1,7 @@
 import React from 'react';
 
 //COMPONENTS
-import HubIndexListItem from './hub_index_list_item';
+import HubIndexPhotoDisplay from './hub_index_photo_display';
 import Home from '../static_pages/home';
 import UserInfo from '../users/info';
 
@@ -9,12 +9,23 @@ class HubIndex extends React.Component{
 	constructor(){
 		super();
 		this.state = {
-			fetchedHubs: false
+			fetchedHubs: false,
+			activeHubId: 0
 		}
+		this.activateHub = this.activateHub.bind(this);
+		this.deactivateHub = this.deactivateHub.bind(this);
 	}
 	
 	componentDidMount(){
 		this.props.requestCurrentUser();
+	}
+	
+	activateHub(hubId){
+		this.setState({activeHubId: hubId});
+	}
+	
+	deactivateHub(){
+		this.setState({activeHubId: 0})
 	}
 	
 	componentWillReceiveProps(nextProps){
@@ -35,12 +46,20 @@ class HubIndex extends React.Component{
 									<p>No Hubs Have Been Created Yet, Take a photo to create your first hub.</p>
 				</div>);
 		} else {
+			let that = this;
 			return(
 				<div>
-					
-					{hubs.map((hub) => {
-						return <HubIndexListItem key={hub.id} hub={hub} klass="col-xs-12 col-md-6 align-center" onIndexView={true}/>
-					})}
+					<UserInfo currentUser={currentUser}/>
+					<div className="page-block page-block-border center-block">
+			
+						{hubs.map((hub) => {
+							return <HubIndexPhotoDisplay key={hub.id} 
+																						hub={hub} 
+																						activeHubId={that.state.activeHubId} 
+																						activateHub={that.activateHub} 
+																						deactivateHub={that.deactivateHub}/>
+						})}
+					</div>
 				</div>
 			);
 		}

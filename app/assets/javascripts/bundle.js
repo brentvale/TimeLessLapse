@@ -49752,9 +49752,9 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _hub_index_list_item = __webpack_require__(542);
+	var _hub_index_photo_display = __webpack_require__(654);
 	
-	var _hub_index_list_item2 = _interopRequireDefault(_hub_index_list_item);
+	var _hub_index_photo_display2 = _interopRequireDefault(_hub_index_photo_display);
 	
 	var _home = __webpack_require__(278);
 	
@@ -49784,8 +49784,11 @@
 			var _this = _possibleConstructorReturn(this, (HubIndex.__proto__ || Object.getPrototypeOf(HubIndex)).call(this));
 	
 			_this.state = {
-				fetchedHubs: false
+				fetchedHubs: false,
+				activeHubId: 0
 			};
+			_this.activateHub = _this.activateHub.bind(_this);
+			_this.deactivateHub = _this.deactivateHub.bind(_this);
 			return _this;
 		}
 	
@@ -49793,6 +49796,16 @@
 			key: 'componentDidMount',
 			value: function componentDidMount() {
 				this.props.requestCurrentUser();
+			}
+		}, {
+			key: 'activateHub',
+			value: function activateHub(hubId) {
+				this.setState({ activeHubId: hubId });
+			}
+		}, {
+			key: 'deactivateHub',
+			value: function deactivateHub() {
+				this.setState({ activeHubId: 0 });
 			}
 		}, {
 			key: 'componentWillReceiveProps',
@@ -49824,12 +49837,22 @@
 						)
 					);
 				} else {
+					var that = this;
 					return _react2.default.createElement(
 						'div',
 						null,
-						hubs.map(function (hub) {
-							return _react2.default.createElement(_hub_index_list_item2.default, { key: hub.id, hub: hub, klass: 'col-xs-12 col-md-6 align-center', onIndexView: true });
-						})
+						_react2.default.createElement(_info2.default, { currentUser: currentUser }),
+						_react2.default.createElement(
+							'div',
+							{ className: 'page-block page-block-border center-block' },
+							hubs.map(function (hub) {
+								return _react2.default.createElement(_hub_index_photo_display2.default, { key: hub.id,
+									hub: hub,
+									activeHubId: that.state.activeHubId,
+									activateHub: that.activateHub,
+									deactivateHub: that.deactivateHub });
+							})
+						)
 					);
 				}
 			}
@@ -50089,12 +50112,87 @@
 	var UserInfo = function UserInfo(_ref) {
 		var currentUser = _ref.currentUser;
 	
+	
+		var userNameDisplay = currentUser.first_name && currentUser.last_name ? currentUser.first_name + " " + currentUser.last_name : currentUser.email;
+		var tagLineDisplay = currentUser.tag_line ? currentUser.tag_line : "Add Tag Line";
+		var websiteDisplay = currentUser.website_url ? _react2.default.createElement(
+			"a",
+			{ href: currentUser.website_url },
+			currentUser.website_url
+		) : "Add Website";
+	
 		return _react2.default.createElement(
 			"div",
-			{ className: "page-block page-block-border center-block" },
-			_react2.default.createElement("div", null),
-			_react2.default.createElement("i", { className: "fa fa-user-circle-o", "aria-hidden": "true" }),
-			currentUser.email
+			{ className: "page-block page-block-border page-block-padded center-block" },
+			_react2.default.createElement(
+				"div",
+				{ style: { width: "500px" }, className: "center-block" },
+				_react2.default.createElement(
+					"div",
+					{ style: { marginBottom: "20px" } },
+					_react2.default.createElement(
+						"div",
+						{ style: { display: "inline-block" } },
+						_react2.default.createElement("i", { className: "fa fa-user-circle-o hand-on-hover", "aria-hidden": "true" })
+					),
+					_react2.default.createElement(
+						"div",
+						{ style: { paddingTop: "20px", width: "250px", display: "inline-block", marginLeft: "80px" } },
+						_react2.default.createElement(
+							"div",
+							{ style: { width: "50%", display: "inline-block", textAlign: "center" } },
+							_react2.default.createElement(
+								"p",
+								{ className: "heading", style: { fontWeight: "700", fontSize: "1.2em" } },
+								currentUser.total_hubs
+							),
+							_react2.default.createElement(
+								"p",
+								{ style: { color: "#767676" } },
+								"hubs"
+							)
+						),
+						_react2.default.createElement(
+							"div",
+							{ style: { width: "50%", display: "inline-block", textAlign: "center" } },
+							_react2.default.createElement(
+								"p",
+								{ className: "heading", style: { fontWeight: "700", fontSize: "1.2em" } },
+								currentUser.total_photos
+							),
+							_react2.default.createElement(
+								"p",
+								{ style: { color: "#767676" } },
+								"photos"
+							)
+						),
+						_react2.default.createElement(
+							"div",
+							{ style: { width: "100%" } },
+							_react2.default.createElement(
+								"button",
+								{ style: { width: "100%", textAlign: "center" } },
+								"Edit Profile"
+							)
+						)
+					)
+				),
+				_react2.default.createElement(
+					"p",
+					{ className: "heading", style: { fontWeight: "700" } },
+					userNameDisplay
+				),
+				_react2.default.createElement(
+					"p",
+					{ className: "heading" },
+					tagLineDisplay
+				),
+				_react2.default.createElement(
+					"p",
+					{ className: "heading" },
+					websiteDisplay
+				)
+			)
 		);
 	};
 	
@@ -73935,6 +74033,163 @@
 	};
 	
 	exports.default = usersReducer;
+
+/***/ }),
+/* 654 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	var _reactRouter = __webpack_require__(217);
+	
+	var _global_variables = __webpack_require__(543);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+	
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+	//GLOBAL VARIABLES
+	
+	
+	var HubIndexPhotoDisplay = function (_React$Component) {
+		_inherits(HubIndexPhotoDisplay, _React$Component);
+	
+		function HubIndexPhotoDisplay() {
+			_classCallCheck(this, HubIndexPhotoDisplay);
+	
+			var _this = _possibleConstructorReturn(this, (HubIndexPhotoDisplay.__proto__ || Object.getPrototypeOf(HubIndexPhotoDisplay)).call(this));
+	
+			_this.state = {
+				currentImageIndex: 0,
+				interval: 500,
+				lessThanTabletBreakSize: window.innerWidth < _global_variables.tabletBreakPoint
+			};
+			_this.stopFlipping = _this.stopFlipping.bind(_this);
+			_this.startFlipping = _this.startFlipping.bind(_this);
+			_this.changeStateSizeIfBreakpointReached = _this.changeStateSizeIfBreakpointReached.bind(_this);
+			return _this;
+		}
+	
+		_createClass(HubIndexPhotoDisplay, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				window.addEventListener('resize', this.changeStateSizeIfBreakpointReached);
+			}
+		}, {
+			key: 'componentWillUnmount',
+			value: function componentWillUnmount() {
+				window.removeEventListener('resize', this.changeStateSizeIfBreakpointReached);
+			}
+		}, {
+			key: 'changeStateSizeIfBreakpointReached',
+			value: function changeStateSizeIfBreakpointReached() {
+				if (window.innerWidth < _global_variables.tabletBreakPoint) {
+					this.setState({ lessThanTabletBreakSize: true });
+				} else {
+					this.setState({ lessThanTabletBreakSize: false });
+				}
+			}
+		}, {
+			key: 'startFlipping',
+			value: function startFlipping(e) {
+				e.preventDefault();
+				this.props.activateHub(parseInt($(e.currentTarget).data("hub-id")));
+				var that = this;
+				var photosLength = this.props.hub.photographs.length;
+				this.interval = setInterval(function () {
+					if (that.state.currentImageIndex + 1 < photosLength) {
+						that.setState({ currentImageIndex: that.state.currentImageIndex + 1 });
+					} else {
+						that.setState({ currentImageIndex: 0 });
+					}
+				}, that.state.interval);
+			}
+		}, {
+			key: 'stopFlipping',
+			value: function stopFlipping() {
+				this.props.deactivateHub();
+				clearInterval(this.interval);
+			}
+		}, {
+			key: 'render',
+			value: function render() {
+				var hub = this.props.hub;
+	
+				//save for dev														
+	
+				if (hub.photographs.length === 0) {
+					return _react2.default.createElement(
+						'div',
+						null,
+						'Not photographs with timelapse_hub with id ',
+						hub.id
+					);
+				}
+	
+				var imageToUse = this.state.lessThanTabletBreakSize ? _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, className: 'drop-shadow' }) : _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'drop-shadow' });
+	
+				var hubInfoDisplay = _react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						_reactRouter.Link,
+						{ to: '/hubs/' + hub.id, onClick: this.stopFlipping },
+						'View ',
+						hub.hub_name,
+						' Hub >>'
+					),
+					_react2.default.createElement(
+						'h2',
+						{ className: 'heading-block' },
+						hub.hub_name
+					)
+				);
+				var hubImageKlass = this.props.activeHubId == hub.id ? "center-block active-hub" : "center-block inactive-hub";
+				return _react2.default.createElement(
+					'div',
+					{ className: 'one-third-block' },
+					_react2.default.createElement(
+						'div',
+						null,
+						_react2.default.createElement(
+							'div',
+							{ onMouseEnter: this.startFlipping,
+								onMouseLeave: this.stopFlipping,
+								onTouchStart: this.startFlipping,
+								onTouchEnd: this.stopFlipping,
+								'data-hub-id': hub.id,
+								className: hubImageKlass,
+								style: { position: "relative" } },
+							_react2.default.createElement('div', { className: 'overlay' }),
+							imageToUse,
+							_react2.default.createElement(
+								_reactRouter.Link,
+								{ to: '/hubs/' + hub.id, onClick: this.stopFlipping },
+								_react2.default.createElement('i', { className: 'fa fa-share-square hand-on-hover', 'aria-hidden': 'true' })
+							)
+						)
+					)
+				);
+			}
+		}]);
+	
+		return HubIndexPhotoDisplay;
+	}(_react2.default.Component);
+	
+	exports.default = HubIndexPhotoDisplay;
 
 /***/ })
 /******/ ]);
