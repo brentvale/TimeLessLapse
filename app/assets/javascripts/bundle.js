@@ -50158,7 +50158,7 @@
 								{ to: "/edit_user" },
 								_react2.default.createElement(
 									'div',
-									{ className: 'button button-create button-width-full hand-on-hover' },
+									{ className: 'button button-create button-width-full hand-on-hover', style: { margin: "0" } },
 									'Edit Profile'
 								)
 							)
