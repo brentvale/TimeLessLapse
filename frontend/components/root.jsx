@@ -12,6 +12,7 @@ import CustomNav from './navigation/custom_nav';
 import HubsContainer from './hubs/hubs_container';
 import HubShowContainer from './hubs/hub_show_container'
 import NewPhoto from './photographs/new_photo';
+import EditUserContainer from './users/edit_user_container';
 
 import SessionFormContainer from './session_form/session_form_container';
 
@@ -38,6 +39,7 @@ const Root = ({ store }) => {
          
 					<Route path="/take_photo" component={NewPhoto} />
 					<Route path="/hubs/:hubId" component={HubShowContainer} />
+					<Route path="/edit_user" component={EditUserContainer} />
         </Route>
       </Router>
     </Provider>

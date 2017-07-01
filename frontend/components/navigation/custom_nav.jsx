@@ -19,7 +19,7 @@ class CustomNav extends React.Component {
 	render(){
 	  const {currentUser} = this.props;
 		
-		let navItemSignInOrOut, brandContent, hubsLink;
+		let navItemSignInOrOut, brandContent, hubsLink, profileLink;
 		if(currentUser){
     	navItemSignInOrOut =  <NavItem  href="/users/sign_out"
                       								rel="nofollow" 
@@ -30,12 +30,16 @@ class CustomNav extends React.Component {
 			hubsLink = <NavItem href={"/"}>
 									 Hubs
 								 </NavItem>;
+			profileLink = <NavItem href={"#/edit_user"}>
+											Profile
+									 	</NavItem>;
 		} else {
     	navItemSignInOrOut =  <NavItem  href="/users/sign_in"
                       								rel="nofollow"
 																			onClick={this.navigateToSignIn}>Sign In</NavItem>
 			brandContent = <a href="/">TimeLessLapse</a>;
 			hubsLink = "";
+			profileLink = "";
 		}
   
 	  return(
@@ -53,6 +57,7 @@ class CustomNav extends React.Component {
 	        </Nav>
     
 	        <Nav pullRight>
+						{profileLink}
 						{hubsLink}
 						{navItemSignInOrOut}
 	        </Nav>

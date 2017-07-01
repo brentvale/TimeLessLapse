@@ -10,6 +10,12 @@ export function requestCurrentUser(){
 	};
 }
 
+export function updateCurrentUser(formData){
+	return(dispatch) => {
+		return APIUtil.updateCurrentUser().then(obj => dispatch(receiveCurrentUser(obj)) );
+	};
+}
+
 export const receiveCurrentUser = currentUser => ({
   type: RECEIVE_CURRENT_USER,
   currentUser: currentUser

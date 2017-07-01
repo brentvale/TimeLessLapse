@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   namespace :api do 
     resources :photographs, only: [:create, :index, :update]
     resources :timelapse_hubs, only: [:index, :show, :create, :update]
+    resources :users, only: [:update]
     get "/users/current_user", to: "users#current_logged_in_user"
   end
   

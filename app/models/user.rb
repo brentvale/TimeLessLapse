@@ -49,11 +49,19 @@ class User < ActiveRecord::Base
     
   #after_image_post_process :load_exif
   
-  def image_url_small
-    self.image.url(:small)
+  def avatar_url_small
+    if self.avatar.exists?
+      self.avatar.url(:small)
+    else
+      return nil
+    end
   end
   
-  def image_url_thumb
-    self.image.url(:thumb)
+  def avatar_url_thumb
+    if self.avatar.exists?
+      return self.avatar.url(:thumb)
+    else
+      return nil
+    end
   end
 end

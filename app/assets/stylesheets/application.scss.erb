@@ -25,7 +25,7 @@ $fade-time: .5s;
 $alabaster: #f9f9f9; //white-ish
 $wild-sand: #f4f4f4; //white-touch of gray
 $alto: #d3d3d3; //unclickable gray color
-$alto-hover: #b8b8b8;
+$silver: #b8b8b8; //good for alto:hover
 $boulder: #767676; //darker gray
 $tundora: #363636; //darkest gray
 
@@ -105,8 +105,71 @@ p.heading{
 .box-with-shadow:hover{
   box-shadow: 0 3px 10px rgba(0,0,0,.23);
 }
+.disguised-link, .disguised-link:hover, .disguised-link:visited{
+	color:$boulder;
+	text-decoration:none;
+}
 .drop-shadow{
 	box-shadow: 0 3px 10px rgba(0,0,0,.23);
+}
+.edit-block-header{
+	background-color: $wild-sand;
+	height: 250px;
+	padding: 2em;
+	position: relative;
+	text-align:center;
+	div p {
+		color: $silver;
+	}
+	div i.fa-user-circle-o{
+		color: $alto;
+	}
+	div:hover p{
+		color: $boulder;
+	}
+	div:hover i.fa-user-circle-o{
+		color: $silver;
+	}
+} 
+.edit-block-content-border{
+	border-top: 1px solid $silver;
+	border-bottom: 1px solid $silver;
+	width: 100%;
+}
+.edit-block-content{
+	width: 400px;
+	div{
+		height:3em;
+		margin-top:1em;
+		text-align:left;
+	}
+	div div{
+		display:inline-block;
+		margin-top:0em;
+		padding-top:0px;
+		text-align:center;
+		width: 5em;
+	}
+	div p{
+		border-bottom: 1px solid $wild-sand;
+		display:inline-block;
+		line-height:2.5em;
+		margin-bottom: 0;
+		padding-bottom: 0.6em;
+		vertical-align:top;
+		width: 70%;
+	}
+	div p.unfilled{
+		color: $silver;
+	}
+	div:last-child p{
+		border-bottom: none;
+	}
+	div .fa{
+		color: $boulder;
+		display: inline;
+		font-size: 30px;
+	}
 }
 .hub-select-container{
 	height:25em;
@@ -171,6 +234,20 @@ p.heading{
 .page-block{
 	max-width: 800px;
 	width: 100%;
+	.nav-block{
+		width: 100%;
+	}
+	.nav-block div:first-child, .nav-block div:last-child{
+		width: 15%;
+	}
+	.nav-block div{
+		display:inline-block;
+		text-align:center;
+		width: 70%;
+	}
+	h3{
+		margin: 1em;
+	}
 }
 .page-block-border{
 	border-bottom: 1px solid $wild-sand;
@@ -210,6 +287,9 @@ p.heading{
 	border: 1px solid $boulder;
 	color: $boulder;
 }
+.button-width-full{
+	width: 100%;
+}
 .circle-button-parent{
 	margin-top: 2em;
 }
@@ -232,10 +312,15 @@ p.heading{
 //ICONS
 .fa-user-circle-o{
 	color: $alto;
+}
+.fa-user-circle-o.small{
 	font-size: 80px;
 }
+.fa-user-circle-o.large{
+	font-size: 120px;
+}
 .fa-user-circle-o:hover{
-	color: $alto-hover;
+	color: $silver;
 }
 .fa-share-square{
 	bottom: 3px;
