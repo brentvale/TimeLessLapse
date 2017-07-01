@@ -11,7 +11,7 @@ class Api::UsersController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    if @user.update_attributes
+    if @user.update_attributes(user_params)
       render :show
     else
       render json: {message: "something went wrong server side updating the user", errors: @user.errors.full_messages}
@@ -21,6 +21,6 @@ class Api::UsersController < ApplicationController
   private 
   
   def user_params
-    params.require(:user).permit(:website_url, :avatar, :tag_line, :name)
+    params.require(:user).permit(:website_url, :avatar, :tag_line, :name, :email)
   end
 end

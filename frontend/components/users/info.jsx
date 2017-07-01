@@ -4,7 +4,7 @@ import { Link } from 'react-router';
 
 const UserInfo = ({currentUser}) => {
 	
-	const userNameDisplay = (currentUser.first_name && currentUser.last_name) ? `${currentUser.first_name} ${currentUser.last_name}`: currentUser.email;
+	const userNameDisplay = (currentUser.name) ? `${currentUser.name}`: currentUser.email;
 	const tagLineDisplay = (currentUser.tag_line) ? currentUser.tag_line : "Add Tag Line";
 	const websiteDisplay = (currentUser.website_url) ? <a href={currentUser.website_url}>{currentUser.website_url}</a> : "Add Website";
 	
@@ -36,15 +36,9 @@ const UserInfo = ({currentUser}) => {
 					</div>
 				</div>
 		
-				<Link to={"/edit_user"} className="hand-on-hover disguised-link">
 				<p className="heading" style={{fontWeight: "700"}}>{userNameDisplay}</p>
-				</Link>
-				<Link to={"/edit_user"} className="hand-on-hover disguised-link">
-					<p className="heading">{tagLineDisplay}</p>
-				</Link>
-				<Link to={"/edit_user"} className="hand-on-hover disguised-link">
-					<p className="heading">{websiteDisplay}</p>
-				</Link>
+				<p className="heading">{tagLineDisplay}</p>
+				<p className="heading">{websiteDisplay}</p>
 			</div>
 		</div>
 	)	

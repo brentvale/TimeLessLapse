@@ -49549,7 +49549,7 @@
 	
 	function updateCurrentUser(formData) {
 		return function (dispatch) {
-			return APIUtil.updateCurrentUser().then(function (obj) {
+			return APIUtil.updateCurrentUser(formData).then(function (obj) {
 				return dispatch(receiveCurrentUser(obj));
 			});
 		};
@@ -49606,14 +49606,14 @@
 	
 	var updateCurrentUser = exports.updateCurrentUser = function updateCurrentUser(formData) {
 	  return $.ajax({
-	    method: 'POST',
+	    method: 'PATCH',
 	    url: '/api/users/' + formData.userId,
 	    data: {
 	      user: {
 	        website_url: formData.websiteUrl,
 	        tag_line: formData.tagLine,
-	        first_name: formData.firstName,
-	        last_name: formData.lastName
+	        name: formData.name,
+	        email: formData.email
 	      }
 	    }
 	  });
@@ -50092,7 +50092,7 @@
 		var currentUser = _ref.currentUser;
 	
 	
-		var userNameDisplay = currentUser.first_name && currentUser.last_name ? currentUser.first_name + ' ' + currentUser.last_name : currentUser.email;
+		var userNameDisplay = currentUser.name ? '' + currentUser.name : currentUser.email;
 		var tagLineDisplay = currentUser.tag_line ? currentUser.tag_line : "Add Tag Line";
 		var websiteDisplay = currentUser.website_url ? _react2.default.createElement(
 			'a',
@@ -50165,31 +50165,19 @@
 					)
 				),
 				_react2.default.createElement(
-					_reactRouter.Link,
-					{ to: "/edit_user", className: 'hand-on-hover disguised-link' },
-					_react2.default.createElement(
-						'p',
-						{ className: 'heading', style: { fontWeight: "700" } },
-						userNameDisplay
-					)
+					'p',
+					{ className: 'heading', style: { fontWeight: "700" } },
+					userNameDisplay
 				),
 				_react2.default.createElement(
-					_reactRouter.Link,
-					{ to: "/edit_user", className: 'hand-on-hover disguised-link' },
-					_react2.default.createElement(
-						'p',
-						{ className: 'heading' },
-						tagLineDisplay
-					)
+					'p',
+					{ className: 'heading' },
+					tagLineDisplay
 				),
 				_react2.default.createElement(
-					_reactRouter.Link,
-					{ to: "/edit_user", className: 'hand-on-hover disguised-link' },
-					_react2.default.createElement(
-						'p',
-						{ className: 'heading' },
-						websiteDisplay
-					)
+					'p',
+					{ className: 'heading' },
+					websiteDisplay
 				)
 			)
 		);
@@ -71108,7 +71096,13 @@
 	
 	var _reactRouter = __webpack_require__(217);
 	
+	var _input_field = __webpack_require__(657);
+	
+	var _input_field2 = _interopRequireDefault(_input_field);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
@@ -71119,29 +71113,93 @@
 	var UserForm = function (_React$Component) {
 		_inherits(UserForm, _React$Component);
 	
-		function UserForm() {
+		function UserForm(props) {
 			_classCallCheck(this, UserForm);
 	
-			var _this = _possibleConstructorReturn(this, (UserForm.__proto__ || Object.getPrototypeOf(UserForm)).call(this));
+			var _this = _possibleConstructorReturn(this, (UserForm.__proto__ || Object.getPrototypeOf(UserForm)).call(this, props));
 	
-			_this.state = {};
+			_this.state = {
+				focused: null,
+				name: null,
+				email: null,
+				websiteUrl: null,
+				tagLine: null
+			};
 			_this.handleChangePhoto = _this.handleChangePhoto.bind(_this);
+			_this.handleKeyPress = _this.handleKeyPress.bind(_this);
 			_this.navigateToHome = _this.navigateToHome.bind(_this);
+			_this.update = _this.update.bind(_this);
+			_this.updateFocusedElement = _this.updateFocusedElement.bind(_this);
+			_this.updateUser = _this.updateUser.bind(_this);
 			return _this;
 		}
 	
 		_createClass(UserForm, [{
 			key: 'componentDidMount',
-			value: function componentDidMount() {}
+			value: function componentDidMount() {
+				this.props.requestCurrentUser();
+			}
+		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextProps) {
+				var name = nextProps.currentUser.name ? nextProps.currentUser.name : "";
+				var email = nextProps.currentUser.email ? nextProps.currentUser.email : "";
+				var websiteUrl = nextProps.currentUser.website_url ? nextProps.currentUser.website_url : "";
+				var tagLine = nextProps.currentUser.tag_line ? nextProps.currentUser.tag_line : "";
+	
+				this.setState({ name: name,
+					email: email,
+					websiteUrl: websiteUrl,
+					tagLine: tagLine
+				});
+			}
 		}, {
 			key: 'handleChangePhoto',
 			value: function handleChangePhoto() {
 				alert("launch modal to change photo");
 			}
 		}, {
+			key: 'handleKeyPress',
+			value: function handleKeyPress(e) {
+				if (e.keyCode == 13) {
+					this.updateUser();
+				}
+			}
+		}, {
 			key: 'navigateToHome',
-			value: function navigateToHome() {
-				_reactRouter.hashHistory.goBack();
+			value: function navigateToHome(e) {
+				if (e.currentTarget.id === "done") {
+					this.updateUser();
+				} else if (e.currentTarget.id === "cancel") {
+					_reactRouter.hashHistory.goBack();
+				}
+			}
+		}, {
+			key: 'updateUser',
+			value: function updateUser() {
+				this.props.updateCurrentUser({ userId: this.props.currentUser.id,
+					name: this.state.name,
+					email: this.state.email,
+					websiteUrl: this.state.websiteUrl,
+					tagLine: this.state.tagLine }).then(_reactRouter.hashHistory.goBack());
+			}
+		}, {
+			key: 'update',
+			value: function update(field) {
+				var _this2 = this;
+	
+				return function (e) {
+					if (!e.currentTarget.value) {
+						_this2.setState(_defineProperty({}, field, ""));
+					} else {
+						_this2.setState(_defineProperty({}, field, e.currentTarget.value));
+					}
+				};
+			}
+		}, {
+			key: 'updateFocusedElement',
+			value: function updateFocusedElement(e) {
+				this.setState({ focused: e.currentTarget.id });
 			}
 		}, {
 			key: 'render',
@@ -71155,43 +71213,9 @@
 						'Fetching User Info'
 					);
 				}
+	
 				var imageDisplay = currentUser.thumbnail_avatar ? _react2.default.createElement('img', { src: currentUser.thumbnail_avatar }) : _react2.default.createElement('i', { className: 'fa fa-user-circle-o large hand-on-hover', 'aria-hidden': 'true' });
-				var nameDisplay = currentUser.name ? _react2.default.createElement(
-					'p',
-					null,
-					currentUser.name
-				) : _react2.default.createElement(
-					'p',
-					{ className: 'unfilled' },
-					'Click to add name'
-				);
-				var emailDisplay = currentUser.email ? _react2.default.createElement(
-					'p',
-					null,
-					currentUser.email
-				) : _react2.default.createElement(
-					'p',
-					{ className: 'unfilled' },
-					'Click to add email'
-				);
-				var websiteDisplay = currentUser.website_url ? _react2.default.createElement(
-					'p',
-					null,
-					currentUser.website_url
-				) : _react2.default.createElement(
-					'p',
-					{ className: 'unfilled' },
-					'Click to add website'
-				);
-				var tagLineDisplay = currentUser.tag_line ? _react2.default.createElement(
-					'p',
-					null,
-					currentUser.tag_line
-				) : _react2.default.createElement(
-					'p',
-					{ className: 'unfilled' },
-					'Add your bio in under 255 characters'
-				);
+	
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -71203,7 +71227,7 @@
 							{ className: 'nav-block' },
 							_react2.default.createElement(
 								'div',
-								{ onClick: this.navigateToHome, className: 'hand-on-hover' },
+								{ onClick: this.navigateToHome, id: 'cancel', className: 'hand-on-hover' },
 								'Cancel'
 							),
 							_react2.default.createElement(
@@ -71217,7 +71241,7 @@
 							),
 							_react2.default.createElement(
 								'div',
-								{ onClick: this.navigateToHome, className: 'hand-on-hover' },
+								{ onClick: this.navigateToHome, onFocus: this.updateFocusedElement, onKeyDown: this.handleKeyPress, id: 'done', className: 'hand-on-hover', tabIndex: '5' },
 								'Done'
 							)
 						),
@@ -71249,7 +71273,13 @@
 										null,
 										_react2.default.createElement('i', { className: 'fa fa-user', 'aria-hidden': 'true' })
 									),
-									nameDisplay
+									_react2.default.createElement(_input_field2.default, { fieldId: 'name',
+										attribute: this.state.name,
+										emptyFieldInstructions: 'Click to add name',
+										focused: this.state.focused === "name",
+										updateFocusedElement: this.updateFocusedElement,
+										update: this.update,
+										tabIndex: '1' })
 								),
 								_react2.default.createElement(
 									'div',
@@ -71259,7 +71289,13 @@
 										null,
 										_react2.default.createElement('i', { className: 'fa fa-id-badge', 'aria-hidden': 'true' })
 									),
-									emailDisplay
+									_react2.default.createElement(_input_field2.default, { fieldId: 'email',
+										attribute: this.state.email,
+										emptyFieldInstructions: 'Click to add email',
+										focused: this.state.focused === "email",
+										updateFocusedElement: this.updateFocusedElement,
+										update: this.update,
+										tabIndex: '2' })
 								),
 								_react2.default.createElement(
 									'div',
@@ -71269,7 +71305,13 @@
 										null,
 										_react2.default.createElement('i', { className: 'fa fa-ravelry', 'aria-hidden': 'true' })
 									),
-									websiteDisplay
+									_react2.default.createElement(_input_field2.default, { fieldId: 'websiteUrl',
+										attribute: this.state.websiteUrl,
+										emptyFieldInstructions: 'Click to add website',
+										focused: this.state.focused === "websiteUrl",
+										updateFocusedElement: this.updateFocusedElement,
+										update: this.update,
+										tabIndex: '3' })
 								),
 								_react2.default.createElement(
 									'div',
@@ -71279,10 +71321,17 @@
 										null,
 										_react2.default.createElement('i', { className: 'fa fa-info-circle', 'aria-hidden': 'true' })
 									),
-									tagLineDisplay
+									_react2.default.createElement(_input_field2.default, { fieldId: 'tagLine',
+										attribute: this.state.tagLine,
+										emptyFieldInstructions: 'Add your bio in under 255 characters',
+										focused: this.state.focused === "tagLine",
+										updateFocusedElement: this.updateFocusedElement,
+										update: this.update,
+										tabIndex: '4' })
 								)
 							)
-						)
+						),
+						_react2.default.createElement('div', { className: 'edit-block-footer' })
 					)
 				);
 			}
@@ -74496,6 +74545,58 @@
 	};
 	
 	exports.default = usersReducer;
+
+/***/ }),
+/* 657 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	
+	var _react = __webpack_require__(1);
+	
+	var _react2 = _interopRequireDefault(_react);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	var InputField = function InputField(_ref) {
+		var fieldId = _ref.fieldId,
+		    attribute = _ref.attribute,
+		    emptyFieldInstructions = _ref.emptyFieldInstructions,
+		    focused = _ref.focused,
+		    updateFocusedElement = _ref.updateFocusedElement,
+		    update = _ref.update,
+		    tabIndex = _ref.tabIndex;
+	
+	
+		if (focused) {
+			return _react2.default.createElement(
+				"div",
+				{ className: "input-container" },
+				_react2.default.createElement("input", { autoFocus: true, value: attribute, onChange: update(fieldId), id: fieldId, className: "profile-input-field", tabIndex: tabIndex }),
+				_react2.default.createElement("i", { className: "fa fa-times", "aria-hidden": "true", style: { float: "right", fontSize: "14px", verticalAlign: "top" }, onClick: update(fieldId) })
+			);
+		} else {
+			if (attribute) {
+				return _react2.default.createElement(
+					"p",
+					{ tabIndex: tabIndex, onFocus: updateFocusedElement, onClick: updateFocusedElement, id: fieldId },
+					attribute
+				);
+			} else {
+				return _react2.default.createElement(
+					"p",
+					{ tabIndex: tabIndex, onFocus: updateFocusedElement, onClick: updateFocusedElement, id: fieldId, className: "unfilled" },
+					emptyFieldInstructions
+				);
+			}
+		}
+	};
+	
+	exports.default = InputField;
 
 /***/ })
 /******/ ]);

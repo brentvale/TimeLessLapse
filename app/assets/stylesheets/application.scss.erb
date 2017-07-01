@@ -113,7 +113,7 @@ p.heading{
 .drop-shadow{
 	box-shadow: 0 3px 10px rgba(0,0,0,.23);
 }
-.edit-block-header{
+.edit-block-header, .edit-block-footer{
 	background-color: $wild-sand;
 	height: 250px;
 	padding: 2em;
@@ -151,14 +151,23 @@ p.heading{
 		text-align:center;
 		width: 5em;
 	}
-	div p{
-		border-bottom: 1px solid $wild-sand;
+	div p, div .profile-input-field{
+		border-style:none;
+		box-shadow:none;
 		display:inline-block;
 		line-height:2.5em;
 		margin-bottom: 0;
-		padding-bottom: 0.6em;
 		vertical-align:top;
+	}
+	div p{
+		border-bottom: 1px solid $wild-sand;
+		padding-bottom: 0.5em;
 		width: 70%;
+	}
+	div .profile-input-field{
+		border-bottom: none;
+		padding-bottom: 0.3em;
+		width: 100%;
 	}
 	div p.unfilled{
 		color: $silver;
@@ -170,6 +179,21 @@ p.heading{
 		color: $boulder;
 		display: inline;
 		font-size: 30px;
+	}
+	.profile-input-field:focus{
+		text-decoration: none;
+		outline-width: 0;
+	}
+	.input-container{
+		border-bottom: 1px solid $wild-sand;
+		position: relative;
+		vertical-align:top;
+		width: 70%;
+		i{
+			position:absolute;
+			right: 0;
+			top: 5px;
+		}
 	}
 }
 .hub-select-container{

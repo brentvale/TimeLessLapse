@@ -11,14 +11,14 @@ export const fetchCurrentUser = () => (
 
 export const updateCurrentUser = (formData) => (
   $.ajax({
-    method: 'POST',
+    method: 'PATCH',
     url: `/api/users/${formData.userId}`,
 		data: {
 			user: {
 				website_url: formData.websiteUrl,
 				tag_line: formData.tagLine,
-				first_name: formData.firstName,
-				last_name: formData.lastName
+				name: formData.name,
+				email: formData.email
 			}
 		}
   })

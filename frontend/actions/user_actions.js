@@ -12,7 +12,7 @@ export function requestCurrentUser(){
 
 export function updateCurrentUser(formData){
 	return(dispatch) => {
-		return APIUtil.updateCurrentUser().then(obj => dispatch(receiveCurrentUser(obj)) );
+		return APIUtil.updateCurrentUser(formData).then(obj => dispatch(receiveCurrentUser(obj)) );
 	};
 }
 
