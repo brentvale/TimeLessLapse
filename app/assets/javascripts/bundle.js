@@ -49973,7 +49973,6 @@
 		}, {
 			key: 'startFlipping',
 			value: function startFlipping(e) {
-				e.preventDefault();
 				this.props.activateHub(parseInt($(e.currentTarget).data("hub-id")));
 				var that = this;
 				var photosLength = this.props.hub.photographs.length;

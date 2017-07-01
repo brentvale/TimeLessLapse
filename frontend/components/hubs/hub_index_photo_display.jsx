@@ -34,7 +34,6 @@ class HubIndexPhotoDisplay extends React.Component{
 	}
 	
 	startFlipping(e){
-		e.preventDefault();
 		this.props.activateHub( parseInt( $(e.currentTarget).data("hub-id") ) );
 		let that = this;
 		let photosLength = this.props.hub.photographs.length;
