@@ -29920,7 +29920,7 @@
 		}, {
 			key: 'navigateToSignIn',
 			value: function navigateToSignIn() {
-				window.location('/users/sign_in');
+				window.location.replace('/users/sign_in');
 			}
 		}, {
 			key: 'render',
@@ -49948,6 +49948,7 @@
 			_this.stopFlipping = _this.stopFlipping.bind(_this);
 			_this.startFlipping = _this.startFlipping.bind(_this);
 			_this.changeStateSizeIfBreakpointReached = _this.changeStateSizeIfBreakpointReached.bind(_this);
+			_this.handleNavigateToHub = _this.handleNavigateToHub.bind(_this);
 			return _this;
 		}
 	
@@ -49969,6 +49970,13 @@
 				} else {
 					this.setState({ lessThanTabletBreakSize: false });
 				}
+			}
+		}, {
+			key: 'handleNavigateToHub',
+			value: function handleNavigateToHub(e) {
+				//don't prevent default (want link to navigate, this is in case of mobile)
+				this.stopFlipping();
+				window.location.replace('#/hub/' + $(e.currentTarget).data("hub-id"));
 			}
 		}, {
 			key: 'startFlipping',
@@ -50045,7 +50053,7 @@
 							imageToUse,
 							_react2.default.createElement(
 								_reactRouter.Link,
-								{ to: '/hubs/' + hub.id, onClick: this.stopFlipping, onTouchStart: this.stopFlipping, style: { height: "50px", width: "50px", display: "inline", zIndex: "10" } },
+								{ to: '/hubs/' + hub.id, onClick: this.handleNavigateToHub, onTouchStart: this.stopFlipping, style: { height: "50px", width: "50px", display: "inline", zIndex: "10" }, 'data-hub-id': hub.id },
 								_react2.default.createElement('i', { className: 'fa fa-share-square hand-on-hover', 'aria-hidden': 'true' })
 							)
 						)

@@ -13,7 +13,7 @@ class CustomNav extends React.Component {
 	}
 	
 	navigateToSignIn(){
-		window.location('/users/sign_in');
+		window.location.replace('/users/sign_in');
 	}
 	
 	render(){
