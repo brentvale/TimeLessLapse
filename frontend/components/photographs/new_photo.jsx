@@ -231,7 +231,7 @@ class NewPhoto extends React.Component{
 				                     accept=".jpg,.jpeg,.pdf"
 				                     className="image-upload hand-on-hover"
 				                     onChange={this.handleChange}
-														 placeholder="Upload Photograph"/>
+														 placeholder="Upload Photo"/>
 									
 				         { submitButton }
 				        </form>
