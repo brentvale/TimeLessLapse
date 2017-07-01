@@ -29920,7 +29920,7 @@
 		}, {
 			key: 'navigateToSignIn',
 			value: function navigateToSignIn() {
-				window.location.replace('/users/sign_in');
+				window.location('/users/sign_in');
 			}
 		}, {
 			key: 'render',
