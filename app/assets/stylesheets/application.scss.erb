@@ -140,7 +140,6 @@ p.heading{
 .edit-block-content{
 	width: 400px;
 	div{
-		height:3em;
 		margin-top:1em;
 		text-align:left;
 	}
@@ -157,16 +156,15 @@ p.heading{
 		display:inline-block;
 		line-height:2.5em;
 		margin-bottom: 0;
+		padding-bottom: 0.5em;
 		vertical-align:top;
 	}
 	div p{
 		border-bottom: 1px solid $wild-sand;
-		padding-bottom: 0.5em;
 		width: 70%;
 	}
 	div .profile-input-field{
 		border-bottom: none;
-		padding-bottom: 0.3em;
 		width: 100%;
 	}
 	div p.unfilled{
@@ -434,6 +432,9 @@ p.heading{
 
 //detect mobile specifically, prevent autofocus of input fields
 body.is-mobile input[type="text"]{
+	font-size:16px;
+}
+body.is-mobile .edit-block-content div p{
 	font-size:16px;
 }
 
