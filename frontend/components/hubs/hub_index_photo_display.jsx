@@ -15,7 +15,6 @@ class HubIndexPhotoDisplay extends React.Component{
 		this.stopFlipping = this.stopFlipping.bind(this);
 		this.startFlipping = this.startFlipping.bind(this);
 		this.changeStateSizeIfBreakpointReached = this.changeStateSizeIfBreakpointReached.bind(this);
-		this.handleNavigateToHub = this.handleNavigateToHub.bind(this);
 	}
 	
 	componentDidMount(){
@@ -32,12 +31,6 @@ class HubIndexPhotoDisplay extends React.Component{
 		} else {
 			this.setState({lessThanTabletBreakSize: false});
 		}
-	}
-	
-	handleNavigateToHub(e){
-		//don't prevent default (want link to navigate, this is in case of mobile)
-		this.stopFlipping();
-		window.location.replace(`#/hub/${$(e.currentTarget).data("hub-id")}`);
 	}
 	
 	startFlipping(e){
@@ -91,7 +84,7 @@ class HubIndexPhotoDisplay extends React.Component{
 							 <div className="overlay"></div>
 							 {imageToUse}
 							 
-							 <Link to={`/hubs/${hub.id}`} onClick={this.handleNavigateToHub} onTouchStart={this.stopFlipping} style={{height: "50px", width: "50px", display:"inline", zIndex: "10"}} data-hub-id={hub.id}>
+							 <Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping} onTouchStart={this.stopFlipping}>
 							 		<i className="fa fa-share-square hand-on-hover" aria-hidden="true"></i>
 							 </Link>
 					</div>
