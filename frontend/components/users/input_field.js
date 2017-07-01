@@ -5,7 +5,13 @@ const InputField = ({fieldId, attribute, emptyFieldInstructions, focused, update
 	
 	if(focused){
 		return <div className="input-container">
-					 		<input autoFocus value={attribute} onChange={update(fieldId)} id={fieldId} className="profile-input-field" tabIndex={tabIndex}/>
+					 		<input  autoFocus 
+											value={attribute} 
+											onChange={update(fieldId)} 
+											id={fieldId} 
+											className="profile-input-field" 
+											tabIndex={tabIndex}
+											type="text"/>
 							<i className="fa fa-times" aria-hidden="true" style={{float: "right", fontSize: "14px", verticalAlign:"top"}} onClick={update(fieldId)}></i>
 					 </div>
 	} else {

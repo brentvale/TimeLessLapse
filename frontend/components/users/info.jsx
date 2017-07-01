@@ -6,7 +6,7 @@ const UserInfo = ({currentUser}) => {
 	
 	const userNameDisplay = (currentUser.name) ? `${currentUser.name}`: currentUser.email;
 	const tagLineDisplay = (currentUser.tag_line) ? currentUser.tag_line : "Add Tag Line";
-	const websiteDisplay = (currentUser.website_url) ? <a href={currentUser.website_url}>{currentUser.website_url}</a> : "Add Website";
+	const websiteDisplay = (currentUser.website_url) ? <a target="_blank" href={currentUser.website_url}>{currentUser.website_url}</a> : "Add Website";
 	
 	return (
 		<div className="page-block page-block-border page-block-padded center-block">

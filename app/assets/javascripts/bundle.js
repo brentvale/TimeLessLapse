@@ -50096,7 +50096,7 @@
 		var tagLineDisplay = currentUser.tag_line ? currentUser.tag_line : "Add Tag Line";
 		var websiteDisplay = currentUser.website_url ? _react2.default.createElement(
 			'a',
-			{ href: currentUser.website_url },
+			{ target: '_blank', href: currentUser.website_url },
 			currentUser.website_url
 		) : "Add Website";
 	
@@ -74576,7 +74576,13 @@
 			return _react2.default.createElement(
 				"div",
 				{ className: "input-container" },
-				_react2.default.createElement("input", { autoFocus: true, value: attribute, onChange: update(fieldId), id: fieldId, className: "profile-input-field", tabIndex: tabIndex }),
+				_react2.default.createElement("input", { autoFocus: true,
+					value: attribute,
+					onChange: update(fieldId),
+					id: fieldId,
+					className: "profile-input-field",
+					tabIndex: tabIndex,
+					type: "text" }),
 				_react2.default.createElement("i", { className: "fa fa-times", "aria-hidden": "true", style: { float: "right", fontSize: "14px", verticalAlign: "top" }, onClick: update(fieldId) })
 			);
 		} else {
