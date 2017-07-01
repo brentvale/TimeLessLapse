@@ -50045,7 +50045,7 @@
 							imageToUse,
 							_react2.default.createElement(
 								_reactRouter.Link,
-								{ to: '/hubs/' + hub.id, onClick: this.stopFlipping, onTouchStart: this.stopFlipping, style: { height: "50px", width: "50px", display: "inline" } },
+								{ to: '/hubs/' + hub.id, onClick: this.stopFlipping, onTouchStart: this.stopFlipping, style: { height: "50px", width: "50px", display: "inline", zIndex: "10" } },
 								_react2.default.createElement('i', { className: 'fa fa-share-square hand-on-hover', 'aria-hidden': 'true' })
 							)
 						)
