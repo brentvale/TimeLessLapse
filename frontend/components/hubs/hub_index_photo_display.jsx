@@ -59,9 +59,9 @@ class HubIndexPhotoDisplay extends React.Component{
 			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
 		}									
 		
-		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} className="drop-shadow"/>
+		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} className="with-border drop-shadow"/>
 																														: 
-																														<img src={hub.photographs[this.state.currentImageIndex].small_image} className="drop-shadow"/>;
+																														<img src={hub.photographs[this.state.currentImageIndex].small_image} className="with-border drop-shadow"/>;
 																																
 																							
 		let hubInfoDisplay =  <div>

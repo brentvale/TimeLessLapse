@@ -6,7 +6,6 @@ class HubMap extends Component {
   constructor(){
   	super();
 		this.state = {
-			
 		}
 		this.placeMarker = this.placeMarker.bind(this);
   }
@@ -14,7 +13,8 @@ class HubMap extends Component {
 		let mapOptions = {
 		  center: {lat: parseFloat(this.props.lat), lng: parseFloat(this.props.lng)},
 		  zoom: 15,
-			mapTypeId: 'terrain'
+			mapTypeId: 'terrain',
+			scrollwheel: false
 		}
     const map = this.refs.map;
     this.map = new google.maps.Map(map, mapOptions);
@@ -54,10 +54,19 @@ class HubMap extends Component {
 	}
   
   render() {
-    return <div className="col-xs-12 align-center">
-							<h2 className="heading-block">GoogleMaps</h2>
-							<div id="map" ref="map" className="center-block">Map</div>
-					 </div>;
+		const { windowWidth } = this.props;
+		const mapWidth = (windowWidth > 800) ? 800 : windowWidth;
+		const mapHeight = mapWidth * 0.6;
+		
+    return (
+						<div>
+							<div className="heading-block-container">
+								<h2 className="heading-block center-block">GoogleMaps</h2>
+						  </div>
+							<div id="map" ref="map" className="center-block" style={{width: mapWidth, height: mapHeight}}>Map</div>
+					 	</div>
+    	
+    );
   }
 }
 

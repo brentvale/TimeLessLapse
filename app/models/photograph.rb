@@ -38,6 +38,10 @@ class Photograph < ActiveRecord::Base
     
   #after_image_post_process :load_exif
   
+  def image_url_large
+    self.image.url(:large)
+  end
+  
   def image_url_small
     self.image.url(:small)
   end

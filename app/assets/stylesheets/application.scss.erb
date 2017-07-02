@@ -43,8 +43,7 @@ body{
 #main{
 	font-family: 'Raleway', sans-serif;
 }
-img{
-	border: 3px solid #fff;
+img.with-border{
 	border-radius: 4px;
 }
 ul{
@@ -200,12 +199,8 @@ p.heading{
 	padding:1em;
 	width: 95%;
 }
-.image-upload{
-	text-align:center;
-}
-#map{
-  width: 200px;
-  height: 150px;
+.image-display{
+	width: 100%;
 }
 .photo-container{
 	background-color: white;
@@ -217,6 +212,9 @@ p.heading{
 	top: 50px;
 	width: 100%;
 	z-index: 10;
+}
+.scrolloff {
+    pointer-events: none;
 }
 //BLOCK ELEMENTS
 .border-block{
@@ -238,10 +236,23 @@ p.heading{
 	left:0;
 	right:0;
 }
+.heading-block-container{
+	//border-bottom: 1px solid $wild-sand;
+	position:relative;
+	span{
+		color:$carnation;
+		position:absolute;
+		right: 10px;
+		top: 1.5em;
+	}
+}
 .heading-block{
-	margin-top: 1em;
-	margin-bottom: 0.6em;
-	padding-top: 0.5em;
+	display:inline;
+	margin: 0;
+	padding-top:1em;
+	padding-bottom: 1em;
+	text-align:center;
+	width: 70%;
 }
 .one-third-block{
 	display:inline-block;
@@ -333,6 +344,17 @@ p.heading{
 	box-shadow:         3px 3px 5px 6px #ccc;
 }
 //ICONS
+.fa-home{
+	color: #777;
+	float:left;
+	font-size: 20px;
+	margin-top:1em;
+	padding-left: 10px;
+	z-index: 10;
+}
+.fa-home:hover{
+	color: #5e5e5e;
+}
 .fa-user-circle-o{
 	color: $alto;
 }
@@ -361,7 +383,8 @@ p.heading{
 //FORMS
 //used on file upload input
 .image-upload{
-	width: 12em;
+	text-align:center;
+	width: 12em;	
 }
 .capitalize{
 	text-transform: capitalize;
@@ -459,6 +482,14 @@ $screen-xs-min: 500px;
 }
 
 @media (min-width: $screen-sm-min) { 
+	.heading-block-container{
+		span{
+			top: 2em;
+		}
+	}
+	.fa-home{
+		margin-top:1.5em;
+	}
 	.fa-share-square{
 		bottom: 8px;
 		font-size: 50px;
@@ -479,10 +510,6 @@ $screen-xs-min: 500px;
 	}
 	.button-med{
 		width: 12em;
-	}
-	#map{
-	  width: 400px;
-	  height: 300px;
 	}
 	h2{
 		font-size: 2em !important;
