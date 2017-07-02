@@ -13,10 +13,14 @@ class HubShow extends React.Component{
 	constructor(){
 		super();
 		this.state = {
-			windowWidth: window.innerWidth
+			windowWidth: window.innerWidth,
+			editingTitle: false,
+			nameField: ""
 		}
 		this.saveHubName = this.saveHubName.bind(this);
 		this.changeWindowSize = this.changeWindowSize.bind(this);
+		this.changeHubName = this.changeHubName.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 	}
 	
 	componentDidMount(){
@@ -25,16 +29,34 @@ class HubShow extends React.Component{
 		this.props.requestCurrentUser();
 	}
 	
+	componentWillReceiveProps(nextProps){
+		if(nextProps.hub){
+			this.setState({nameField: nextProps.hub.hub_name});
+		}	
+	}
+	
 	componentWillUnmount(){
 		window.removeEventListener('resize', this.changeWindowSize);
+	}
+	
+	changeHubName(){
+		this.setState({editingTitle: true});
 	}
 	
 	changeWindowSize(){
 		this.setState({windowWidth: window.innerWidth})
 	}
+	
+	handleChange(property){
+		return (e) => {
+			this.setState({
+				[property] : e.currentTarget.value
+			})
+		}
+	}
 
-	saveHubName(hubName, callback){
-		this.props.updateHub({hub: this.props.hub, hubName: hubName, callback: callback});
+	saveHubName(){
+		this.props.updateHub({hub: this.props.hub, hubName: this.state.nameField}).then(this.setState({editingTitle: false}));
 	}
 	
 	render(){
@@ -46,19 +68,15 @@ class HubShow extends React.Component{
 		let spanKlass = "bold";
 		let that = this;
 		
-		let titleEditingField = <h2 className="heading-block center-block">{hub.hub_name}</h2>;
-		// if(this.state.editingTitle){
-// 			titleEditingField = <h2 className="heading-block">{hub.hub_name}</h2>;
-// 		} else {
-// 			titleEditingField = (this.state.editingHubName) ? <input style={{marginTop: "0", marginBottom: "0.5em", display:"block", fontSize: "2em", width: "12em", height: "2em", textAlign:"center"}}
-// 																																			 onFocus={this.handleFocus}
-// 																																			 onKeyDown={this.handleKeyPress}
-// 																																			 className="center-block"
-// 																																			 value={this.state.nameField}
-// 																																			 onChange={this.handleChange} /> :
-// 																												<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
-// 		}
+		let titleEditingField;
 		
+		titleEditingField = (this.state.editingTitle) ? <input autoFocus
+																													 className="center-block heading"
+																													 value={this.state.nameField}
+																													 onChange={this.handleChange("nameField")} /> :
+																											<h2 className="heading-block center-block">{hub.hub_name}</h2>;
+																											
+		let spanEditOrSave = (this.state.editingTitle) ? <span onClick={this.saveHubName} className={"hand-on-hover"}>Save</span> : <span onClick={this.changeHubName} className={"hand-on-hover"}>Edit</span>;
 		return(
 			<div>
 				<UserInfo currentUser={currentUser}/>
@@ -69,7 +87,7 @@ class HubShow extends React.Component{
 							<i className="fa fa-home hand-on-hover" aria-hidden="true"></i>
 						</Link>
 						{titleEditingField}
-						<span>Edit</span>
+						{spanEditOrSave}
 					</div>
 	
 					<HubIndexListItem hub={hub} windowWidth={this.state.windowWidth}/>

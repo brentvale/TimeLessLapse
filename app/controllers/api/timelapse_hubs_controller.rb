@@ -29,6 +29,7 @@ class Api::TimelapseHubsController < ApplicationController
   def update
     @hub = TimelapseHub.find(params[:id])
     if @hub.update_attributes(timelapse_hub_params)
+      @photographs = @hub.photographs.sort_by {|x| x.order_number}
       render :show
     else
       render json: {message: "something went wrong server side updating a hub", errors: @hub.errors.full_messages}

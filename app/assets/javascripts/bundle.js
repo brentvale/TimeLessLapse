@@ -49713,7 +49713,7 @@
 		return function (dispatch) {
 			return util.updateHub(hubObj).then(function (obj) {
 				return dispatch(receiveHub(obj));
-			}).then(hubObj.callback());
+			});
 		};
 	}
 	
@@ -50282,6 +50282,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -50300,10 +50302,14 @@
 			var _this = _possibleConstructorReturn(this, (HubShow.__proto__ || Object.getPrototypeOf(HubShow)).call(this));
 	
 			_this.state = {
-				windowWidth: window.innerWidth
+				windowWidth: window.innerWidth,
+				editingTitle: false,
+				nameField: ""
 			};
 			_this.saveHubName = _this.saveHubName.bind(_this);
 			_this.changeWindowSize = _this.changeWindowSize.bind(_this);
+			_this.changeHubName = _this.changeHubName.bind(_this);
+			_this.handleChange = _this.handleChange.bind(_this);
 			return _this;
 		}
 	
@@ -50315,9 +50321,21 @@
 				this.props.requestCurrentUser();
 			}
 		}, {
+			key: 'componentWillReceiveProps',
+			value: function componentWillReceiveProps(nextProps) {
+				if (nextProps.hub) {
+					this.setState({ nameField: nextProps.hub.hub_name });
+				}
+			}
+		}, {
 			key: 'componentWillUnmount',
 			value: function componentWillUnmount() {
 				window.removeEventListener('resize', this.changeWindowSize);
+			}
+		}, {
+			key: 'changeHubName',
+			value: function changeHubName() {
+				this.setState({ editingTitle: true });
 			}
 		}, {
 			key: 'changeWindowSize',
@@ -50325,14 +50343,23 @@
 				this.setState({ windowWidth: window.innerWidth });
 			}
 		}, {
+			key: 'handleChange',
+			value: function handleChange(property) {
+				var _this2 = this;
+	
+				return function (e) {
+					_this2.setState(_defineProperty({}, property, e.currentTarget.value));
+				};
+			}
+		}, {
 			key: 'saveHubName',
-			value: function saveHubName(hubName, callback) {
-				this.props.updateHub({ hub: this.props.hub, hubName: hubName, callback: callback });
+			value: function saveHubName() {
+				this.props.updateHub({ hub: this.props.hub, hubName: this.state.nameField }).then(this.setState({ editingTitle: false }));
 			}
 		}, {
 			key: 'render',
 			value: function render() {
-				var _this2 = this;
+				var _this3 = this;
 	
 				var _props = this.props,
 				    hub = _props.hub,
@@ -50349,23 +50376,26 @@
 				var spanKlass = "bold";
 				var that = this;
 	
-				var titleEditingField = _react2.default.createElement(
+				var titleEditingField = void 0;
+	
+				titleEditingField = this.state.editingTitle ? _react2.default.createElement('input', { autoFocus: true,
+					className: 'center-block heading',
+					value: this.state.nameField,
+					onChange: this.handleChange("nameField") }) : _react2.default.createElement(
 					'h2',
 					{ className: 'heading-block center-block' },
 					hub.hub_name
 				);
-				// if(this.state.editingTitle){
-				// 			titleEditingField = <h2 className="heading-block">{hub.hub_name}</h2>;
-				// 		} else {
-				// 			titleEditingField = (this.state.editingHubName) ? <input style={{marginTop: "0", marginBottom: "0.5em", display:"block", fontSize: "2em", width: "12em", height: "2em", textAlign:"center"}}
-				// 																																			 onFocus={this.handleFocus}
-				// 																																			 onKeyDown={this.handleKeyPress}
-				// 																																			 className="center-block"
-				// 																																			 value={this.state.nameField}
-				// 																																			 onChange={this.handleChange} /> :
-				// 																												<h2 className="heading-block" onClick={this.changeHubName}>{hub.hub_name}</h2>;
-				// 		}
 	
+				var spanEditOrSave = this.state.editingTitle ? _react2.default.createElement(
+					'span',
+					{ onClick: this.saveHubName, className: "hand-on-hover" },
+					'Save'
+				) : _react2.default.createElement(
+					'span',
+					{ onClick: this.changeHubName, className: "hand-on-hover" },
+					'Edit'
+				);
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -50382,11 +50412,7 @@
 								_react2.default.createElement('i', { className: 'fa fa-home hand-on-hover', 'aria-hidden': 'true' })
 							),
 							titleEditingField,
-							_react2.default.createElement(
-								'span',
-								null,
-								'Edit'
-							)
+							spanEditOrSave
 						),
 						_react2.default.createElement(_hub_index_list_item2.default, { hub: hub, windowWidth: this.state.windowWidth }),
 						_react2.default.createElement(_hub_map2.default, { lat: hub.latitude, lng: hub.longitude, windowWidth: this.state.windowWidth }),
@@ -50411,7 +50437,7 @@
 							)
 						),
 						hub.photographs.map(function (photo) {
-							return _react2.default.createElement(_hub_show_photo_display2.default, { key: photo.id, photo: photo, windowWidth: _this2.state.windowWidth, spanKlass: spanKlass });
+							return _react2.default.createElement(_hub_show_photo_display2.default, { key: photo.id, photo: photo, windowWidth: _this3.state.windowWidth, spanKlass: spanKlass });
 						})
 					)
 				);
