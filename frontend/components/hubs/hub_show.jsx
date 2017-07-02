@@ -60,9 +60,9 @@ class HubShow extends React.Component{
 	}
 	
 	render(){
-		let { hub, currentUser } = this.props;
+		let { hub, currentUser, homePage } = this.props;
 		
-		if(!hub || !currentUser){
+		if(!hub || (!currentUser && !homePage)){
 			return <div>Fetching Data...</div>
 		}
 		let spanKlass = "bold";
@@ -77,9 +77,11 @@ class HubShow extends React.Component{
 																											<h2 className="heading-block center-block">{hub.hub_name}</h2>;
 																											
 		let spanEditOrSave = (this.state.editingTitle) ? <span onClick={this.saveHubName} className={"hand-on-hover"}>Save</span> : <span onClick={this.changeHubName} className={"hand-on-hover"}>Edit</span>;
+		
+		let currentUserDisplay = (currentUser) ? <UserInfo currentUser={currentUser}/> : "";
 		return(
 			<div>
-				<UserInfo currentUser={currentUser}/>
+				{ currentUserDisplay }
 			
 				<div className="page-block page-block-border center-block">
 					<div className="heading-block-container">

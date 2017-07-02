@@ -29710,16 +29710,40 @@
 		function Home() {
 			_classCallCheck(this, Home);
 	
-			return _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this));
+			var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this));
+	
+			_this.state = {
+				hub: null
+			};
+			return _this;
 		}
 	
 		_createClass(Home, [{
+			key: 'componentDidMount',
+			value: function componentDidMount() {
+				var that = this;
+				$.ajax({
+					url: "/static_pages/fetch_landing_hub",
+					method: "get",
+					success: function success(resp) {
+						that.setState({ hub: resp });
+					}
+				});
+			}
+		}, {
 			key: 'render',
 			value: function render() {
+				if (!this.state.hub) {
+					return _react2.default.createElement(
+						'div',
+						{ style: { marginTop: "70px", textAlign: "center" } },
+						'fetching hub...'
+					);
+				}
 				return _react2.default.createElement(
 					'div',
 					{ style: { width: "100%", textAlign: "center" } },
-					'HOMEPAGE'
+					_react2.default.createElement(HubIndexListItem, { hub: this.state.hub, homePage: true })
 				);
 			}
 		}]);
@@ -29928,12 +29952,17 @@
 				var currentUser = this.props.currentUser;
 	
 	
-				var navItemSignInOrOut = void 0,
+				var navItemSignIn = void 0,
+				    navItemSignUp = void 0,
+				    navItemSignOut = void 0,
 				    brandContent = void 0,
 				    hubsLink = void 0,
 				    profileLink = void 0;
+	
 				if (currentUser) {
-					navItemSignInOrOut = _react2.default.createElement(
+					navItemSignIn = "";
+					navItemSignUp = "";
+					navItemSignOut = _react2.default.createElement(
 						_reactBootstrap.NavItem,
 						{ href: '/users/sign_out',
 							rel: 'nofollow',
@@ -29956,13 +29985,21 @@
 						'Profile'
 					);
 				} else {
-					navItemSignInOrOut = _react2.default.createElement(
+					navItemSignIn = _react2.default.createElement(
 						_reactBootstrap.NavItem,
 						{ href: '/users/sign_in',
 							rel: 'nofollow',
 							onClick: this.navigateToSignIn },
 						'Sign In'
 					);
+					navItemSignUp = _react2.default.createElement(
+						_reactBootstrap.NavItem,
+						{ href: '/users/sign_up',
+							rel: 'nofollow',
+							onClick: this.navigateToSignIn },
+						'Sign Up'
+					);
+					navItemSignOut = "";
 					brandContent = _react2.default.createElement(
 						'a',
 						{ href: '/' },
@@ -29994,7 +30031,9 @@
 							{ pullRight: true },
 							profileLink,
 							hubsLink,
-							navItemSignInOrOut
+							navItemSignIn,
+							navItemSignUp,
+							navItemSignOut
 						)
 					)
 				);
@@ -50363,10 +50402,11 @@
 	
 				var _props = this.props,
 				    hub = _props.hub,
-				    currentUser = _props.currentUser;
+				    currentUser = _props.currentUser,
+				    homePage = _props.homePage;
 	
 	
-				if (!hub || !currentUser) {
+				if (!hub || !currentUser && !homePage) {
 					return _react2.default.createElement(
 						'div',
 						null,
@@ -50396,10 +50436,12 @@
 					{ onClick: this.changeHubName, className: "hand-on-hover" },
 					'Edit'
 				);
+	
+				var currentUserDisplay = currentUser ? _react2.default.createElement(_info2.default, { currentUser: currentUser }) : "";
 				return _react2.default.createElement(
 					'div',
 					null,
-					_react2.default.createElement(_info2.default, { currentUser: currentUser }),
+					currentUserDisplay,
 					_react2.default.createElement(
 						'div',
 						{ className: 'page-block page-block-border center-block' },

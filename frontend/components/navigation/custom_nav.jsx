@@ -19,9 +19,13 @@ class CustomNav extends React.Component {
 	render(){
 	  const {currentUser} = this.props;
 		
-		let navItemSignInOrOut, brandContent, hubsLink, profileLink;
+		let navItemSignIn, navItemSignUp, navItemSignOut, brandContent, hubsLink, profileLink;
+		
+		
 		if(currentUser){
-    	navItemSignInOrOut =  <NavItem  href="/users/sign_out"
+			navItemSignIn = "";
+			navItemSignUp = "";
+    	navItemSignOut =  <NavItem  href="/users/sign_out"
                       								rel="nofollow" 
                       								data-method="delete">Sign Out</NavItem>
 			brandContent = <Link to={"/take_photo"}>
@@ -34,9 +38,13 @@ class CustomNav extends React.Component {
 											Profile
 									 	</NavItem>;
 		} else {
-    	navItemSignInOrOut =  <NavItem  href="/users/sign_in"
+    	navItemSignIn =  <NavItem  href="/users/sign_in"
                       								rel="nofollow"
 																			onClick={this.navigateToSignIn}>Sign In</NavItem>
+    	navItemSignUp =  <NavItem  href="/users/sign_up"
+                      								rel="nofollow"
+																			onClick={this.navigateToSignIn}>Sign Up</NavItem>
+			navItemSignOut = "";
 			brandContent = <a href="/">TimeLessLapse</a>;
 			hubsLink = "";
 			profileLink = "";
@@ -59,7 +67,9 @@ class CustomNav extends React.Component {
 	        <Nav pullRight>
 						{profileLink}
 						{hubsLink}
-						{navItemSignInOrOut}
+						{navItemSignIn}
+						{navItemSignUp}
+						{navItemSignOut}
 	        </Nav>
 	      </Navbar.Collapse>
 	    </Navbar>

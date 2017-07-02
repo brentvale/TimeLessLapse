@@ -1,9 +1,13 @@
 class StaticPagesController < ApplicationController
-  before_action :authenticate_user!, except: [:home]
+  before_action :authenticate_user!, except: [:home, :fetch_landing_hub]
+  
   def home
-    # @hub = TimelapseHub.find(5) #garden timelapse 2017
+  end
+  
+  def fetch_landing_hub
+    # @hub = TimeLapseHub.find(5)
 #     @photographs = @hub.photographs.sort_by {|x| x.order_number}
-#     respond_to :html, :json
+#     render 'api/timelapse_hubs/show'
   end
   
   def new_hub_instructions
@@ -12,4 +16,6 @@ class StaticPagesController < ApplicationController
   def fetch_map_image
     render json: {image_url: ActionController::Base.helpers.asset_path('camera_image_32x32.png')}
   end
+  
 end
+

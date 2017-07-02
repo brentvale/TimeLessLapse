@@ -1,5 +1,6 @@
 class Api::UsersController < ApplicationController
   before_action :authenticate_user!, except: [:current_logged_in_user]
+  
   def current_logged_in_user
     @user = current_user
     if @user.nil?

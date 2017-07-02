@@ -1,5 +1,6 @@
 class Api::TimelapseHubsController < ApplicationController
   before_action :authenticate_user!
+  
   def index
     @hubs = current_user.timelapse_hubs.includes(:photographs)
     @photographs = {}
