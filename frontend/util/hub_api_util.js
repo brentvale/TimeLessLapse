@@ -25,6 +25,13 @@ export const updateHub = ({hub, hubName}) => (
 		}
 	})
 );
+
+export const fetchLandingHub = () => (
+  $.ajax({
+    method: 'GET',
+    url: '/static_pages/fetch_landing_hub'
+  })
+);
 	
 
 

@@ -14,4 +14,8 @@ const getCurrentUser = ({ users }) => {
 	return users.currentUser;
 }
 
-export { getAllHubs, getSingleHub, getCurrentUser };
+const getHomeHub = ({ hubs }) => {
+	return hubs[5];
+}
+
+export { getAllHubs, getSingleHub, getCurrentUser, getHomeHub};

@@ -25,6 +25,10 @@ class HubIndexListItem extends React.Component{
 		this.setState({nameField: this.props.hub.hub_name});
 	}
 	
+	componentWillUnMount(){
+		this.stopFlipping();
+	}
+	
 	changeHubName(){
 		this.setState({editingHubName: true})
 	}

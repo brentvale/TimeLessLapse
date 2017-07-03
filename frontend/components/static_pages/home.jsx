@@ -14,14 +14,13 @@ class Home extends React.Component{
 	}
 	
 	componentDidMount(){
-		let that = this;
-		$.ajax({
-			url: "/static_pages/fetch_landing_hub",
-			method: "get",
-			success: (resp) => {
-				that.setState({hub: resp})
-			}
-		})
+		this.props.requestHomeHub();
+	}
+	
+	componentWillReceiveProps(nextProps){
+		if(nextProps.homeHub){
+			this.setState({hub: nextProps.homeHub});
+		}
 	}
 	
 	render(){

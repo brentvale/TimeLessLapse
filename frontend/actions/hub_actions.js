@@ -22,6 +22,12 @@ export function updateHub(hubObj){
 	}
 }
 
+export function requestHomeHub(){
+	return(dispatch) => {
+		return util.fetchLandingHub().then(obj => dispatch(receiveHub(obj)));
+	}
+}
+
 //sync actions
 export const receiveHubs = (obj) => ({
   type: RECEIVE_HUBS,

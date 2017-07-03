@@ -2,7 +2,7 @@ import React from 'react';
 
 //COMPONENTS
 import HubIndexPhotoDisplay from './hub_index_photo_display';
-import Home from '../static_pages/home';
+import HomeContainer from '../static_pages/home_container';
 import UserInfo from '../users/info';
 
 class HubIndex extends React.Component{
@@ -38,7 +38,7 @@ class HubIndex extends React.Component{
 	render(){
 		let {hubs, currentUser} = this.props;
 		if(!currentUser){
-			return (<Home />);
+			return (<HomeContainer />);
 		}
 		
 		if(hubs.length === 0){
