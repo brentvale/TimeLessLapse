@@ -2,6 +2,7 @@ import React from 'react';
 
 //COMPONENTS
 import { Link } from 'react-router';
+import HubIndexListItem from '../hubs/hub_index_list_item';
 
 
 class Home extends React.Component{
@@ -28,7 +29,7 @@ class Home extends React.Component{
 			return <div style={{marginTop: "70px", textAlign:"center"}}>fetching hub...</div>;
 		}
 		return(
-			<div style={{width: "100%", textAlign: "center"}}>
+			<div className="page-block page-block-border center-block">
 				<HubIndexListItem hub={this.state.hub} homePage={true}/>
 			</div>
 		)

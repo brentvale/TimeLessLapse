@@ -29693,6 +29693,10 @@
 	
 	var _reactRouter = __webpack_require__(217);
 	
+	var _hub_index_list_item = __webpack_require__(547);
+	
+	var _hub_index_list_item2 = _interopRequireDefault(_hub_index_list_item);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -29742,8 +29746,8 @@
 				}
 				return _react2.default.createElement(
 					'div',
-					{ style: { width: "100%", textAlign: "center" } },
-					_react2.default.createElement(HubIndexListItem, { hub: this.state.hub, homePage: true })
+					{ className: 'page-block page-block-border center-block' },
+					_react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true })
 				);
 			}
 		}]);

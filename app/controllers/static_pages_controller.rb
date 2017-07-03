@@ -5,9 +5,9 @@ class StaticPagesController < ApplicationController
   end
   
   def fetch_landing_hub
-    # @hub = TimeLapseHub.find(5)
-#     @photographs = @hub.photographs.sort_by {|x| x.order_number}
-#     render 'api/timelapse_hubs/show'
+    @hub = TimelapseHub.find(5)
+    @photographs = @hub.photographs.sort_by {|x| x.order_number}
+    render 'api/timelapse_hubs/show'
   end
   
   def new_hub_instructions
