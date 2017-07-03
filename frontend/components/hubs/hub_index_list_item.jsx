@@ -17,7 +17,6 @@ class HubIndexListItem extends React.Component{
 		this.startFlipping = this.startFlipping.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.changeHubName = this.changeHubName.bind(this);
-		this.handleFocus = this.handleFocus.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 	}
 	
@@ -35,12 +34,6 @@ class HubIndexListItem extends React.Component{
 	
 	handleChange(e){
 		this.setState({nameField: e.target.value});
-	}
-	
-	handleFocus(){
-		if(this.state.nameField === "Click to Add Hub Name"){
-			this.setState({nameField: ""});
-		}
 	}
 	
 	handleKeyPress(e){

@@ -22,14 +22,15 @@
 </head>
 <body id="main">
 
+<% if notice %>
+	<p class="notice" role="alert" style="margin-top: 50px;"><%= notice %></p>
+<% end %>
+<% if alert %>
+	<p class="alert" role="alert" style="margin-top: 50px;"><%= alert %></p>
+<% end %>
+
 <div class="container-fluid" style="padding:0">	
-	<% if notice %>
-		<p class="notice" role="alert"><%= notice %></p>
-	<% end %>
-	<% if alert %>
-		<p class="alert" role="alert"><%= alert %></p>
-	<% end %>
-	
+		
 	<%= yield %>
 	
 </div>

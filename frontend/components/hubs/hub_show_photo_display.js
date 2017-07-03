@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 
 class HubShowPhotoDisplay extends Component{
 	
-	
 	render(){
 		let { photo, spanKlass, windowWidth } = this.props;
 		
@@ -13,12 +12,12 @@ class HubShowPhotoDisplay extends Component{
 			imageDisplay = <img src={photo.small_image} className="image-display drop-shadow"/>;
 		}																			
 
-	 	let takenAtBlock = (this.props.photo.datetime_digitized) ? <p style={{marginBottom: "0.2em", textAlign: "left", width: "300px"}} className="center-block">
-	 																															<span className={spanKlass}>photo taken at:</span> 
-	 																															{photo.datetime_digitized.slice(11,19)} 
-																																<span className={spanKlass}>on</span> 
-																																{photo.datetime_digitized.slice(0,10)} 
-																															</p> : "";
+	 	let takenAtBlock = (photo.datetime_digitized) ? <p style={{marginBottom: "0.2em", textAlign: "left", width: "300px"}} className="center-block">
+																											<span className={spanKlass}>photo taken at: </span> 
+																											{photo.datetime_digitized.slice(11,19)} 
+																											<span className={spanKlass}> on </span> 
+																											{photo.datetime_digitized.slice(0,10)} 
+																										</p> : "";
 		return(
 			 <div style={{textAlign:"center", marginBottom: "4em"}}>
 					{imageDisplay}

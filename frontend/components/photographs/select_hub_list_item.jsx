@@ -21,23 +21,13 @@ class SelectHubListItem extends React.Component {
 		let { hub } = this.props;
 		let hubImageSrc = (typeof hub.photographs[0] === "undefined") ? "" : hub.photographs[0].thumbnail_image;
 		
-		let containerKlass = "center-block hub-select-container box-with-shadow";
-		let circleButtonKlass = "circle-button center-block hand-on-hover";
-		
-		if(this.state.selected){
-			containerKlass += " box-with-shadow-selected";
-			circleButtonKlass += " circle-button-selected";
-		}
 		return(
-			<div className="col-xs-12 block-element" onClick={this.handleSelectHub} data-hub-id={hub.id}>
-				<div className={containerKlass}>
-					<div className="col-xs-12 col-sm-6" style={{marginTop: "1em"}}>
-						<h2 style={{marginTop: "0"}}>{hub.hub_name}</h2>
-						<img src={hubImageSrc} alt="First Image in Hub" style={{height:"150px", width:"200px"}} className="drop-shadow"/>
-					</div>
-					<div className="col-xs-12 col-sm-6 circle-button-parent">
-						<div className={circleButtonKlass}></div>
-					</div>
+			<div onClick={this.handleSelectHub} data-hub-id={hub.id} data-hub-name={hub.hub_name} className="center-block select-hub-list-item hand-on-hover" >
+				<img src={hubImageSrc} alt="First Image in Hub" style={{height:"75px", width:"100px", display: "inline-block"}} className="drop-shadow"/>
+				<div>
+					<h4 style={{marginTop: "0", display: "inline-block"}}>{hub.hub_name}</h4>
+					<p><strong>latitude:</strong> {hub.latitude}</p>
+					<p><strong>longitude:</strong> {hub.longitude}</p>
 				</div>
 			</div>
 		)

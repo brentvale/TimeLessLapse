@@ -41,6 +41,14 @@ class SelectHub extends React.Component{
 				{Object.keys(this.state.hubs).map((hub_id,idx) => {
 					return <SelectHubListItem key={idx} hub={that.state.hubs[hub_id]} handleSelectHub={that.props.handleSelectHub}/>
 				})}
+				
+				<div onClick={this.props.createNewHub} className="center-block select-hub-list-item hand-on-hover" style={{padding: "0"}}>
+					<i className="fa fa-picture-o" aria-hidden="true"></i>
+					<div style={{verticalAlign: "top", height: "100%"}}>
+						<h4 style={{marginTop: "2em", display: "inline-block", verticalAlign: "middle"}}>Create New Hub</h4>
+					</div>
+				</div>
+				
 			</div>
 		)
 	}

@@ -2,11 +2,12 @@ import React from 'react';
 
 import { withRouter } from 'react-router';
 import ReactDOM from 'react-dom';
+import {Link} from 'react-router';
+
 import Exif from 'exif-js';
 window.EXIF_IMAGE = Exif;
 
 import {Button, Modal} from 'react-bootstrap';
-
 import FileInput from 'react-file-input';
 import * as ReactKonva from 'react-konva';
 import SelectHub from './select_hub';
@@ -21,7 +22,8 @@ class NewPhoto extends React.Component{
 			photograph: null,
 			showModal: false,
 			selectedHubId: null,
-			spinning: false
+			spinning: false,
+			targetHubName: null
 		};
 		this.close = this.close.bind(this);
 		this.createNewHub = this.createNewHub.bind(this);
@@ -57,7 +59,7 @@ class NewPhoto extends React.Component{
 				timelapse_hub: {
 					latitude: that.state.photograph.latitude.slice(0,13),
 					longitude: that.state.photograph.longitude.slice(0,13),
-					hub_name: "Click to Add Hub Name",
+					hub_name: "Unnamed",
 					first_photograph_id: that.state.photograph.id
 				}
 			},
@@ -92,14 +94,15 @@ class NewPhoto extends React.Component{
 	}
 	
 	handleUnConfirmed(){
-		this.setState({selectedHub: null, showModal: false})
+		this.setState({selectedHubId: null, showModal: false, selectedHubName: null})
 	}
 	
 	handleSelectHub(obj){
 		const targetHubId = $(obj.e.currentTarget).data("hub-id");
-		console.log(targetHubId);
+		const targetHubName = $(obj.e.currentTarget).data("hub-name");
+		
 		obj.callback();
-		this.setState({selectedHubId: targetHubId, showModal: true});
+		this.setState({selectedHubId: targetHubId, showModal: true, selectedHubName: targetHubName});
 	}
 	
   handleSubmit(e) {
@@ -237,7 +240,7 @@ class NewPhoto extends React.Component{
 				        </form>
 			break;
 		case 2:
-			display = <SelectHub handleSelectHub={this.handleSelectHub}/>
+			display = <SelectHub handleSelectHub={this.handleSelectHub} createNewHub={this.createNewHub}/>
 			break;
 		}
 		return display;
@@ -265,18 +268,24 @@ class NewPhoto extends React.Component{
 	render(){
 		let display = this.stepFromState();
 		let marginTop, photographDisplay;
+		
 		if(this.state.photograph){
-			photographDisplay = <div className="photo-container" style={{}}>
-														<img src={this.state.photograph.small_image} 
+			let takenAtBlock = (this.state.photograph.datetime_digitized) ? <p style={{marginBottom: "0.2em", textAlign: "left", width: "300px"}} className="center-block">
+																																				<span className="bold">photograph taken at: </span> 
+																																				{this.state.photograph.datetime_digitized.slice(11,19)} 
+																																				<span className="bold"> on </span> 
+																																				{this.state.photograph.datetime_digitized.slice(0,10)} 
+																																			</p> : "";
+			let imageSrc = (window.innerWidth > 400) ? this.state.photograph.large_image : this.state.photograph.small_image;																														
+			photographDisplay = <div>
+														<img src={imageSrc} 
 															 alt="Newly Uploaded Image" 
-															 style={{height:"150px", width:"200px"}}/>
-														<div style={{marginTop: "0.5em"}}>
-															<p>Select the timelapse hub this photo goes with or...</p>
-															<hr style={{marginTop: 0, marginBottom: 0}}/>
-															<div className="button button-med button-create hand-on-hover" onClick={this.createNewHub}>Create New Hub</div>
-														</div>
+															 className="image-display drop-shadow"/>
+															<p style={{marginBottom: "0.2em", textAlign: "left", width: "300px", marginTop: "1em"}} className="center-block"><span className="bold">latitude:</span> {this.state.photograph.latitude}</p>
+															<p style={{marginBottom: "0.2em", textAlign: "left", width: "300px"}} className="center-block"><span className="bold">longitude:</span> {this.state.photograph.longitude}</p>
+															{takenAtBlock}
 													</div>;
-			marginTop = "18em";
+			marginTop = "8em";
 		} else {
 			photographDisplay = "";
 			marginTop = "0em";
@@ -285,22 +294,41 @@ class NewPhoto extends React.Component{
 		let spinnerUploadDisplay = (this.state.spinning) ? <div style={{padding:"1em"}}>
 																													<i className="fa fa-spinner fa-pulse fa-3x fa-fw"></i><br/>
 																													<span>Uploading Image...</span><br/>
-																													<span>This can take a while, check your browser for upload progress (bottom left)</span>
+																													<span>This can take a while...sometimes as long as 30 seconds...</span>
 																													<span className="sr-only">Uploading Image...</span>
 																											</div>: "";
+																											
+		let headingDisplay = (this.state.step === 1) ? <div className="heading-block-container heading-block-container-border">
+																											<Link to={"/"}>
+																												<i className="fa fa-home hand-on-hover" aria-hidden="true"></i>
+																											</Link>
+																											<h2 className="heading-block center-block">Select photo from library</h2>
+																										</div> : 
+ 																										<div className="heading-block-container heading-block-container-border">
+																											<h2 className="heading-block center-block">Assign photo to hub.</h2>
+																										</div>;
+																														
+		let createNewHubButton = (this.state.step === 2) ? <div style={{marginTop: "0.5em"}}>
+																												<p>Select the timelapse hub this photo goes with or...</p>
+																												<div className="button button-med button-create hand-on-hover" onClick={this.createNewHub}>Create New Hub</div>
+																											</div>: "";
 		return(
-			<div>
-				<div style={{textAlign:"center", paddingTop: "3em"}}>
-					{photographDisplay}
-					<div style={{marginTop: marginTop}}>
-						{display}
-						{spinnerUploadDisplay}
-					</div>	
-				</div>
-						
+			<div className="page-block page-block-border center-block">
+			
+				{ headingDisplay }
+				
+				{photographDisplay}
+				
+				<i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{display: "none"}}></i>
+				
+				<div style={{marginTop: marginTop, marginBottom: "100px", textAlign:"center"}}>
+					{display}
+					{spinnerUploadDisplay}
+				</div>	
+					
 				<Modal show={this.state.showModal} onHide={this.close}>
 	        <Modal.Header closeButton>
-	          <Modal.Title style={{textAlign:"center"}}>Are you sure this picture goes with this hub?</Modal.Title>
+	          <Modal.Title style={{textAlign:"center"}}>Are you sure this photo goes with {this.state.selectedHubName} Timelapse?</Modal.Title>
 	        </Modal.Header>
 	        <Modal.Body style={{height: "10em"}}>
 						<div className="col-xs-12">
