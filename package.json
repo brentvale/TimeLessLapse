@@ -31,8 +31,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "webpack:deploy": "webpack --config=./webpack.config.prod.js -p",
-    "heroku-postbuild": "npm run webpack:deploy"
+    "postinstall": "webpack"
   },
   "engines": {
     "node": "6.9.2",
