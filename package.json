@@ -32,7 +32,7 @@
   "devDependencies": {},
   "scripts": {
     "webpack:deploy": "webpack --config=./webpack.config.prod.js -p",
-    "heroku-postbuild": "npm run node_modules/.bind/webpack:deploy"
+    "heroku-postbuild": "npm run webpack:deploy"
   },
   "engines": {
     "node": "6.9.2",

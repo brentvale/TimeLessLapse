@@ -18,4 +18,4 @@ node_modules
 
 # Ignore bundle
 bundle.js
-bundle.js.map
+bundle.js.mapnode_modules
