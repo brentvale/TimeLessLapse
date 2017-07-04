@@ -1,7 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 
-export default {
+module.exports =  {
   context: __dirname,
   entry: "./frontend/timelesslapse.jsx",
   output: {
