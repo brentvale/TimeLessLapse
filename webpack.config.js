@@ -1,4 +1,5 @@
-var path = require("path");
+var path = require('path');
+var webpack = require('webpack');
 
 module.exports = {
   context: __dirname,
@@ -19,6 +20,10 @@ module.exports = {
       }
     ]
   },
+	plugins: [
+	    new webpack.HotModuleReplacementPlugin(),
+	    new webpack.NoErrorsPlugin()
+	  ],
   devtool: 'source-maps',
   resolve: {
     extensions: ["", ".js", ".jsx" ]
