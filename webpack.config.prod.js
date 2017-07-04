@@ -1,21 +1,13 @@
-const path = require('path');
 const webpack = require('webpack');
+const path = require('path');
 
-module.exports =  {
+module.exports = {
   context: __dirname,
   entry: "./frontend/timelesslapse.jsx",
   output: {
     path: path.join(__dirname, 'app', 'assets', 'javascripts'),
     filename: "bundle.js"
   },
-	plugins: [
-		new webpack.DefinePlugin({
-		  'process.env': {
-		    NODE_ENV: JSON.stringify('production')
-		  }
-		}),
-		new webpack.optimize.UglifyJsPlugin()
-  ],
   module: {
     loaders: [
       {

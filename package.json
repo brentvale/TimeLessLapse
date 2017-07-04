@@ -27,11 +27,11 @@
     "react-router-dom": "^4.1.1",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "webpack": "^1.12.2"
+    "webpack": "^2.6.1"
   },
   "devDependencies": {},
   "scripts": {
-    "webpack:deploy": "webpack --config=../../webpack.config.prod.js -p",
+    "webpack:deploy": "webpack --config=./webpack.config.prod.js -p",
     "heroku-postbuild": "npm run webpack:deploy"
   },
   "engines": {
