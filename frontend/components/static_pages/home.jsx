@@ -94,7 +94,7 @@ class Home extends React.Component{
 				<div id="landingHeader">
 					<div id="landingSprite" className="center-block" style={{backgroundPosition: landingSpriteStyle}}></div>
 					<h1>Time<span>less</span>lapse</h1>
-					<h2>Watch daily photos become life&#39;s timeless events.</h2>
+					<h2>Watch daily photos become life&#39;s timeless&nbsp;events.</h2>
 				</div>
 				<div className="landing-page-block center-block">
 					<h3 className="landing-step">Step 1</h3>

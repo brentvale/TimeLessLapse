@@ -13293,7 +13293,7 @@ var Home = function (_React$Component) {
 					_react2.default.createElement(
 						'h2',
 						null,
-						'Watch daily photos become life\'s timeless events.'
+						'Watch daily photos become life\'s timeless\xA0events.'
 					)
 				),
 				_react2.default.createElement(
