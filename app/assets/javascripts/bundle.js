@@ -13264,7 +13264,6 @@ var Home = function (_React$Component) {
 					'fetching hub...'
 				);
 			}
-			debugger;
 
 			var landingSpriteStyle = void 0;
 			if (this.state.imageIndex === 0) {
@@ -13315,8 +13314,8 @@ var Home = function (_React$Component) {
 						null,
 						'Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.'
 					),
-					_react2.default.createElement('img', { src: this.state.landingPageImages.mountain_silhouette_url, alt: 'Mountains' }),
-					_react2.default.createElement('img', { src: this.state.landingPageImages.camera_url, alt: 'Camera Silhouette' })
+					_react2.default.createElement('img', { className: 'mountain', src: this.state.landingPageImages.mountain_silhouette_url, alt: 'Mountains' }),
+					_react2.default.createElement('img', { className: 'tripod', src: this.state.landingPageImages.camera_url, alt: 'Camera Silhouette' })
 				),
 				_react2.default.createElement(
 					'div',
@@ -13333,7 +13332,7 @@ var Home = function (_React$Component) {
 					),
 					_react2.default.createElement(
 						'p',
-						null,
+						{ style: { marginBottom: "20px" } },
 						'Take daily photos.  Track progress toward your health goals, life goals, or G3s (',
 						_react2.default.createElement(
 							'span',
@@ -13353,7 +13352,10 @@ var Home = function (_React$Component) {
 							'G'
 						),
 						'oals).'
-					)
+					),
+					_react2.default.createElement('i', { className: 'fa fa-picture-o landing', 'aria-hidden': 'true' }),
+					_react2.default.createElement('i', { className: 'fa fa-picture-o landing', 'aria-hidden': 'true' }),
+					_react2.default.createElement('i', { className: 'fa fa-picture-o landing', 'aria-hidden': 'true' })
 				),
 				_react2.default.createElement(
 					'div',

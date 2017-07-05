@@ -114,8 +114,11 @@ input.heading{
 	}
 }
 .landing-page-block{
+	perspective: 400px;
+	margin-bottom: 50px;
 	max-width:500px;
 	h3.landing-step{
+		color: $carnation;
 		margin: 0;
 	}
 	padding: 20px;
@@ -124,6 +127,18 @@ input.heading{
 			color: #228B22;
 			font-weight: bold;
 		}
+	}
+	img.mountain{
+		height: 150px;
+		transform: rotate3d(0,1,0,40deg);
+		-ms-transform: rotate3d(0,1,0,40deg); /* IE 9 */
+		-webkit-transform: rotate3d(0,1,0,40deg); /* Safari and Chrome */
+	}
+	img.tripod{
+		float: right;
+		height: 80px;
+		margin-right:50px;
+		margin-top:60px;
 	}
 }
 .landing-page-block.right-block{
@@ -459,6 +474,12 @@ input.heading{
 	margin-left: 10px;
 	width: 110px;
 	font-size: 100px;
+}
+.fa-picture-o.landing{
+	color: $tundora;
+	transform: rotate3d(0,1,0,-60deg);
+	-ms-transform: rotate3d(0,1,0,-60deg); /* IE 9 */
+	-webkit-transform: rotate3d(0,1,0,-60deg); /* Safari and Chrome */
 }
 
 //FORMS

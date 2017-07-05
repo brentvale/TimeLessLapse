@@ -80,7 +80,6 @@ class Home extends React.Component{
 		if(!this.state.hub || !this.state.landingPageImages){
 			return <div style={{marginTop: "70px", textAlign:"center"}}>fetching hub...</div>;
 		}
-		debugger
 		
 		let landingSpriteStyle;
 		if(this.state.imageIndex === 0){
@@ -101,13 +100,16 @@ class Home extends React.Component{
 					<h3 className="landing-step">Step 1</h3>
 					<h4>Take a Photo to Create a Hub</h4>
 					<p>Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.</p>
-					<img src={this.state.landingPageImages.mountain_silhouette_url} alt="Mountains" />
-					<img src={this.state.landingPageImages.camera_url} alt="Camera Silhouette" />
+					<img className="mountain" src={this.state.landingPageImages.mountain_silhouette_url} alt="Mountains" />
+					<img className="tripod" src={this.state.landingPageImages.camera_url} alt="Camera Silhouette" />
 				</div>
 				<div className="landing-page-block center-block right-block">
 					<h3 className="landing-step">Step 2</h3>
 					<h4>Repeat</h4>
-					<p>Take daily photos.  Track progress toward your health goals, life goals, or G3s (<span>G</span>arden <span>G</span>rowing <span>G</span>oals).</p>
+					<p style={{marginBottom: "20px"}}>Take daily photos.  Track progress toward your health goals, life goals, or G3s (<span>G</span>arden <span>G</span>rowing <span>G</span>oals).</p>
+					<i className="fa fa-picture-o landing" aria-hidden="true"></i>
+					<i className="fa fa-picture-o landing" aria-hidden="true"></i>
+					<i className="fa fa-picture-o landing" aria-hidden="true"></i>
 				</div>
 				<div className="landing-page-block center-block">
 					<h3 className="landing-step">Step 3</h3>
