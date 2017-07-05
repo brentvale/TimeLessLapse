@@ -5219,7 +5219,7 @@ function requestHomeHub() {
 var receiveHomeTimelapseSprite = exports.receiveHomeTimelapseSprite = function receiveHomeTimelapseSprite(obj) {
 	return {
 		type: RECEIVE_HUB_IMAGE,
-		landing_sprite: obj
+		landingImages: obj
 	};
 };
 
@@ -5277,17 +5277,17 @@ var getHomeHub = function getHomeHub(_ref4) {
 	return hubs[5];
 };
 
-var getLandingPageSprite = function getLandingPageSprite(_ref5) {
+var getLandingPageImages = function getLandingPageImages(_ref5) {
 	var hubs = _ref5.hubs;
 
-	return hubs["landingPageSprite"];
+	return hubs["landingPageImages"];
 };
 
 exports.getAllHubs = getAllHubs;
 exports.getSingleHub = getSingleHub;
 exports.getCurrentUser = getCurrentUser;
 exports.getHomeHub = getHomeHub;
-exports.getLandingPageSprite = getLandingPageSprite;
+exports.getLandingPageImages = getLandingPageImages;
 
 /***/ }),
 /* 67 */
@@ -13178,12 +13178,14 @@ var Home = function (_React$Component) {
 
 		_this.state = {
 			hub: null,
-			landingPageSprite: null,
+			landingPageImages: null,
 			//image has 6 column and 5 rows, total of 30 images 
 			imageIndex: 0
 		};
 		_this.handleSpriteAnimation = _this.handleSpriteAnimation.bind(_this);
 		_this.calculateBackgroundPositionFromStateImageIndex = _this.calculateBackgroundPositionFromStateImageIndex.bind(_this);
+		_this.navigateToSignUp = _this.navigateToSignUp.bind(_this);
+		_this.handleGuestLogin = _this.handleGuestLogin.bind(_this);
 		return _this;
 	}
 
@@ -13199,9 +13201,9 @@ var Home = function (_React$Component) {
 			if (nextProps.homeHub) {
 				this.setState({ hub: nextProps.homeHub });
 			}
-			if (nextProps.landingPageSprite) {
+			if (nextProps.landingPageImages) {
 				this.handleSpriteAnimation();
-				this.setState({ landingPageSprite: nextProps.landingPageSprite });
+				this.setState({ landingPageImages: nextProps.landingPageImages });
 			}
 		}
 	}, {
@@ -13225,6 +13227,11 @@ var Home = function (_React$Component) {
 			}, 200);
 		}
 	}, {
+		key: 'handleGuestLogin',
+		value: function handleGuestLogin() {
+			alert("Guest Login Coming Soon!");
+		}
+	}, {
 		key: 'calculateBackgroundPositionFromStateImageIndex',
 		value: function calculateBackgroundPositionFromStateImageIndex() {
 			//image dimensions = 1200 x 920 => height: 184px; width: 200px;
@@ -13243,15 +13250,21 @@ var Home = function (_React$Component) {
 			}
 		}
 	}, {
+		key: 'navigateToSignUp',
+		value: function navigateToSignUp() {
+			window.location.replace('/users/sign_up');
+		}
+	}, {
 		key: 'render',
 		value: function render() {
-			if (!this.state.hub) {
+			if (!this.state.hub || !this.state.landingPageImages) {
 				return _react2.default.createElement(
 					'div',
 					{ style: { marginTop: "70px", textAlign: "center" } },
 					'fetching hub...'
 				);
 			}
+			debugger;
 
 			var landingSpriteStyle = void 0;
 			if (this.state.imageIndex === 0) {
@@ -13284,7 +13297,126 @@ var Home = function (_React$Component) {
 						'Watch daily photos become life\'s timeless events.'
 					)
 				),
-				_react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true })
+				_react2.default.createElement(
+					'div',
+					{ className: 'landing-page-block center-block' },
+					_react2.default.createElement(
+						'h3',
+						{ className: 'landing-step' },
+						'Step 1'
+					),
+					_react2.default.createElement(
+						'h4',
+						null,
+						'Take a Photo to Create a Hub'
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						'Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.'
+					),
+					_react2.default.createElement('img', { src: this.state.landingPageImages.mountain_silhouette_url, alt: 'Mountains' }),
+					_react2.default.createElement('img', { src: this.state.landingPageImages.camera_url, alt: 'Camera Silhouette' })
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'landing-page-block center-block right-block' },
+					_react2.default.createElement(
+						'h3',
+						{ className: 'landing-step' },
+						'Step 2'
+					),
+					_react2.default.createElement(
+						'h4',
+						null,
+						'Repeat'
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						'Take daily photos.  Track progress toward your health goals, life goals, or G3s (',
+						_react2.default.createElement(
+							'span',
+							null,
+							'G'
+						),
+						'arden ',
+						_react2.default.createElement(
+							'span',
+							null,
+							'G'
+						),
+						'rowing ',
+						_react2.default.createElement(
+							'span',
+							null,
+							'G'
+						),
+						'oals).'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'landing-page-block center-block' },
+					_react2.default.createElement(
+						'h3',
+						{ className: 'landing-step' },
+						'Step 3'
+					),
+					_react2.default.createElement(
+						'h4',
+						null,
+						'Watch your progress'
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						'Enjoy the compiled timelapse by hovering over the photo, or tapping if you\'re on your phone.'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'center-block', style: { maxWidth: "300px", paddingTop: "20px", marginBottom: "20px" } },
+						_react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true })
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'landing-page-block center-block align-center' },
+					_react2.default.createElement(
+						'h3',
+						{ className: 'landing-step' },
+						'Step 4'
+					),
+					_react2.default.createElement(
+						'h4',
+						null,
+						'Enjoy!'
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						'Join the community of users creating timelesslapses.'
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'button-container center-block' },
+					_react2.default.createElement(
+						'div',
+						{ className: 'button button-create button-width-full hand-on-hover', style: { margin: "0" }, onClick: this.navigateToSignUp },
+						'Sign Up Now!'
+					),
+					_react2.default.createElement(
+						'p',
+						null,
+						'or'
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'button button-create button-width-full hand-on-hover', style: { margin: "0" }, onClick: this.handleGuestLogin },
+						'Guest Login'
+					)
+				)
 			);
 		}
 	}]);
@@ -26836,7 +26968,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var mapStateToProps = function mapStateToProps(state) {
 	return {
 		homeHub: (0, _selectors.getHomeHub)(state),
-		landingPageSprite: (0, _selectors.getLandingPageSprite)(state)
+		landingPageImages: (0, _selectors.getLandingPageImages)(state)
 	};
 };
 
@@ -27289,7 +27421,7 @@ var hubsReducer = function hubsReducer() {
       newState[action.hub.id] = action.hub;
       return newState;
     case HubActions.RECEIVE_HUB_IMAGE:
-      newState["landingPageSprite"] = action.landing_sprite.image_url;
+      newState["landingPageImages"] = action.landingImages;
       return newState;
     default:
       return state;

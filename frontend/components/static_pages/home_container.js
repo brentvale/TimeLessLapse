@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import {getHomeHub, getLandingPageSprite} from '../../reducers/selectors';
+import {getHomeHub, getLandingPageImages} from '../../reducers/selectors';
 import * as HubActions from '../../actions/hub_actions';
 
 import Home from './home';
@@ -8,7 +8,7 @@ import Home from './home';
 
 const mapStateToProps = state => ({
 	homeHub: getHomeHub(state),
-	landingPageSprite: getLandingPageSprite(state)
+	landingPageImages: getLandingPageImages(state)
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -38,7 +38,7 @@ export function requestHomeHub(){
 //sync actions
 export const receiveHomeTimelapseSprite = (obj) => ({
   type: RECEIVE_HUB_IMAGE,
-  landing_sprite: obj
+  landingImages: obj
 });
 
 export const receiveHubs = (obj) => ({

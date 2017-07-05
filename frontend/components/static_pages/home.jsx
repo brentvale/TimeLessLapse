@@ -10,12 +10,14 @@ class Home extends React.Component{
 		super();
 		this.state = {
 			hub: null,
-			landingPageSprite: null,
+			landingPageImages: null,
 			//image has 6 column and 5 rows, total of 30 images 
 			imageIndex: 0
 		}
 		this.handleSpriteAnimation = this.handleSpriteAnimation.bind(this);
 		this.calculateBackgroundPositionFromStateImageIndex = this.calculateBackgroundPositionFromStateImageIndex.bind(this);
+		this.navigateToSignUp = this.navigateToSignUp.bind(this);
+		this.handleGuestLogin = this.handleGuestLogin.bind(this);
 	}
 	
 	componentDidMount(){
@@ -27,9 +29,9 @@ class Home extends React.Component{
 		if(nextProps.homeHub){
 			this.setState({hub: nextProps.homeHub});
 		}
-		if(nextProps.landingPageSprite){
+		if(nextProps.landingPageImages){
 			this.handleSpriteAnimation();
-			this.setState({landingPageSprite: nextProps.landingPageSprite})
+			this.setState({landingPageImages: nextProps.landingPageImages})
 		}
 	}
 	
@@ -49,6 +51,10 @@ class Home extends React.Component{
 		},200);
 	}
 	
+	handleGuestLogin(){
+		alert("Guest Login Coming Soon!");
+	}
+	
 	calculateBackgroundPositionFromStateImageIndex(){
 		//image dimensions = 1200 x 920 => height: 184px; width: 200px;
 		if(this.state.imageIndex === 0){
@@ -66,10 +72,15 @@ class Home extends React.Component{
 		}
 	}
 	
+	navigateToSignUp(){
+		window.location.replace('/users/sign_up');
+	}
+	
 	render(){
-		if(!this.state.hub){
+		if(!this.state.hub || !this.state.landingPageImages){
 			return <div style={{marginTop: "70px", textAlign:"center"}}>fetching hub...</div>;
 		}
+		debugger
 		
 		let landingSpriteStyle;
 		if(this.state.imageIndex === 0){
@@ -86,8 +97,39 @@ class Home extends React.Component{
 					<h1>Time<span>less</span>lapse</h1>
 					<h2>Watch daily photos become life&#39;s timeless events.</h2>
 				</div>
+				<div className="landing-page-block center-block">
+					<h3 className="landing-step">Step 1</h3>
+					<h4>Take a Photo to Create a Hub</h4>
+					<p>Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.</p>
+					<img src={this.state.landingPageImages.mountain_silhouette_url} alt="Mountains" />
+					<img src={this.state.landingPageImages.camera_url} alt="Camera Silhouette" />
+				</div>
+				<div className="landing-page-block center-block right-block">
+					<h3 className="landing-step">Step 2</h3>
+					<h4>Repeat</h4>
+					<p>Take daily photos.  Track progress toward your health goals, life goals, or G3s (<span>G</span>arden <span>G</span>rowing <span>G</span>oals).</p>
+				</div>
+				<div className="landing-page-block center-block">
+					<h3 className="landing-step">Step 3</h3>
+					<h4>Watch your progress</h4>
+					<p>Enjoy the compiled timelapse by hovering over the photo, or tapping if you&#39;re on your phone.</p>
+					<div className="center-block" style={{maxWidth: "300px", paddingTop: "20px", marginBottom: "20px"}}>
+						<HubIndexListItem hub={this.state.hub} homePage={true}/>
+					</div>
+				</div>
+				<div className="landing-page-block center-block align-center">
+					<h3 className="landing-step">Step 4</h3>
+					<h4>Enjoy!</h4>
+					<p>Join the community of users creating timelesslapses.</p>
+				</div>
 			
-				<HubIndexListItem hub={this.state.hub} homePage={true}/>
+				<div className="button-container center-block">
+					<div className="button button-create button-width-full hand-on-hover" style={{margin: "0"}} onClick={this.navigateToSignUp}>Sign Up Now!</div>
+					<p>or</p>
+					<div className="button button-create button-width-full hand-on-hover" style={{margin: "0"}} onClick={this.handleGuestLogin}>Guest Login</div>
+				</div>
+
+				
 			</div>
 		)
 	}

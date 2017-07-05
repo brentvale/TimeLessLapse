@@ -11,7 +11,8 @@ class StaticPagesController < ApplicationController
   end
   
   def fetch_landing_sprite
-    render json: {image_url: ActionController::Base.helpers.asset_path('tree_growing_sprite.png')}
+    render json: {mountain_silhouette_url: ActionController::Base.helpers.asset_path('mountain_silhouette.png'),
+                  camera_url: ActionController::Base.helpers.asset_path('tripod_with_camera_silhouette.png')}
   end
   
   def new_hub_instructions
