@@ -32,6 +32,10 @@ export const fetchLandingHub = () => (
     url: '/static_pages/fetch_landing_hub'
   })
 );
-	
 
-
+export const requestHomeTimelapseSprite = () => (
+  $.ajax({
+    method: 'GET',
+    url: '/static_pages/fetch_landing_sprite'
+  })
+);

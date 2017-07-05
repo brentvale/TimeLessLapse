@@ -24,7 +24,7 @@ class HubIndexListItem extends React.Component{
 		this.setState({nameField: this.props.hub.hub_name});
 	}
 	
-	componentWillUnMount(){
+	componentWillUnmount(){
 		this.stopFlipping();
 	}
 	

@@ -11,6 +11,9 @@ const hubsReducer = (state = {}, action) => {
     case HubActions.RECEIVE_HUB:
 			newState[action.hub.id] = action.hub;
 			return newState;
+		case HubActions.RECEIVE_HUB_IMAGE:
+			newState["landingPageSprite"] = action.landing_sprite.image_url;
+			return newState;
     default:
       return state;
   }

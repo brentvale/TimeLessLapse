@@ -18,4 +18,8 @@ const getHomeHub = ({ hubs }) => {
 	return hubs[5];
 }
 
-export { getAllHubs, getSingleHub, getCurrentUser, getHomeHub};
+const getLandingPageSprite = ({ hubs }) => {
+	return hubs["landingPageSprite"];
+}
+
+export { getAllHubs, getSingleHub, getCurrentUser, getHomeHub, getLandingPageSprite};

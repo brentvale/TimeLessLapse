@@ -5157,7 +5157,8 @@ module.exports = reactProdInvariant;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.receiveHub = exports.receiveHubs = exports.RECEIVE_HUB = exports.RECEIVE_HUBS = undefined;
+exports.receiveHub = exports.receiveHubs = exports.receiveHomeTimelapseSprite = exports.RECEIVE_HUB_IMAGE = exports.RECEIVE_HUB = exports.RECEIVE_HUBS = undefined;
+exports.requestHomeTimelapseSprite = requestHomeTimelapseSprite;
 exports.requestHubs = requestHubs;
 exports.requestHub = requestHub;
 exports.updateHub = updateHub;
@@ -5171,8 +5172,17 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var RECEIVE_HUBS = exports.RECEIVE_HUBS = "RECEIVE_HUBS";
 var RECEIVE_HUB = exports.RECEIVE_HUB = "RECEIVE_HUB";
+var RECEIVE_HUB_IMAGE = exports.RECEIVE_HUB_IMAGE = "RECEIVE_HUB_IMAGE";
 
 //async actions
+function requestHomeTimelapseSprite() {
+	return function (dispatch) {
+		return util.requestHomeTimelapseSprite().then(function (obj) {
+			return dispatch(receiveHomeTimelapseSprite(obj));
+		});
+	};
+}
+
 function requestHubs() {
 	return function (dispatch) {
 		return util.fetchHubs().then(function (obj) {
@@ -5206,6 +5216,13 @@ function requestHomeHub() {
 }
 
 //sync actions
+var receiveHomeTimelapseSprite = exports.receiveHomeTimelapseSprite = function receiveHomeTimelapseSprite(obj) {
+	return {
+		type: RECEIVE_HUB_IMAGE,
+		landing_sprite: obj
+	};
+};
+
 var receiveHubs = exports.receiveHubs = function receiveHubs(obj) {
 	return {
 		type: RECEIVE_HUBS,
@@ -5260,10 +5277,17 @@ var getHomeHub = function getHomeHub(_ref4) {
 	return hubs[5];
 };
 
+var getLandingPageSprite = function getLandingPageSprite(_ref5) {
+	var hubs = _ref5.hubs;
+
+	return hubs["landingPageSprite"];
+};
+
 exports.getAllHubs = getAllHubs;
 exports.getSingleHub = getSingleHub;
 exports.getCurrentUser = getCurrentUser;
 exports.getHomeHub = getHomeHub;
+exports.getLandingPageSprite = getLandingPageSprite;
 
 /***/ }),
 /* 67 */
@@ -12871,8 +12895,8 @@ var HubIndexListItem = function (_React$Component) {
 			this.setState({ nameField: this.props.hub.hub_name });
 		}
 	}, {
-		key: 'componentWillUnMount',
-		value: function componentWillUnMount() {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
 			this.stopFlipping();
 		}
 	}, {
@@ -13153,8 +13177,13 @@ var Home = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (Home.__proto__ || Object.getPrototypeOf(Home)).call(this));
 
 		_this.state = {
-			hub: null
+			hub: null,
+			landingPageSprite: null,
+			//image has 6 column and 5 rows, total of 30 images 
+			imageIndex: 0
 		};
+		_this.handleSpriteAnimation = _this.handleSpriteAnimation.bind(_this);
+		_this.calculateBackgroundPositionFromStateImageIndex = _this.calculateBackgroundPositionFromStateImageIndex.bind(_this);
 		return _this;
 	}
 
@@ -13162,12 +13191,55 @@ var Home = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.props.requestHomeHub();
+			this.props.requestHomeTimelapseSprite();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
 			if (nextProps.homeHub) {
 				this.setState({ hub: nextProps.homeHub });
+			}
+			if (nextProps.landingPageSprite) {
+				this.handleSpriteAnimation();
+				this.setState({ landingPageSprite: nextProps.landingPageSprite });
+			}
+		}
+	}, {
+		key: 'componentWillUnmount',
+		value: function componentWillUnmount() {
+			clearInterval(this.interval);
+		}
+	}, {
+		key: 'handleSpriteAnimation',
+		value: function handleSpriteAnimation() {
+			var _this2 = this;
+
+			clearInterval(this.interval);
+			this.interval = setInterval(function () {
+				//39 total images with 0 indexing
+				if (_this2.state.imageIndex < 50) {
+					_this2.setState({ imageIndex: _this2.state.imageIndex + 1 });
+				} else {
+					_this2.setState({ imageIndex: 0 });
+				}
+			}, 200);
+		}
+	}, {
+		key: 'calculateBackgroundPositionFromStateImageIndex',
+		value: function calculateBackgroundPositionFromStateImageIndex() {
+			//image dimensions = 1200 x 920 => height: 184px; width: 200px;
+			if (this.state.imageIndex === 0) {
+				return "0px 0px";
+			} else if (this.state.imageIndex >= 30) {
+				return "-1000px -736px";
+			} else {
+				var col = this.state.imageIndex % 6;
+				var row = Math.floor(this.state.imageIndex / 6);
+
+				var xPixels = col * 200;
+				var yPixels = row * 184;
+
+				return '-' + xPixels + 'px -' + yPixels + 'px';
 			}
 		}
 	}, {
@@ -13180,9 +13252,38 @@ var Home = function (_React$Component) {
 					'fetching hub...'
 				);
 			}
+
+			var landingSpriteStyle = void 0;
+			if (this.state.imageIndex === 0) {
+				landingSpriteStyle = "0px 0px";
+			} else {
+				landingSpriteStyle = this.calculateBackgroundPositionFromStateImageIndex();
+			}
+
 			return _react2.default.createElement(
 				'div',
 				{ className: 'page-block page-block-border center-block' },
+				_react2.default.createElement(
+					'div',
+					{ id: 'landingHeader' },
+					_react2.default.createElement('div', { id: 'landingSprite', className: 'center-block', style: { backgroundPosition: landingSpriteStyle } }),
+					_react2.default.createElement(
+						'h1',
+						null,
+						'Time',
+						_react2.default.createElement(
+							'span',
+							null,
+							'less'
+						),
+						'lapse'
+					),
+					_react2.default.createElement(
+						'h2',
+						null,
+						'Watch daily photos become life\'s timeless events.'
+					)
+				),
 				_react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true })
 			);
 		}
@@ -26713,7 +26814,7 @@ exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _reactRedux = __webpack_require__(45);
@@ -26733,17 +26834,21 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 var mapStateToProps = function mapStateToProps(state) {
-  return {
-    homeHub: (0, _selectors.getHomeHub)(state)
-  };
+	return {
+		homeHub: (0, _selectors.getHomeHub)(state),
+		landingPageSprite: (0, _selectors.getLandingPageSprite)(state)
+	};
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    requestHomeHub: function requestHomeHub() {
-      return dispatch(HubActions.requestHomeHub());
-    }
-  };
+	return {
+		requestHomeHub: function requestHomeHub() {
+			return dispatch(HubActions.requestHomeHub());
+		},
+		requestHomeTimelapseSprite: function requestHomeTimelapseSprite() {
+			return dispatch(HubActions.requestHomeTimelapseSprite());
+		}
+	};
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_home2.default);
@@ -27183,6 +27288,9 @@ var hubsReducer = function hubsReducer() {
     case HubActions.RECEIVE_HUB:
       newState[action.hub.id] = action.hub;
       return newState;
+    case HubActions.RECEIVE_HUB_IMAGE:
+      newState["landingPageSprite"] = action.landing_sprite.image_url;
+      return newState;
     default:
       return state;
   }
@@ -27362,7 +27470,7 @@ document.addEventListener('DOMContentLoaded', function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
+exports.requestHomeTimelapseSprite = exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
 
 var _hub_actions = __webpack_require__(65);
 
@@ -27398,6 +27506,13 @@ var fetchLandingHub = exports.fetchLandingHub = function fetchLandingHub() {
   return $.ajax({
     method: 'GET',
     url: '/static_pages/fetch_landing_hub'
+  });
+};
+
+var requestHomeTimelapseSprite = exports.requestHomeTimelapseSprite = function requestHomeTimelapseSprite() {
+  return $.ajax({
+    method: 'GET',
+    url: '/static_pages/fetch_landing_sprite'
   });
 };
 
