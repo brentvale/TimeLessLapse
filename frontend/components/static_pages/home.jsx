@@ -103,10 +103,13 @@ class Home extends React.Component{
 					<img className="mountain" src={this.state.landingPageImages.mountain_silhouette_url} alt="Mountains" />
 					<img className="tripod" src={this.state.landingPageImages.camera_url} alt="Camera Silhouette" />
 				</div>
-				<div className="landing-page-block center-block right-block">
+				<div className="landing-page-block center-block right-block" style={{marginBottom: "0px"}}>
 					<h3 className="landing-step">Step 2</h3>
 					<h4>Repeat</h4>
 					<p style={{marginBottom: "20px"}}>Take daily photos.  Track progress toward your health goals, life goals, or G3s (<span>G</span>arden <span>G</span>rowing <span>G</span>oals).</p>
+					
+				</div>
+				<div className="center-block icon-center-block">
 					<i className="fa fa-picture-o landing" aria-hidden="true"></i>
 					<i className="fa fa-picture-o landing" aria-hidden="true"></i>
 					<i className="fa fa-picture-o landing" aria-hidden="true"></i>

@@ -13319,7 +13319,7 @@ var Home = function (_React$Component) {
 				),
 				_react2.default.createElement(
 					'div',
-					{ className: 'landing-page-block center-block right-block' },
+					{ className: 'landing-page-block center-block right-block', style: { marginBottom: "0px" } },
 					_react2.default.createElement(
 						'h3',
 						{ className: 'landing-step' },
@@ -13352,7 +13352,11 @@ var Home = function (_React$Component) {
 							'G'
 						),
 						'oals).'
-					),
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					{ className: 'center-block icon-center-block' },
 					_react2.default.createElement('i', { className: 'fa fa-picture-o landing', 'aria-hidden': 'true' }),
 					_react2.default.createElement('i', { className: 'fa fa-picture-o landing', 'aria-hidden': 'true' }),
 					_react2.default.createElement('i', { className: 'fa fa-picture-o landing', 'aria-hidden': 'true' })
