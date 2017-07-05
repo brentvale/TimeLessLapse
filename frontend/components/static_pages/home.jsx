@@ -126,9 +126,9 @@ class Home extends React.Component{
 				</div>
 			
 				<div className="button-container center-block">
-					<div className="button button-create button-width-full hand-on-hover" style={{margin: "0"}} onClick={this.navigateToSignUp}>Sign Up Now!</div>
+					<div className="button button-create button-width-full hand-on-hover button-height-large" onClick={this.navigateToSignUp}>Sign Up Now!</div>
 					<p>or</p>
-					<div className="button button-create button-width-full hand-on-hover" style={{margin: "0"}} onClick={this.handleGuestLogin}>Guest Login</div>
+					<div className="button button-create button-width-full hand-on-hover button-height-large" onClick={this.handleGuestLogin}>Guest Login</div>
 				</div>
 
 				

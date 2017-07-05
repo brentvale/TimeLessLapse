@@ -13405,7 +13405,7 @@ var Home = function (_React$Component) {
 					{ className: 'button-container center-block' },
 					_react2.default.createElement(
 						'div',
-						{ className: 'button button-create button-width-full hand-on-hover', style: { margin: "0" }, onClick: this.navigateToSignUp },
+						{ className: 'button button-create button-width-full hand-on-hover button-height-large', onClick: this.navigateToSignUp },
 						'Sign Up Now!'
 					),
 					_react2.default.createElement(
@@ -13415,7 +13415,7 @@ var Home = function (_React$Component) {
 					),
 					_react2.default.createElement(
 						'div',
-						{ className: 'button button-create button-width-full hand-on-hover', style: { margin: "0" }, onClick: this.handleGuestLogin },
+						{ className: 'button button-create button-width-full hand-on-hover button-height-large', onClick: this.handleGuestLogin },
 						'Guest Login'
 					)
 				)
