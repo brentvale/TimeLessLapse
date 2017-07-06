@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  before_action :authenticate_user!, except: [:home, :fetch_landing_hub, :fetch_landing_sprite]
+  before_action :authenticate_user!, except: [:home, :fetch_landing_hub, :fetch_main_images]
   
   def home
   end

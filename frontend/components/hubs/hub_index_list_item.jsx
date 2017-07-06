@@ -84,8 +84,7 @@ class HubIndexListItem extends React.Component{
 		
 		if(USER_IS_MOBILE){
 			return (
-				<div 
-						 className="center-block"
+				<div className="center-block"
 						 style={{position:"relative"}}>
 						 {imageToUse}
 						 <img src={mainImages.finger_print_url} 

@@ -12982,8 +12982,7 @@ var HubIndexListItem = function (_React$Component) {
 			if (USER_IS_MOBILE) {
 				return _react2.default.createElement(
 					'div',
-					{
-						className: 'center-block',
+					{ className: 'center-block',
 						style: { position: "relative" } },
 					imageToUse,
 					_react2.default.createElement('img', { src: mainImages.finger_print_url,
