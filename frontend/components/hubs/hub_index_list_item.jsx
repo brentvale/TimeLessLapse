@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import {ProgressBar} from 'react-bootstrap';
 
 //GLOBAL VARIABLES
 import { tabletBreakPoint } from '../../util/global_variables';
@@ -71,8 +72,10 @@ class HubIndexListItem extends React.Component{
 		if(hub.photographs.length === 0){
 			return <div>Not photographs with timelapse hub with id {hub.id}</div>
 		}	
-		if(typeof mainImages === "undefined"){
-			return <div>Fetching timelapse hub.</div>
+		
+		let imageSrc = "";
+		if(typeof mainImages !== "undefined"){
+			imageSrc = mainImages.finger_print_url;
 		}								
 		
 		let imageToUse;
@@ -80,14 +83,17 @@ class HubIndexListItem extends React.Component{
 			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].large_image} className="image-display"/>;
 		} else {
 			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display"/>;
-		}																			
+		}
+		
+		const now = (this.state.currentImageIndex / hub.photographs.length) * 100;																			
 		
 		if(USER_IS_MOBILE){
 			return (
 				<div className="center-block"
 						 style={{position:"relative"}}>
+						<ProgressBar bsStyle="danger" now={now} />
 						 {imageToUse}
-						 <img src={mainImages.finger_print_url} 
+						 <img src={imageSrc} 
 						 			alt="Fingerprint to animate timelapse." 
 						 			id="fingerPrintIcon"
 						 			onTouchStart={this.startFlipping} 
@@ -99,6 +105,7 @@ class HubIndexListItem extends React.Component{
 				<div onMouseEnter={this.startFlipping} 
 						 onMouseLeave={this.stopFlipping} 
 						 className="center-block">
+						 <ProgressBar bsStyle="danger" now={now} />
 						 {imageToUse}
 				</div>
 			);
