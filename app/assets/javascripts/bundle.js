@@ -13172,6 +13172,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //COMPONENTS
 
 
+var SPRITE_ANIMATION_TIME = 200;
+
 var Home = function (_React$Component) {
 	_inherits(Home, _React$Component);
 
@@ -13228,7 +13230,7 @@ var Home = function (_React$Component) {
 				} else {
 					_this2.setState({ imageIndex: 0 });
 				}
-			}, 200);
+			}, SPRITE_ANIMATION_TIME);
 		}
 	}, {
 		key: 'handleGuestLogin',
