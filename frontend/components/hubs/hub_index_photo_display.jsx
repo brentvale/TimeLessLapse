@@ -58,19 +58,21 @@ class HubIndexPhotoDisplay extends React.Component{
 		if(hub.photographs.length === 0){
 			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
 		}									
-		
-		let imageToUse = (this.state.lessThanTabletBreakSize)	? <img src={hub.photographs[this.state.currentImageIndex].thumbnail_image} className="with-border drop-shadow"/>
-																														: 
-																														<img src={hub.photographs[this.state.currentImageIndex].small_image} className="with-border drop-shadow"/>;
-																																
 																							
 		let hubInfoDisplay =  <div>
 														<Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping}>View {hub.hub_name} Hub >></Link>
 														<h2 className="heading-block">{hub.hub_name}</h2>
 													</div>;
 		let hubImageKlass = (this.props.activeHubId == hub.id) ? "center-block active-hub" : "center-block inactive-hub";
+		
+		let containerKlass, imageToUse;
+		if(this.state.lessThanTabletBreakSize){
+			containerKlass = "one-half-block";
+		} else {
+			containerKlass = "one-third-block";
+		}
 		return (
-			<div className="one-third-block">
+			<div className={containerKlass}>
 				<div>
 					<div onMouseEnter={this.startFlipping} 
 							 onMouseLeave={this.stopFlipping} 
@@ -81,7 +83,8 @@ class HubIndexPhotoDisplay extends React.Component{
 							 style={{position:"relative"}}>
 							 
 							 <div className="overlay"></div>
-							 {imageToUse}
+							 
+							 <img src={hub.photographs[this.state.currentImageIndex].small_image} className="with-border drop-shadow"/>
 							 
 							 <Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping} onTouchStart={this.stopFlipping}>
 							 		<i className="fa fa-share-square hand-on-hover" aria-hidden="true"></i>
