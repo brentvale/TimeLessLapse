@@ -19,27 +19,21 @@ import SessionFormContainer from './session_form/session_form_container';
 const Root = ({ store }) => {
 
   const _ensureLoggedIn = (nextState, replace) => {
-    const currentUser = store.getState().session.currentUser;
+    const currentUser = store.getState().users.currentUser;
     if (!currentUser) {
-      replace('/login');
+      replace('/');
     }
   };
 
-  const _redirectIfLoggedIn = (nextState, replace) => {
-    const currentUser = store.getState().session.currentUser;
-    if (currentUser) {
-      replace('/');
-    }
-  }
   return (
     <Provider store={store}>
       <Router history={hashHistory}>
         <Route path="/" component={App}>
           <IndexRoute component={HubsContainer} />
          
-					<Route path="/take_photo" component={NewPhoto} />
-					<Route path="/hubs/:hubId" component={HubShowContainer} />
-					<Route path="/edit_user" component={EditUserContainer} />
+					<Route path="/take_photo" component={NewPhoto} onEnter={_ensureLoggedIn}/>
+					<Route path="/hubs/:hubId" component={HubShowContainer} onEnter={_ensureLoggedIn}/>
+					<Route path="/edit_user" component={EditUserContainer} onEnter={_ensureLoggedIn}/>
         </Route>
       </Router>
     </Provider>

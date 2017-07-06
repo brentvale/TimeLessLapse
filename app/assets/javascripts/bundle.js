@@ -25017,18 +25017,12 @@ var Root = function Root(_ref) {
 
 
   var _ensureLoggedIn = function _ensureLoggedIn(nextState, replace) {
-    var currentUser = store.getState().session.currentUser;
+    var currentUser = store.getState().users.currentUser;
     if (!currentUser) {
-      replace('/login');
-    }
-  };
-
-  var _redirectIfLoggedIn = function _redirectIfLoggedIn(nextState, replace) {
-    var currentUser = store.getState().session.currentUser;
-    if (currentUser) {
       replace('/');
     }
   };
+
   return _react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
@@ -25039,9 +25033,9 @@ var Root = function Root(_ref) {
         _reactRouter.Route,
         { path: '/', component: _app2.default },
         _react2.default.createElement(_reactRouter.IndexRoute, { component: _hubs_container2.default }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/take_photo', component: _new_photo2.default }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/hubs/:hubId', component: _hub_show_container2.default }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/edit_user', component: _edit_user_container2.default })
+        _react2.default.createElement(_reactRouter.Route, { path: '/take_photo', component: _new_photo2.default, onEnter: _ensureLoggedIn }),
+        _react2.default.createElement(_reactRouter.Route, { path: '/hubs/:hubId', component: _hub_show_container2.default, onEnter: _ensureLoggedIn }),
+        _react2.default.createElement(_reactRouter.Route, { path: '/edit_user', component: _edit_user_container2.default, onEnter: _ensureLoggedIn })
       )
     )
   );
