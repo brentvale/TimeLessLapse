@@ -65,7 +65,7 @@ class HubIndexPhotoDisplay extends React.Component{
 													</div>;
 		let hubImageKlass = (this.props.activeHubId == hub.id) ? "center-block active-hub" : "center-block inactive-hub";
 		
-		let containerKlass, imageToUse;
+		let containerKlass;
 		if(this.state.lessThanTabletBreakSize){
 			containerKlass = "one-half-block";
 		} else {

@@ -25365,8 +25365,7 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 			);
 			var hubImageKlass = this.props.activeHubId == hub.id ? "center-block active-hub" : "center-block inactive-hub";
 
-			var containerKlass = void 0,
-			    imageToUse = void 0;
+			var containerKlass = void 0;
 			if (this.state.lessThanTabletBreakSize) {
 				containerKlass = "one-half-block";
 			} else {
