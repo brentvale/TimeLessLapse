@@ -25347,8 +25347,6 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 				);
 			}
 
-			var imageToUse = this.state.lessThanTabletBreakSize ? _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].thumbnail_image, className: 'with-border drop-shadow' }) : _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'with-border drop-shadow' });
-
 			var hubInfoDisplay = _react2.default.createElement(
 				'div',
 				null,
@@ -25366,9 +25364,17 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 				)
 			);
 			var hubImageKlass = this.props.activeHubId == hub.id ? "center-block active-hub" : "center-block inactive-hub";
+
+			var containerKlass = void 0,
+			    imageToUse = void 0;
+			if (this.state.lessThanTabletBreakSize) {
+				containerKlass = "one-half-block";
+			} else {
+				containerKlass = "one-third-block";
+			}
 			return _react2.default.createElement(
 				'div',
-				{ className: 'one-third-block' },
+				{ className: containerKlass },
 				_react2.default.createElement(
 					'div',
 					null,
@@ -25382,7 +25388,7 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 							className: hubImageKlass,
 							style: { position: "relative" } },
 						_react2.default.createElement('div', { className: 'overlay' }),
-						imageToUse,
+						_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'with-border drop-shadow' }),
 						_react2.default.createElement(
 							_reactRouter.Link,
 							{ to: '/hubs/' + hub.id, onClick: this.stopFlipping, onTouchStart: this.stopFlipping },
