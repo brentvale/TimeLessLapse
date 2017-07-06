@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import HubIndexListItem from '../hubs/hub_index_list_item';
 
+const SPRITE_ANIMATION_TIME = 200;
 
 class Home extends React.Component{
 	constructor(){
@@ -48,7 +49,7 @@ class Home extends React.Component{
 			} else {
 				this.setState({imageIndex: 0});
 			}
-		},200);
+		},SPRITE_ANIMATION_TIME);
 	}
 	
 	handleGuestLogin(){
