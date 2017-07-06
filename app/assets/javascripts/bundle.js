@@ -5157,8 +5157,8 @@ module.exports = reactProdInvariant;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.receiveHub = exports.receiveHubs = exports.receiveHomeTimelapseSprite = exports.RECEIVE_HUB_IMAGE = exports.RECEIVE_HUB = exports.RECEIVE_HUBS = undefined;
-exports.requestHomeTimelapseSprite = requestHomeTimelapseSprite;
+exports.receiveHub = exports.receiveHubs = exports.receiveMainImages = exports.RECEIVE_HUB_IMAGE = exports.RECEIVE_HUB = exports.RECEIVE_HUBS = undefined;
+exports.requestMainImages = requestMainImages;
 exports.requestHubs = requestHubs;
 exports.requestHub = requestHub;
 exports.updateHub = updateHub;
@@ -5175,10 +5175,10 @@ var RECEIVE_HUB = exports.RECEIVE_HUB = "RECEIVE_HUB";
 var RECEIVE_HUB_IMAGE = exports.RECEIVE_HUB_IMAGE = "RECEIVE_HUB_IMAGE";
 
 //async actions
-function requestHomeTimelapseSprite() {
+function requestMainImages() {
 	return function (dispatch) {
-		return util.requestHomeTimelapseSprite().then(function (obj) {
-			return dispatch(receiveHomeTimelapseSprite(obj));
+		return util.requestMainImages().then(function (obj) {
+			return dispatch(receiveMainImages(obj));
 		});
 	};
 }
@@ -5216,10 +5216,10 @@ function requestHomeHub() {
 }
 
 //sync actions
-var receiveHomeTimelapseSprite = exports.receiveHomeTimelapseSprite = function receiveHomeTimelapseSprite(obj) {
+var receiveMainImages = exports.receiveMainImages = function receiveMainImages(obj) {
 	return {
 		type: RECEIVE_HUB_IMAGE,
-		landingImages: obj
+		mainImages: obj
 	};
 };
 
@@ -5255,7 +5255,7 @@ var getAllHubs = function getAllHubs(_ref) {
 	} else {
 		var arrayedHubs = [];
 		for (var i = 0; i < Object.keys(hubs).length; i++) {
-			if (Object.keys(hubs)[i] !== "landingPageImages") {
+			if (Object.keys(hubs)[i] !== "mainImages") {
 				arrayedHubs.push(hubs[Object.keys(hubs)[i]]);
 			}
 		}
@@ -5281,17 +5281,17 @@ var getHomeHub = function getHomeHub(_ref4) {
 	return hubs[5];
 };
 
-var getLandingPageImages = function getLandingPageImages(_ref5) {
+var getMainImages = function getMainImages(_ref5) {
 	var hubs = _ref5.hubs;
 
-	return hubs["landingPageImages"];
+	return hubs["mainImages"];
 };
 
 exports.getAllHubs = getAllHubs;
 exports.getSingleHub = getSingleHub;
 exports.getCurrentUser = getCurrentUser;
 exports.getHomeHub = getHomeHub;
-exports.getLandingPageImages = getLandingPageImages;
+exports.getMainImages = getMainImages;
 
 /***/ }),
 /* 67 */
@@ -12952,15 +12952,23 @@ var HubIndexListItem = function (_React$Component) {
 		value: function render() {
 			var _props = this.props,
 			    hub = _props.hub,
-			    windowWidth = _props.windowWidth;
+			    windowWidth = _props.windowWidth,
+			    mainImages = _props.mainImages;
 
 
 			if (hub.photographs.length === 0) {
 				return _react2.default.createElement(
 					'div',
 					null,
-					'Not photographs with timelapse_hub with id ',
+					'Not photographs with timelapse hub with id ',
 					hub.id
+				);
+			}
+			if (typeof mainImages === "undefined") {
+				return _react2.default.createElement(
+					'div',
+					null,
+					'Fetching timelapse hub.'
 				);
 			}
 
@@ -12971,15 +12979,28 @@ var HubIndexListItem = function (_React$Component) {
 				imageToUse = _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'image-display drop-shadow' });
 			}
 
-			return _react2.default.createElement(
-				'div',
-				{ onMouseEnter: this.startFlipping,
-					onMouseLeave: this.stopFlipping,
-					onTouchStart: this.startFlipping,
-					onTouchEnd: this.stopFlipping,
-					className: 'center-block' },
-				imageToUse
-			);
+			if (USER_IS_MOBILE) {
+				return _react2.default.createElement(
+					'div',
+					{
+						className: 'center-block',
+						style: { position: "relative" } },
+					imageToUse,
+					_react2.default.createElement('img', { src: mainImages.finger_print_url,
+						alt: 'Fingerprint to animate timelapse.',
+						id: 'fingerPrintIcon',
+						onTouchStart: this.startFlipping,
+						onTouchEnd: this.stopFlipping })
+				);
+			} else {
+				return _react2.default.createElement(
+					'div',
+					{ onMouseEnter: this.startFlipping,
+						onMouseLeave: this.stopFlipping,
+						className: 'center-block' },
+					imageToUse
+				);
+			}
 		}
 	}]);
 
@@ -13184,7 +13205,7 @@ var Home = function (_React$Component) {
 
 		_this.state = {
 			hub: null,
-			landingPageImages: null,
+			mainImages: null,
 			//image has 6 column and 5 rows, total of 30 images 
 			imageIndex: 0
 		};
@@ -13199,7 +13220,7 @@ var Home = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.props.requestHomeHub();
-			this.props.requestHomeTimelapseSprite();
+			this.props.requestMainImages();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -13207,9 +13228,9 @@ var Home = function (_React$Component) {
 			if (nextProps.homeHub) {
 				this.setState({ hub: nextProps.homeHub });
 			}
-			if (nextProps.landingPageImages) {
+			if (nextProps.mainImages) {
 				this.handleSpriteAnimation();
-				this.setState({ landingPageImages: nextProps.landingPageImages });
+				this.setState({ mainImages: nextProps.mainImages });
 			}
 		}
 	}, {
@@ -13263,7 +13284,7 @@ var Home = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			if (!this.state.hub || !this.state.landingPageImages) {
+			if (!this.state.hub || !this.state.mainImages) {
 				return _react2.default.createElement(
 					'div',
 					{ style: { marginTop: "70px", textAlign: "center" } },
@@ -13320,8 +13341,8 @@ var Home = function (_React$Component) {
 						null,
 						'Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.'
 					),
-					_react2.default.createElement('img', { className: 'mountain', src: this.state.landingPageImages.mountain_silhouette_url, alt: 'Mountains' }),
-					_react2.default.createElement('img', { className: 'tripod', src: this.state.landingPageImages.camera_url, alt: 'Camera Silhouette' })
+					_react2.default.createElement('img', { className: 'mountain', src: this.state.mainImages.mountain_silhouette_url, alt: 'Mountains' }),
+					_react2.default.createElement('img', { className: 'tripod', src: this.state.mainImages.camera_url, alt: 'Camera Silhouette' })
 				),
 				_react2.default.createElement(
 					'div',
@@ -25018,13 +25039,6 @@ var Root = function Root(_ref) {
   var store = _ref.store;
 
 
-  var _ensureLoggedIn = function _ensureLoggedIn(nextState, replace) {
-    var currentUser = store.getState().users.currentUser;
-    if (!currentUser) {
-      replace('/');
-    }
-  };
-
   return _react2.default.createElement(
     _reactRedux.Provider,
     { store: store },
@@ -25035,9 +25049,9 @@ var Root = function Root(_ref) {
         _reactRouter.Route,
         { path: '/', component: _app2.default },
         _react2.default.createElement(_reactRouter.IndexRoute, { component: _hubs_container2.default }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/take_photo', component: _new_photo2.default, onEnter: _ensureLoggedIn }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/hubs/:hubId', component: _hub_show_container2.default, onEnter: _ensureLoggedIn }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/edit_user', component: _edit_user_container2.default, onEnter: _ensureLoggedIn })
+        _react2.default.createElement(_reactRouter.Route, { path: '/take_photo', component: _new_photo2.default }),
+        _react2.default.createElement(_reactRouter.Route, { path: '/hubs/:hubId', component: _hub_show_container2.default }),
+        _react2.default.createElement(_reactRouter.Route, { path: '/edit_user', component: _edit_user_container2.default })
       )
     )
   );
@@ -25365,8 +25379,7 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 			);
 			var hubImageKlass = this.props.activeHubId == hub.id ? "center-block active-hub" : "center-block inactive-hub";
 
-			var containerKlass = void 0,
-			    imageToUse = void 0;
+			var containerKlass = void 0;
 			if (this.state.lessThanTabletBreakSize) {
 				containerKlass = "one-half-block";
 			} else {
@@ -25377,23 +25390,19 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 				{ className: containerKlass },
 				_react2.default.createElement(
 					'div',
-					null,
+					{ onMouseEnter: this.startFlipping,
+						onMouseLeave: this.stopFlipping,
+						onTouchStart: this.startFlipping,
+						onTouchEnd: this.stopFlipping,
+						'data-hub-id': hub.id,
+						className: hubImageKlass,
+						style: { position: "relative" } },
+					_react2.default.createElement('div', { className: 'overlay' }),
+					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'with-border drop-shadow' }),
 					_react2.default.createElement(
-						'div',
-						{ onMouseEnter: this.startFlipping,
-							onMouseLeave: this.stopFlipping,
-							onTouchStart: this.startFlipping,
-							onTouchEnd: this.stopFlipping,
-							'data-hub-id': hub.id,
-							className: hubImageKlass,
-							style: { position: "relative" } },
-						_react2.default.createElement('div', { className: 'overlay' }),
-						_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'with-border drop-shadow' }),
-						_react2.default.createElement(
-							_reactRouter.Link,
-							{ to: '/hubs/' + hub.id, onClick: this.stopFlipping, onTouchStart: this.stopFlipping },
-							_react2.default.createElement('i', { className: 'fa fa-share-square hand-on-hover', 'aria-hidden': 'true' })
-						)
+						_reactRouter.Link,
+						{ to: '/hubs/' + hub.id, onClick: this.stopFlipping, onTouchStart: this.stopFlipping },
+						_react2.default.createElement('i', { className: 'fa fa-share-square hand-on-hover', 'aria-hidden': 'true' })
 					)
 				)
 			);
@@ -25605,6 +25614,7 @@ var HubShow = function (_React$Component) {
 			window.addEventListener('resize', this.changeWindowSize);
 			this.props.requestHub(this.props.hubId);
 			this.props.requestCurrentUser();
+			this.props.requestMainImages();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
@@ -25650,7 +25660,8 @@ var HubShow = function (_React$Component) {
 			var _props = this.props,
 			    hub = _props.hub,
 			    currentUser = _props.currentUser,
-			    homePage = _props.homePage;
+			    homePage = _props.homePage,
+			    mainImages = _props.mainImages;
 
 
 			if (!hub || !currentUser && !homePage) {
@@ -25703,7 +25714,7 @@ var HubShow = function (_React$Component) {
 						titleEditingField,
 						spanEditOrSave
 					),
-					_react2.default.createElement(_hub_index_list_item2.default, { hub: hub, windowWidth: this.state.windowWidth }),
+					_react2.default.createElement(_hub_index_list_item2.default, { hub: hub, windowWidth: this.state.windowWidth, mainImages: mainImages }),
 					_react2.default.createElement(_hub_map2.default, { lat: hub.latitude, lng: hub.longitude, windowWidth: this.state.windowWidth }),
 					_react2.default.createElement(
 						'div',
@@ -25775,10 +25786,12 @@ var mapStateToProps = function mapStateToProps(state, _ref) {
 	var hubId = parseInt(params.hubId);
 	var hub = (0, _selectors.getSingleHub)(state, hubId);
 	var currentUser = (0, _selectors.getCurrentUser)(state);
+	var mainImages = (0, _selectors.getMainImages)(state);
 	return {
 		hubId: hubId,
 		hub: hub,
-		currentUser: currentUser
+		currentUser: currentUser,
+		mainImages: mainImages
 	};
 };
 
@@ -25792,6 +25805,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		},
 		updateHub: function updateHub(obj) {
 			return dispatch(HubActions.updateHub(obj));
+		},
+		requestMainImages: function requestMainImages() {
+			return dispatch(HubActions.requestMainImages());
 		}
 	};
 };
@@ -26980,7 +26996,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 var mapStateToProps = function mapStateToProps(state) {
 	return {
 		homeHub: (0, _selectors.getHomeHub)(state),
-		landingPageImages: (0, _selectors.getLandingPageImages)(state)
+		mainImages: (0, _selectors.getMainImages)(state)
 	};
 };
 
@@ -26989,8 +27005,8 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 		requestHomeHub: function requestHomeHub() {
 			return dispatch(HubActions.requestHomeHub());
 		},
-		requestHomeTimelapseSprite: function requestHomeTimelapseSprite() {
-			return dispatch(HubActions.requestHomeTimelapseSprite());
+		requestMainImages: function requestMainImages() {
+			return dispatch(HubActions.requestMainImages());
 		}
 	};
 };
@@ -27433,7 +27449,7 @@ var hubsReducer = function hubsReducer() {
       newState[action.hub.id] = action.hub;
       return newState;
     case HubActions.RECEIVE_HUB_IMAGE:
-      newState["landingPageImages"] = action.landingImages;
+      newState["mainImages"] = action.mainImages;
       return newState;
     default:
       return state;
@@ -27614,7 +27630,7 @@ document.addEventListener('DOMContentLoaded', function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.requestHomeTimelapseSprite = exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
+exports.requestMainImages = exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
 
 var _hub_actions = __webpack_require__(65);
 
@@ -27653,10 +27669,10 @@ var fetchLandingHub = exports.fetchLandingHub = function fetchLandingHub() {
   });
 };
 
-var requestHomeTimelapseSprite = exports.requestHomeTimelapseSprite = function requestHomeTimelapseSprite() {
+var requestMainImages = exports.requestMainImages = function requestMainImages() {
   return $.ajax({
     method: 'GET',
-    url: '/static_pages/fetch_landing_sprite'
+    url: '/static_pages/fetch_main_images'
   });
 };
 

@@ -66,11 +66,14 @@ class HubIndexListItem extends React.Component{
 	}
 
 	render(){
-		let { hub, windowWidth } = this.props;
+		let { hub, windowWidth, mainImages } = this.props;
 																				
 		if(hub.photographs.length === 0){
-			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
-		}									
+			return <div>Not photographs with timelapse hub with id {hub.id}</div>
+		}	
+		if(typeof mainImages === "undefined"){
+			return <div>Fetching timelapse hub.</div>
+		}								
 		
 		let imageToUse;
 		if(windowWidth > 400){
@@ -78,16 +81,30 @@ class HubIndexListItem extends React.Component{
 		} else {
 			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display drop-shadow"/>;
 		}																			
-													
-		return (
-			<div onMouseEnter={this.startFlipping} 
-					onMouseLeave={this.stopFlipping} 
-				  onTouchStart={this.startFlipping} 
-				  onTouchEnd={this.stopFlipping}
-					className="center-block">
-					{imageToUse}
-			</div>
-		);
+		
+		if(USER_IS_MOBILE){
+			return (
+				<div 
+						 className="center-block"
+						 style={{position:"relative"}}>
+						 {imageToUse}
+						 <img src={mainImages.finger_print_url} 
+						 			alt="Fingerprint to animate timelapse." 
+						 			id="fingerPrintIcon"
+						 			onTouchStart={this.startFlipping} 
+						 			onTouchEnd={this.stopFlipping}/>
+				</div>
+			);
+		} else {
+			return (
+				<div onMouseEnter={this.startFlipping} 
+						 onMouseLeave={this.stopFlipping} 
+						 className="center-block">
+						 {imageToUse}
+				</div>
+			);
+		}						
+		
 	}
 }
 export default HubIndexListItem;

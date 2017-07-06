@@ -4,7 +4,7 @@ const getAllHubs = ({ hubs }) => {
 	} else {
 		let arrayedHubs = [];
 		for(let i = 0; i < Object.keys(hubs).length; i ++){
-			if(Object.keys(hubs)[i] !== "landingPageImages"){
+			if(Object.keys(hubs)[i] !== "mainImages"){
 				arrayedHubs.push(hubs[Object.keys(hubs)[i]])
 			}
 		}
@@ -24,8 +24,8 @@ const getHomeHub = ({ hubs }) => {
 	return hubs[5];
 }
 
-const getLandingPageImages = ({ hubs }) => {
-	return hubs["landingPageImages"];
+const getMainImages = ({ hubs }) => {
+	return hubs["mainImages"];
 }
 
-export { getAllHubs, getSingleHub, getCurrentUser, getHomeHub, getLandingPageImages};
+export { getAllHubs, getSingleHub, getCurrentUser, getHomeHub, getMainImages};

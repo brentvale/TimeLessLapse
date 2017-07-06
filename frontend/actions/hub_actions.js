@@ -5,9 +5,9 @@ export const RECEIVE_HUB = "RECEIVE_HUB";
 export const RECEIVE_HUB_IMAGE = "RECEIVE_HUB_IMAGE";
 
 //async actions
-export function requestHomeTimelapseSprite(){
+export function requestMainImages(){
 	return(dispatch) => {
-		return util.requestHomeTimelapseSprite().then(obj => dispatch(receiveHomeTimelapseSprite(obj)) );
+		return util.requestMainImages().then(obj => dispatch(receiveMainImages(obj)) );
 	};
 }
 
@@ -36,9 +36,9 @@ export function requestHomeHub(){
 }
 
 //sync actions
-export const receiveHomeTimelapseSprite = (obj) => ({
+export const receiveMainImages = (obj) => ({
   type: RECEIVE_HUB_IMAGE,
-  landingImages: obj
+  mainImages: obj
 });
 
 export const receiveHubs = (obj) => ({

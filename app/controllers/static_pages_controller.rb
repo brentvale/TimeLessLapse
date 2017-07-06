@@ -10,9 +10,10 @@ class StaticPagesController < ApplicationController
     render 'api/timelapse_hubs/show'
   end
   
-  def fetch_landing_sprite
+  def fetch_main_images
     render json: {mountain_silhouette_url: ActionController::Base.helpers.asset_path('mountain_silhouette.png'),
-                  camera_url: ActionController::Base.helpers.asset_path('tripod_with_camera_silhouette.png')}
+                  camera_url: ActionController::Base.helpers.asset_path('tripod_with_camera_silhouette.png'),
+                  finger_print_url: ActionController::Base.helpers.asset_path('finger_print.png')}
   end
   
   def new_hub_instructions
