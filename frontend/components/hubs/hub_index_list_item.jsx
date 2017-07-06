@@ -71,8 +71,10 @@ class HubIndexListItem extends React.Component{
 		if(hub.photographs.length === 0){
 			return <div>Not photographs with timelapse hub with id {hub.id}</div>
 		}	
-		if(typeof mainImages === "undefined"){
-			return <div>Fetching timelapse hub.</div>
+		
+		let imageSrc = "";
+		if(typeof mainImages !== "undefined"){
+			imageSrc = mainImages.finger_print_url;
 		}								
 		
 		let imageToUse;
@@ -87,7 +89,7 @@ class HubIndexListItem extends React.Component{
 				<div className="center-block"
 						 style={{position:"relative"}}>
 						 {imageToUse}
-						 <img src={mainImages.finger_print_url} 
+						 <img src={imageSrc} 
 						 			alt="Fingerprint to animate timelapse." 
 						 			id="fingerPrintIcon"
 						 			onTouchStart={this.startFlipping} 

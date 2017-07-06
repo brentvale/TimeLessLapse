@@ -12964,12 +12964,10 @@ var HubIndexListItem = function (_React$Component) {
 					hub.id
 				);
 			}
-			if (typeof mainImages === "undefined") {
-				return _react2.default.createElement(
-					'div',
-					null,
-					'Fetching timelapse hub.'
-				);
+
+			var imageSrc = "";
+			if (typeof mainImages !== "undefined") {
+				imageSrc = mainImages.finger_print_url;
 			}
 
 			var imageToUse = void 0;
@@ -12985,7 +12983,7 @@ var HubIndexListItem = function (_React$Component) {
 					{ className: 'center-block',
 						style: { position: "relative" } },
 					imageToUse,
-					_react2.default.createElement('img', { src: mainImages.finger_print_url,
+					_react2.default.createElement('img', { src: imageSrc,
 						alt: 'Fingerprint to animate timelapse.',
 						id: 'fingerPrintIcon',
 						onTouchStart: this.startFlipping,
