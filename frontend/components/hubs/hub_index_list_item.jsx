@@ -83,7 +83,6 @@ class HubIndexListItem extends React.Component{
 		}																			
 		
 		if(USER_IS_MOBILE){
-			alert("user is mobile");
 			return (
 				<div className="center-block"
 						 style={{position:"relative"}}>
