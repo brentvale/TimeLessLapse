@@ -13302,6 +13302,7 @@ var Home = function (_React$Component) {
 				landingSpriteStyle = this.calculateBackgroundPositionFromStateImageIndex();
 			}
 
+			var instructionsText = USER_IS_MOBILE ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint." : "Enjoy the compiled timelapse by hovering over the photo with your mouse.";
 			return _react2.default.createElement(
 				'div',
 				{ className: 'page-block page-block-border center-block' },
@@ -13407,7 +13408,7 @@ var Home = function (_React$Component) {
 					_react2.default.createElement(
 						'p',
 						null,
-						'Enjoy the compiled timelapse by hovering over the photo, or tapping if you\'re on your phone.'
+						instructionsText
 					),
 					_react2.default.createElement(
 						'div',
