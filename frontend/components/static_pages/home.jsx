@@ -120,7 +120,7 @@ class Home extends React.Component{
 					<h4>Watch your progress</h4>
 					<p>Enjoy the compiled timelapse by hovering over the photo, or tapping if you&#39;re on your phone.</p>
 					<div className="center-block" style={{maxWidth: "300px", paddingTop: "20px", marginBottom: "20px"}}>
-						<HubIndexListItem hub={this.state.hub} homePage={true}/>
+						<HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages}/>
 					</div>
 				</div>
 				<div className="landing-page-block center-block align-center">

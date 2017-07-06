@@ -13412,7 +13412,7 @@ var Home = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'center-block', style: { maxWidth: "300px", paddingTop: "20px", marginBottom: "20px" } },
-						_react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true })
+						_react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages })
 					)
 				),
 				_react2.default.createElement(
