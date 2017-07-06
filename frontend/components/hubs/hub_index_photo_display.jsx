@@ -84,7 +84,7 @@ class HubIndexPhotoDisplay extends React.Component{
 							 
 							 <div className="overlay"></div>
 							 
-							 <img src={hub.photographs[this.state.currentImageIndex].small_image} className="with-border drop-shadow"/>
+							 <img src={hub.photographs[this.state.currentImageIndex].small_image} className="drop-shadow"/>
 							 
 							 <Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping} onTouchStart={this.stopFlipping}>
 							 		<i className="fa fa-share-square hand-on-hover" aria-hidden="true"></i>

@@ -77,12 +77,13 @@ class HubIndexListItem extends React.Component{
 		
 		let imageToUse;
 		if(windowWidth > 400){
-			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].large_image} className="image-display drop-shadow"/>;
+			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].large_image} className="image-display"/>;
 		} else {
-			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display drop-shadow"/>;
+			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display"/>;
 		}																			
 		
 		if(USER_IS_MOBILE){
+			alert("user is mobile");
 			return (
 				<div className="center-block"
 						 style={{position:"relative"}}>

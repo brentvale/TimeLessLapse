@@ -12974,12 +12974,13 @@ var HubIndexListItem = function (_React$Component) {
 
 			var imageToUse = void 0;
 			if (windowWidth > 400) {
-				imageToUse = _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].large_image, className: 'image-display drop-shadow' });
+				imageToUse = _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].large_image, className: 'image-display' });
 			} else {
-				imageToUse = _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'image-display drop-shadow' });
+				imageToUse = _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'image-display' });
 			}
 
 			if (USER_IS_MOBILE) {
+				alert("user is mobile");
 				return _react2.default.createElement(
 					'div',
 					{ className: 'center-block',
@@ -25397,7 +25398,7 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 						className: hubImageKlass,
 						style: { position: "relative" } },
 					_react2.default.createElement('div', { className: 'overlay' }),
-					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'with-border drop-shadow' }),
+					_react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'drop-shadow' }),
 					_react2.default.createElement(
 						_reactRouter.Link,
 						{ to: '/hubs/' + hub.id, onClick: this.stopFlipping, onTouchStart: this.stopFlipping },
