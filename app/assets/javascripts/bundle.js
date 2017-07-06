@@ -12858,6 +12858,8 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactRouter = __webpack_require__(28);
 
+var _reactBootstrap = __webpack_require__(235);
+
 var _global_variables = __webpack_require__(110);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -12977,11 +12979,14 @@ var HubIndexListItem = function (_React$Component) {
 				imageToUse = _react2.default.createElement('img', { src: hub.photographs[this.state.currentImageIndex].small_image, className: 'image-display' });
 			}
 
+			var now = this.state.currentImageIndex / hub.photographs.length * 100;
+
 			if (USER_IS_MOBILE) {
 				return _react2.default.createElement(
 					'div',
 					{ className: 'center-block',
 						style: { position: "relative" } },
+					_react2.default.createElement(_reactBootstrap.ProgressBar, { bsStyle: 'danger', now: now }),
 					imageToUse,
 					_react2.default.createElement('img', { src: imageSrc,
 						alt: 'Fingerprint to animate timelapse.',
@@ -12995,6 +13000,7 @@ var HubIndexListItem = function (_React$Component) {
 					{ onMouseEnter: this.startFlipping,
 						onMouseLeave: this.stopFlipping,
 						className: 'center-block' },
+					_react2.default.createElement(_reactBootstrap.ProgressBar, { bsStyle: 'danger', now: now }),
 					imageToUse
 				);
 			}

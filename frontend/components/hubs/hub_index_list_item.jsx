@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
+import {ProgressBar} from 'react-bootstrap';
 
 //GLOBAL VARIABLES
 import { tabletBreakPoint } from '../../util/global_variables';
@@ -82,12 +83,15 @@ class HubIndexListItem extends React.Component{
 			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].large_image} className="image-display"/>;
 		} else {
 			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display"/>;
-		}																			
+		}
+		
+		const now = (this.state.currentImageIndex / hub.photographs.length) * 100;																			
 		
 		if(USER_IS_MOBILE){
 			return (
 				<div className="center-block"
 						 style={{position:"relative"}}>
+						<ProgressBar bsStyle="danger" now={now} />
 						 {imageToUse}
 						 <img src={imageSrc} 
 						 			alt="Fingerprint to animate timelapse." 
@@ -101,6 +105,7 @@ class HubIndexListItem extends React.Component{
 				<div onMouseEnter={this.startFlipping} 
 						 onMouseLeave={this.stopFlipping} 
 						 className="center-block">
+						 <ProgressBar bsStyle="danger" now={now} />
 						 {imageToUse}
 				</div>
 			);
