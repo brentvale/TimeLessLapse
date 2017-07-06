@@ -73,7 +73,7 @@ class HubIndexPhotoDisplay extends React.Component{
 		}
 		return (
 			<div className={containerKlass}>
-				<div>
+				
 					<div onMouseEnter={this.startFlipping} 
 							 onMouseLeave={this.stopFlipping} 
 							 onTouchStart={this.startFlipping} 
@@ -90,7 +90,7 @@ class HubIndexPhotoDisplay extends React.Component{
 							 		<i className="fa fa-share-square hand-on-hover" aria-hidden="true"></i>
 							 </Link>
 					</div>
-				</div>
+				
 			</div>
 				
 		);

@@ -27,6 +27,7 @@ class HubShow extends React.Component{
 		window.addEventListener('resize', this.changeWindowSize);
 		this.props.requestHub(this.props.hubId);
 		this.props.requestCurrentUser();
+		this.props.requestMainImages();
 	}
 	
 	componentWillReceiveProps(nextProps){
@@ -60,7 +61,7 @@ class HubShow extends React.Component{
 	}
 	
 	render(){
-		let { hub, currentUser, homePage } = this.props;
+		let { hub, currentUser, homePage, mainImages } = this.props;
 		
 		if(!hub || (!currentUser && !homePage)){
 			return <div>Fetching Data...</div>
@@ -92,7 +93,7 @@ class HubShow extends React.Component{
 						{spanEditOrSave}
 					</div>
 	
-					<HubIndexListItem hub={hub} windowWidth={this.state.windowWidth}/>
+					<HubIndexListItem hub={hub} windowWidth={this.state.windowWidth} mainImages={mainImages}/>
 					
 					<HubMap lat={hub.latitude} lng={hub.longitude} windowWidth={this.state.windowWidth}/>
 		

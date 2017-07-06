@@ -11,7 +11,7 @@ class Home extends React.Component{
 		super();
 		this.state = {
 			hub: null,
-			landingPageImages: null,
+			mainImages: null,
 			//image has 6 column and 5 rows, total of 30 images 
 			imageIndex: 0
 		}
@@ -23,16 +23,16 @@ class Home extends React.Component{
 	
 	componentDidMount(){
 		this.props.requestHomeHub();
-		this.props.requestHomeTimelapseSprite();
+		this.props.requestMainImages();
 	}
 	
 	componentWillReceiveProps(nextProps){
 		if(nextProps.homeHub){
 			this.setState({hub: nextProps.homeHub});
 		}
-		if(nextProps.landingPageImages){
+		if(nextProps.mainImages){
 			this.handleSpriteAnimation();
-			this.setState({landingPageImages: nextProps.landingPageImages})
+			this.setState({mainImages: nextProps.mainImages})
 		}
 	}
 	
@@ -78,7 +78,7 @@ class Home extends React.Component{
 	}
 	
 	render(){
-		if(!this.state.hub || !this.state.landingPageImages){
+		if(!this.state.hub || !this.state.mainImages){
 			return <div style={{marginTop: "70px", textAlign:"center"}}>fetching hub...</div>;
 		}
 		
@@ -101,8 +101,8 @@ class Home extends React.Component{
 					<h3 className="landing-step">Step 1</h3>
 					<h4>Take a Photo to Create a Hub</h4>
 					<p>Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.</p>
-					<img className="mountain" src={this.state.landingPageImages.mountain_silhouette_url} alt="Mountains" />
-					<img className="tripod" src={this.state.landingPageImages.camera_url} alt="Camera Silhouette" />
+					<img className="mountain" src={this.state.mainImages.mountain_silhouette_url} alt="Mountains" />
+					<img className="tripod" src={this.state.mainImages.camera_url} alt="Camera Silhouette" />
 				</div>
 				<div className="landing-page-block center-block right-block" style={{marginBottom: "0px"}}>
 					<h3 className="landing-step">Step 2</h3>

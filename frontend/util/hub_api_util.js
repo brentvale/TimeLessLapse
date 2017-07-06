@@ -33,9 +33,9 @@ export const fetchLandingHub = () => (
   })
 );
 
-export const requestHomeTimelapseSprite = () => (
+export const requestMainImages = () => (
   $.ajax({
     method: 'GET',
-    url: '/static_pages/fetch_landing_sprite'
+    url: '/static_pages/fetch_main_images'
   })
 );

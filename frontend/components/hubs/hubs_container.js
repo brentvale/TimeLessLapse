@@ -8,12 +8,12 @@ import HubIndex from './hub_index';
 
 const mapStateToProps = state => ({
 	hubs: getAllHubs(state),
-	currentUser: getCurrentUser(state)
+	currentUser: getCurrentUser(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   requestHubs: () => dispatch(HubActions.requestHubs()),
-	requestCurrentUser: () => dispatch(UserActions.requestCurrentUser())
+	requestCurrentUser: () => dispatch(UserActions.requestCurrentUser()),
 });
 
 export default connect(
