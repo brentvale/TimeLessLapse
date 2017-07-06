@@ -89,6 +89,7 @@ class Home extends React.Component{
 			landingSpriteStyle = this.calculateBackgroundPositionFromStateImageIndex();
 		}
 		
+		let instructionsText = (USER_IS_MOBILE) ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint.":"Enjoy the compiled timelapse by hovering over the photo with your mouse.";
 		return(
 			<div className="page-block page-block-border center-block">
 				
@@ -118,7 +119,7 @@ class Home extends React.Component{
 				<div className="landing-page-block center-block">
 					<h3 className="landing-step">Step 3</h3>
 					<h4>Watch your progress</h4>
-					<p>Enjoy the compiled timelapse by hovering over the photo, or tapping if you&#39;re on your phone.</p>
+					<p>{instructionsText}</p>
 					<div className="center-block" style={{maxWidth: "300px", paddingTop: "20px", marginBottom: "20px"}}>
 						<HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages}/>
 					</div>
