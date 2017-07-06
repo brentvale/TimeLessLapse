@@ -30,7 +30,7 @@ const UserInfo = ({currentUser}) => {
 						</div>
 						<div style={{width: "100%"}}>
 							<Link to={"/edit_user"}>
-								<div className="button button-create button-width-full hand-on-hover" style={{margin: "0"}}>Edit Profile</div>
+								<div className="button button-create button-width-full hand-on-hover" style={{marginTop: "0", marginBottom: "0"}}>Edit Profile</div>
 							</Link>
 						</div>
 					</div>

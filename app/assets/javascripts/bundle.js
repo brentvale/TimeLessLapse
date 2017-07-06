@@ -5253,9 +5253,13 @@ var getAllHubs = function getAllHubs(_ref) {
 	if (Object.keys(hubs).length === 0) {
 		return [];
 	} else {
-		return Object.keys(hubs).map(function (id) {
-			return hubs[id];
-		});
+		var arrayedHubs = [];
+		for (var i = 0; i < Object.keys(hubs).length; i++) {
+			if (Object.keys(hubs)[i] !== "landingPageImages") {
+				arrayedHubs.push(hubs[Object.keys(hubs)[i]]);
+			}
+		}
+		return arrayedHubs;
 	}
 };
 
@@ -13520,7 +13524,7 @@ var UserInfo = function UserInfo(_ref) {
 							{ to: "/edit_user" },
 							_react2.default.createElement(
 								'div',
-								{ className: 'button button-create button-width-full hand-on-hover', style: { margin: "0" } },
+								{ className: 'button button-create button-width-full hand-on-hover', style: { marginTop: "0", marginBottom: "0" } },
 								'Edit Profile'
 							)
 						)
@@ -25336,7 +25340,7 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 		value: function render() {
 			var hub = this.props.hub;
 
-			//save for dev														
+			//save for dev												
 
 			if (hub.photographs.length === 0) {
 				return _react2.default.createElement(

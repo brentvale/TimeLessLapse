@@ -2,7 +2,13 @@ const getAllHubs = ({ hubs }) => {
 	if(Object.keys(hubs).length === 0){
 		return [];
 	} else {
-		return Object.keys(hubs).map(id => hubs[id]);
+		let arrayedHubs = [];
+		for(let i = 0; i < Object.keys(hubs).length; i ++){
+			if(Object.keys(hubs)[i] !== "landingPageImages"){
+				arrayedHubs.push(hubs[Object.keys(hubs)[i]])
+			}
+		}
+		return arrayedHubs;
 	}
 };
 

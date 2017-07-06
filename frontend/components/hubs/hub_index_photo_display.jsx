@@ -54,7 +54,7 @@ class HubIndexPhotoDisplay extends React.Component{
 	render(){
 		let { hub} = this.props;
 						
-		//save for dev														
+		//save for dev												
 		if(hub.photographs.length === 0){
 			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
 		}									
