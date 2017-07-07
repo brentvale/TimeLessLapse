@@ -13242,26 +13242,6 @@ var Home = function (_React$Component) {
 			clearInterval(this.interval);
 		}
 	}, {
-		key: 'handleSpriteAnimation',
-		value: function handleSpriteAnimation() {
-			var _this2 = this;
-
-			clearInterval(this.interval);
-			this.interval = setInterval(function () {
-				//39 total images with 0 indexing
-				if (_this2.state.imageIndex < 50) {
-					_this2.setState({ imageIndex: _this2.state.imageIndex + 1 });
-				} else {
-					_this2.setState({ imageIndex: 0 });
-				}
-			}, SPRITE_ANIMATION_TIME);
-		}
-	}, {
-		key: 'handleGuestLogin',
-		value: function handleGuestLogin() {
-			alert("Guest Login Coming Soon!");
-		}
-	}, {
 		key: 'calculateBackgroundPositionFromStateImageIndex',
 		value: function calculateBackgroundPositionFromStateImageIndex() {
 			//image dimensions = 1200 x 920 => height: 184px; width: 200px;
@@ -13278,6 +13258,26 @@ var Home = function (_React$Component) {
 
 				return '-' + xPixels + 'px -' + yPixels + 'px';
 			}
+		}
+	}, {
+		key: 'handleGuestLogin',
+		value: function handleGuestLogin() {
+			window.location.replace('/welcome_guest_user');
+		}
+	}, {
+		key: 'handleSpriteAnimation',
+		value: function handleSpriteAnimation() {
+			var _this2 = this;
+
+			clearInterval(this.interval);
+			this.interval = setInterval(function () {
+				//39 total images with 0 indexing
+				if (_this2.state.imageIndex < 50) {
+					_this2.setState({ imageIndex: _this2.state.imageIndex + 1 });
+				} else {
+					_this2.setState({ imageIndex: 0 });
+				}
+			}, SPRITE_ANIMATION_TIME);
 		}
 	}, {
 		key: 'navigateToSignUp',

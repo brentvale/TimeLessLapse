@@ -18,10 +18,12 @@ Rails.application.routes.draw do
     get '/users/current_user', to: 'users#current_logged_in_user'
   end
   
+  #STATIC_PAGES
   get 'static_pages/new_hub_instructions', to: 'static_pages#new_hub_instructions', as: '/create_hub'
   get '/static_pages/fetch_landing_hub', to: 'static_pages#fetch_landing_hub'
   get '/static_pages/fetch_main_images', to: 'static_pages#fetch_main_images'
   get '/fetch_map_image', to: 'static_pages#fetch_map_image', as: '/fetch_map_image'
+  get '/welcome_guest_user' => 'static_pages#demonstration'
 
   devise_for :users
   
