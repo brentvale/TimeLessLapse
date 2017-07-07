@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  before_action :authenticate_user!, except: [:home, :fetch_landing_hub, :fetch_main_images]
+  before_action :authenticate_user!, except: [:home, :fetch_landing_hub, :fetch_main_images, :demonstration]
   
   def home
   end
@@ -21,6 +21,12 @@ class StaticPagesController < ApplicationController
   
   def fetch_map_image
     render json: {image_url: ActionController::Base.helpers.asset_path('camera_image_32x32.png')}
+  end
+  
+  def demonstration
+    user_to_sign_in = User.where(email: "guest@example.com").first
+    sign_in(:user, user_to_sign_in)
+    redirect_to root_url
   end
   
 end

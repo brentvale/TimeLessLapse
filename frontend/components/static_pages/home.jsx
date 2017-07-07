@@ -40,22 +40,6 @@ class Home extends React.Component{
 		clearInterval(this.interval);
 	}
 	
-	handleSpriteAnimation(){
-		clearInterval(this.interval);
-		this.interval = setInterval(() => {
-			//39 total images with 0 indexing
-			if(this.state.imageIndex < 50){
-				this.setState({imageIndex: this.state.imageIndex + 1})
-			} else {
-				this.setState({imageIndex: 0});
-			}
-		},SPRITE_ANIMATION_TIME);
-	}
-	
-	handleGuestLogin(){
-		alert("Guest Login Coming Soon!");
-	}
-	
 	calculateBackgroundPositionFromStateImageIndex(){
 		//image dimensions = 1200 x 920 => height: 184px; width: 200px;
 		if(this.state.imageIndex === 0){
@@ -71,6 +55,22 @@ class Home extends React.Component{
 			
 			return `-${xPixels}px -${yPixels}px`;
 		}
+	}
+	
+	handleGuestLogin(){
+		window.location.replace('/welcome_guest_user');
+	}
+	
+	handleSpriteAnimation(){
+		clearInterval(this.interval);
+		this.interval = setInterval(() => {
+			//39 total images with 0 indexing
+			if(this.state.imageIndex < 50){
+				this.setState({imageIndex: this.state.imageIndex + 1})
+			} else {
+				this.setState({imageIndex: 0});
+			}
+		},SPRITE_ANIMATION_TIME);
 	}
 	
 	navigateToSignUp(){
