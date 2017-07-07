@@ -43,11 +43,12 @@ class HubIndex extends React.Component{
 		}
 		
 		if(hubs.length === 0){
+			let containerKlass = (window.innerWidth < 600) ? "one-half-block": "one-third-block";
 			return (
 				<div>
 					<UserInfo currentUser={currentUser}/>
 					<div className="page-block page-block-border center-block" style={{padding: "10px"}}>
-						<div className="one-third-block" style={{textAlign:"center"}}>
+						<div className={containerKlass} style={{textAlign:"center"}}>
 							<Link to={"/take_photo"} className="no-photos">
 								<div className="no-photos-container box-with-shadow-inverted">
 									<p>No Photos Taken</p>

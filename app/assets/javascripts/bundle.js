@@ -25223,6 +25223,7 @@ var HubIndex = function (_React$Component) {
 			}
 
 			if (hubs.length === 0) {
+				var containerKlass = window.innerWidth < 600 ? "one-half-block" : "one-third-block";
 				return _react2.default.createElement(
 					'div',
 					null,
@@ -25232,7 +25233,7 @@ var HubIndex = function (_React$Component) {
 						{ className: 'page-block page-block-border center-block', style: { padding: "10px" } },
 						_react2.default.createElement(
 							'div',
-							{ className: 'one-third-block', style: { textAlign: "center" } },
+							{ className: containerKlass, style: { textAlign: "center" } },
 							_react2.default.createElement(
 								_reactRouter.Link,
 								{ to: "/take_photo", className: 'no-photos' },
@@ -26477,7 +26478,7 @@ var NewPhoto = function (_React$Component) {
 				_react2.default.createElement(
 					'h2',
 					{ className: 'heading-block center-block' },
-					'Select photo from library'
+					'Take photo or select from photo library'
 				)
 			) : _react2.default.createElement(
 				'div',

@@ -302,7 +302,7 @@ class NewPhoto extends React.Component{
 																											<Link to={"/"}>
 																												<i className="fa fa-home hand-on-hover" aria-hidden="true"></i>
 																											</Link>
-																											<h2 className="heading-block center-block">Select photo from library</h2>
+																											<h2 className="heading-block center-block">Take photo or select from photo library</h2>
 																										</div> : 
  																										<div className="heading-block-container heading-block-container-border">
 																											<h2 className="heading-block center-block">Assign photo to hub.</h2>
