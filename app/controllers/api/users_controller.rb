@@ -12,14 +12,15 @@ class Api::UsersController < ApplicationController
   
   def update
     @user = User.find(params[:id])
-    unless @user.email == "guest@example.com"
+    if @user.email == "guest@example.com"
+      render json: {message: "unable to update guest's email address.  you will break the matrix if you do.", status: 500}
+    else
       if @user.update_attributes(user_params)
         render :show
       else
-        render json: {message: "something went wrong server side updating the user", errors: @user.errors.full_messages}
+        render json: {message: "something went wrong server side updating the user", errors: @user.errors.full_messages, status: 400}
       end
     end
-    render json: {message: "unable to update guest's email address.  you will break the matrix if you do."}
   end
   
   private 
