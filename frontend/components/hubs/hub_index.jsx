@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { Link } from 'react-router';
 //COMPONENTS
 import HubIndexPhotoDisplay from './hub_index_photo_display';
 import HomeContainer from '../static_pages/home_container';
@@ -42,9 +43,23 @@ class HubIndex extends React.Component{
 		}
 		
 		if(hubs.length === 0){
-			return (<div>
-								<p>No Hubs Have Been Created Yet, Take a photo to create your first hub.</p>
-							</div>);
+			return (
+				<div>
+					<UserInfo currentUser={currentUser}/>
+					<div className="page-block page-block-border center-block" style={{padding: "10px"}}>
+						<div className="one-third-block" style={{textAlign:"center"}}>
+							<Link to={"/take_photo"} className="no-photos">
+								<div className="no-photos-container box-with-shadow-inverted">
+									<p>No Photos Taken</p>
+								
+										<i className="fa fa-picture-o no-photos-alert" aria-hidden="true"></i>
+									<p>Click to upload new photo.</p>
+								</div>
+							</Link>
+						</div>
+					</div>
+				</div>
+			);
 		} else {
 			let that = this;
 			return(
