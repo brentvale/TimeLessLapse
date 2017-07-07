@@ -27216,11 +27216,16 @@ var UserForm = function (_React$Component) {
 	}, {
 		key: 'updateUser',
 		value: function updateUser() {
-			this.props.updateCurrentUser({ userId: this.props.currentUser.id,
-				name: this.state.name,
-				email: this.state.email,
-				websiteUrl: this.state.websiteUrl,
-				tagLine: this.state.tagLine }).then(_reactRouter.hashHistory.goBack());
+			if (this.props.currentUser.email === "guest@example.com") {
+				alert("Thanks for using TimeLessLapse! Look at you! already editing user profile info.  Unfortunately, I can't let ya do that yet because I haven't had time to create the form validations for a shared guest account.  Check back soon!");
+				_reactRouter.hashHistory.goBack();
+			} else {
+				this.props.updateCurrentUser({ userId: this.props.currentUser.id,
+					name: this.state.name,
+					email: this.state.email,
+					websiteUrl: this.state.websiteUrl,
+					tagLine: this.state.tagLine }).then(_reactRouter.hashHistory.goBack());
+			}
 		}
 	}, {
 		key: 'update',
