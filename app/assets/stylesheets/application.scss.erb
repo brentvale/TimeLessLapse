@@ -89,6 +89,22 @@ input.heading{
 	bottom: 0;
 	left: 0;
 }
+a.no-photos, a.no-photos:hover{
+	text-decoration: none;
+	.no-photos-container{
+		border-radius: 4px;
+		border: 1px solid $wild-sand;
+	}
+	p{
+		color: $boulder;
+		text-decoration: none;
+	}
+}
+a.no-photos:hover{
+	p{
+		color: $tundora;
+	}
+}
 #fingerPrintIcon{
 	height: 80px;
 	position:absolute;
@@ -204,6 +220,15 @@ input.heading{
 }
 .box-with-shadow:hover{
   box-shadow: 0 3px 10px rgba(0,0,0,.23);
+}
+.box-with-shadow-inverted{
+	background: #fff;
+	padding:1em 3em 1em 3em;
+	box-shadow: 0 3px 10px rgba(0,0,0,.23);
+}
+.box-with-shadow-inverted:hover{
+	background: $alabaster;
+	box-shadow: 0 1px 4px rgba(0,0,0,.24);
 }
 .disguised-link, .disguised-link:hover, .disguised-link:visited{
 	color:$boulder;
@@ -521,6 +546,12 @@ div[role="progressbar"]{
 	transform: rotate3d(0,1,0,-60deg);
 	-ms-transform: rotate3d(0,1,0,-60deg); /* IE 9 */
 	-webkit-transform: rotate3d(0,1,0,-60deg); /* Safari and Chrome */
+}
+.fa-picture-o.no-photos-alert{
+	color: $carnation;
+}
+a.no-photos:hover .fa-picture-o.no-photos-alert{
+	color: $dark-carnation;
 }
 
 //FORMS
