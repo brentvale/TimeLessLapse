@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
 	requestCurrentUser: () => dispatch(UserActions.requestCurrentUser()),
-	updateCurrentUser: (formData) => dispatch(UserActions.updateCurrentUser(formData))
+	updateCurrentUser: (formData, userId, avatarBool) => dispatch(UserActions.updateCurrentUser(formData, userId, avatarBool))
 });
 
 export default connect(

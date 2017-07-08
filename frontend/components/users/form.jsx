@@ -2,25 +2,42 @@ import React from 'react';
 
 import {Link} from 'react-router';
 import { hashHistory } from 'react-router';
+
 import InputField from './input_field';
+import FileInput from 'react-file-input';
+import {Button, Modal} from 'react-bootstrap';
+import * as ReactKonva from 'react-konva';
 
 class UserForm extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			focused: null,
-			name: null,
 			email: null,
-			websiteUrl: null,
-			tagLine: null
+			focused: null,
+			imageHeight: 400,
+			imagePreview: null,
+			imageWidth: 300,
+			name: null,
+			showModal: false,
+			tagLine: null,
+			thumbnailAvatar: null,
+			uploadedFile: null,
+			websiteUrl: null
 		}
+		this.close = this.close.bind(this);
 		this.dataHasChanged = this.dataHasChanged.bind(this);
-		this.handleChangePhoto = this.handleChangePhoto.bind(this);
+		this.handleChange = this.handleChange.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 		this.navigateToHome = this.navigateToHome.bind(this);
+		this.open = this.open.bind(this);
 		this.update = this.update.bind(this);
 		this.updateFocusedElement = this.updateFocusedElement.bind(this);
 		this.updateUser = this.updateUser.bind(this);
+	}
+	
+	close(){
+		this.setState({showModal: false});
 	}
 	
 	componentDidMount(){
@@ -32,11 +49,11 @@ class UserForm extends React.Component{
 		const email = (nextProps.currentUser.email) ? nextProps.currentUser.email : "";
 		const websiteUrl = (nextProps.currentUser.website_url) ? nextProps.currentUser.website_url : "";
 		const tagLine = (nextProps.currentUser.tag_line) ? nextProps.currentUser.tag_line : "";
-		
 		this.setState({	name: name,
 										email: email,
 										websiteUrl: websiteUrl,
-										tagLine: tagLine
+										tagLine: tagLine,
+										thumbnailAvatar: nextProps.currentUser.thumbnail_avatar
 									});
 	}
 	
@@ -56,9 +73,52 @@ class UserForm extends React.Component{
 		return false;
 	}
 	
-	handleChangePhoto(){
-		alert("launch modal to change photo");
-	}
+  handleChange(e){
+		let that = this;
+		let uploadedFile = e.target.files[0];
+
+		let reader = new FileReader();
+		
+		reader.onload = function(e) {
+			const image = new window.Image();
+			image.src = e.target.result;
+			
+			that.setState({ imagePreview: image, uploadedFile: uploadedFile});
+		}
+		reader.readAsDataURL(e.target.files[0]);
+  }
+	
+  handleSubmit(e) {
+    e.preventDefault();
+
+    let reader = new FileReader();
+    let that = this;
+
+    reader.onloadend = function(e) {
+				
+      let formData = new FormData();
+
+			let canvas = document.createElement("canvas");
+
+			canvas.width = that.state.imageWidth;
+			canvas.height = that.state.imageHeight;
+
+			let ctx = canvas.getContext("2d");
+			ctx.drawImage(that.state.imagePreview, 0, 0, that.state.imageWidth, that.state.imageHeight);
+
+			let dataurl = canvas.toDataURL("image/jpeg");
+
+      formData.append("user[avatar]", dataurl);
+
+			that.props.updateCurrentUser(formData, {userId: that.props.currentUser.id}, true)
+				.then(that.setState({showModal: false, uploadedFile: null, imagePreview: null}));
+    }
+
+    if (this.state.uploadedFile) {
+      reader.readAsDataURL(this.state.uploadedFile);
+    } 
+		
+  }
 	
 	handleKeyPress(e){
 		if(e.keyCode == 13){
@@ -74,6 +134,10 @@ class UserForm extends React.Component{
 		}
 	}
 	
+	open(){
+		this.setState({showModal: true});
+	}
+	
 	updateUser(){
 		if(this.props.currentUser.email === "guest@example.com"){
 			if(this.dataHasChanged()){
@@ -81,11 +145,16 @@ class UserForm extends React.Component{
 			}
 			hashHistory.goBack();
 		} else {
-			this.props.updateCurrentUser({userId: this.props.currentUser.id,
-																		name: this.state.name,
-																		email: this.state.email,
-																		websiteUrl: this.state.websiteUrl,
-																		tagLine: this.state.tagLine}).then(hashHistory.goBack());
+			this.props.updateCurrentUser(	{user: 
+																			{	
+																				name: this.state.name,
+																				email: this.state.email,
+																				website_url: this.state.websiteUrl,
+																				tag_line: this.state.tagLine
+																			}
+																		},
+																		{ userId: this.props.currentUser.id },
+																		false).then(hashHistory.goBack());
 		}
 	}
 	
@@ -114,12 +183,40 @@ class UserForm extends React.Component{
 			return <div>Fetching User Info</div>
 		}
 		
-		const imageDisplay = (currentUser.thumbnail_avatar) ? <img src={currentUser.thumbnail_avatar} /> : <i className="fa fa-user-circle-o large hand-on-hover" aria-hidden="true"></i>;
+		const imageDisplay = (this.state.thumbnailAvatar) ? <img src={this.state.thumbnailAvatar} id="profilePhoto"/> : <i className="fa fa-user-circle-o large hand-on-hover" aria-hidden="true"></i>;
+
+		//MODAL
+		const imageHeight = 150;
+		const imageWidth = 200;
+		let imagePreview, submitButton;
 		
+		if(this.state.imagePreview){
+			imagePreview = <div style={{width: "100%", textAlign: "center", marginBottom: "1em"}}>
+											 <ReactKonva.Stage height={imageHeight} width={imageWidth} >
+												 <ReactKonva.Layer style={{textAlign:"center"}}>
+													 <ReactKonva.Image image={this.state.imagePreview} height={imageHeight} width={imageWidth}/>
+								         </ReactKonva.Layer>
+											 </ReactKonva.Stage>
+										 </div>;
+			submitButton = <input type="submit" className="btn btn-default" value="Save" style={{width: "12em", marginTop: "2em"}}/>;
+		} else {
+			imagePreview = <div style={{height: imageHeight, width: imageWidth, marginBottom: "1em"}} className="center-block"></div>;
+			submitButton =  <div className="button button-med button-unclickable" style={{marginTop: "2em"}} onClick={() => alert("Upload Photograph First")}>Save</div>;
+		}			
+																			
+		let display = <form onSubmit={this.handleSubmit} className="center-block" style={{marginTop: "3em", width: imageWidth, textAlign:"center"}}>
+										{imagePreview}
+					          <FileInput name="profilePhoto"
+					                     accept=".jpg,.jpeg,.pdf"
+					                     className="image-upload hand-on-hover"
+					                     onChange={this.handleChange}
+															 placeholder="Upload Photo"
+															 style={{zIndex: "10"}}/>
+					         { submitButton }
+									 </form>;
 		return(
 			<div>
 				<div className="page-block page-block-border center-block">
-			
 					<div className="nav-block" >
 						<div onClick={this.navigateToHome} id="cancel" className="hand-on-hover">
 							Cancel
@@ -129,8 +226,10 @@ class UserForm extends React.Component{
 							Done
 						</div>
 					</div>
+			
 					<div className="edit-block-header">
-						<div onClick={this.handleChangePhoto} className="hand-on-hover center-block" style={{width: "150px"}}>
+						
+						<div className="hand-on-hover center-block" onClick={this.open}>
 							{imageDisplay}
 							<p style={{marginTop: "15px"}}>Change Profile Photo</p>
 						</div>
@@ -206,6 +305,15 @@ class UserForm extends React.Component{
 					<div className="edit-block-footer"></div>
 							
 				</div>
+														
+				<Modal show={this.state.showModal} onHide={this.close}>
+	        <Modal.Header closeButton>
+	          <Modal.Title style={{textAlign:"center"}}>Upload Photo</Modal.Title>
+	        </Modal.Header>
+	        <Modal.Body style={{height: "500px"}}>
+						{ display }
+	        </Modal.Body>
+	      </Modal>
 			</div>
 		)
 	}

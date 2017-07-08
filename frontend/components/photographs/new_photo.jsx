@@ -228,7 +228,7 @@ class NewPhoto extends React.Component{
 																										<div style={{height: imageHeight, width: imageWidth, marginBottom: "1em"}} className="center-block"></div>;
 																										
 			let submitButton = (this.state.uploadedFile) ? <input type="submit" className="btn btn-default" value="Save" style={{width: "12em", marginTop: "2em"}}/> : <div className="button button-med button-unclickable" style={{marginTop: "2em"}} onClick={() => alert("Upload Photograph First")}>Save</div>;																					
-			display = <form onSubmit={this.handleSubmit} className="center-block" style={{marginTop: "3em", width: imageWidth}}>
+			display = <form onSubmit={this.handleSubmit} className="center-block" style={{marginTop: "3em", width: imageWidth, zIndex: "10"}}>
 									{imagePreview}
 				          <FileInput name="companyDocument"
 				                     accept=".jpg,.jpeg,.pdf"
@@ -317,7 +317,7 @@ class NewPhoto extends React.Component{
 			
 				{ headingDisplay }
 				
-				{photographDisplay}
+				{ photographDisplay }
 				
 				<i className="fa fa-spinner fa-pulse fa-3x fa-fw" style={{display: "none"}}></i>
 				
