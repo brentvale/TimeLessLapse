@@ -10,9 +10,9 @@ export function requestCurrentUser(){
 	};
 }
 
-export function updateCurrentUser(formData){
+export function updateCurrentUser(formData, userIdObj, avatarBool){
 	return(dispatch) => {
-		return APIUtil.updateCurrentUser(formData).then(obj => dispatch(receiveCurrentUser(obj)) );
+		return APIUtil.updateCurrentUser(formData, userIdObj, avatarBool).then(obj => dispatch(receiveCurrentUser(obj)) );
 	};
 }
 

@@ -9,17 +9,26 @@ export const fetchCurrentUser = () => (
   })
 );
 
-export const updateCurrentUser = (formData) => (
-  $.ajax({
-    method: 'PATCH',
-    url: `/api/users/${formData.userId}`,
-		data: {
-			user: {
-				website_url: formData.websiteUrl,
-				tag_line: formData.tagLine,
-				name: formData.name,
-				email: formData.email
-			}
-		}
-  })
-);
+export const updateCurrentUser = (formData, userIdObj, avatarBool) => {
+	if(avatarBool){
+		return(
+		  $.ajax({
+		    method: 'PATCH',
+		    url: `/api/users/${userIdObj.userId}`,
+	      processData: false,
+	      contentType: false,
+				dataType: 'json',
+				data: formData
+		  })
+		)
+		      
+	} else {
+		return(
+		  $.ajax({
+		    method: 'PATCH',
+		    url: `/api/users/${userIdObj.userId}`,
+				data: formData
+		  })
+		)
+	}  
+};
