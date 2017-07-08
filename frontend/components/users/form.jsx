@@ -14,6 +14,7 @@ class UserForm extends React.Component{
 			websiteUrl: null,
 			tagLine: null
 		}
+		this.dataHasChanged = this.dataHasChanged.bind(this);
 		this.handleChangePhoto = this.handleChangePhoto.bind(this);
 		this.handleKeyPress = this.handleKeyPress.bind(this);
 		this.navigateToHome = this.navigateToHome.bind(this);
@@ -39,6 +40,22 @@ class UserForm extends React.Component{
 									});
 	}
 	
+	dataHasChanged(){
+		if(this.props.currentUser.name !== this.state.name){
+			return true;
+		}
+		if(this.props.currentUser.email !== this.state.email){
+			return true;
+		}
+		if(this.props.currentUser.website_url !== this.state.websiteUrl){
+			return true;
+		}
+		if(this.props.currentUser.tag_line !== this.state.tagLine){
+			return true;
+		}
+		return false;
+	}
+	
 	handleChangePhoto(){
 		alert("launch modal to change photo");
 	}
@@ -59,7 +76,9 @@ class UserForm extends React.Component{
 	
 	updateUser(){
 		if(this.props.currentUser.email === "guest@example.com"){
-			alert("Thanks for using TimeLessLapse! Look at you! already editing user profile info.  Unfortunately, I can't let ya do that yet because I haven't had time to create the form validations for a shared guest account.  Check back soon!");
+			if(this.dataHasChanged()){
+				alert("Thanks for using TimeLessLapse! Look at you! already editing user profile info.  Unfortunately, I can't let ya do that yet because I haven't had time to create the form validations for a shared guest account.  Check back soon!");
+			}
 			hashHistory.goBack();
 		} else {
 			this.props.updateCurrentUser({userId: this.props.currentUser.id,

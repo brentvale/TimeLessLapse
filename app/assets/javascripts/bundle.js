@@ -27165,6 +27165,7 @@ var UserForm = function (_React$Component) {
 			websiteUrl: null,
 			tagLine: null
 		};
+		_this.dataHasChanged = _this.dataHasChanged.bind(_this);
 		_this.handleChangePhoto = _this.handleChangePhoto.bind(_this);
 		_this.handleKeyPress = _this.handleKeyPress.bind(_this);
 		_this.navigateToHome = _this.navigateToHome.bind(_this);
@@ -27194,6 +27195,23 @@ var UserForm = function (_React$Component) {
 			});
 		}
 	}, {
+		key: 'dataHasChanged',
+		value: function dataHasChanged() {
+			if (this.props.currentUser.name !== this.state.name) {
+				return true;
+			}
+			if (this.props.currentUser.email !== this.state.email) {
+				return true;
+			}
+			if (this.props.currentUser.website_url !== this.state.websiteUrl) {
+				return true;
+			}
+			if (this.props.currentUser.tag_line !== this.state.tagLine) {
+				return true;
+			}
+			return false;
+		}
+	}, {
 		key: 'handleChangePhoto',
 		value: function handleChangePhoto() {
 			alert("launch modal to change photo");
@@ -27218,7 +27236,9 @@ var UserForm = function (_React$Component) {
 		key: 'updateUser',
 		value: function updateUser() {
 			if (this.props.currentUser.email === "guest@example.com") {
-				alert("Thanks for using TimeLessLapse! Look at you! already editing user profile info.  Unfortunately, I can't let ya do that yet because I haven't had time to create the form validations for a shared guest account.  Check back soon!");
+				if (this.dataHasChanged()) {
+					alert("Thanks for using TimeLessLapse! Look at you! already editing user profile info.  Unfortunately, I can't let ya do that yet because I haven't had time to create the form validations for a shared guest account.  Check back soon!");
+				}
 				_reactRouter.hashHistory.goBack();
 			} else {
 				this.props.updateCurrentUser({ userId: this.props.currentUser.id,
