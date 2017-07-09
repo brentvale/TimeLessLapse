@@ -230,7 +230,7 @@ class NewPhoto extends React.Component{
 			let submitButton = (this.state.uploadedFile) ? <input type="submit" className="btn btn-default" value="Save" style={{width: "12em", marginTop: "2em"}}/> : <div className="button button-med button-unclickable" style={{marginTop: "2em"}} onClick={() => alert("Upload Photograph First")}>Save</div>;																					
 			display = <form onSubmit={this.handleSubmit} className="center-block" style={{marginTop: "3em", width: imageWidth, zIndex: "10"}}>
 									{imagePreview}
-				          <FileInput name="companyDocument"
+				          <FileInput name="timelapseUpload"
 				                     accept=".jpg,.jpeg,.pdf"
 				                     className="image-upload hand-on-hover"
 				                     onChange={this.handleChange}

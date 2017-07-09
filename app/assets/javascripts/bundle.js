@@ -26821,7 +26821,7 @@ var NewPhoto = function (_React$Component) {
 						'form',
 						{ onSubmit: this.handleSubmit, className: 'center-block', style: { marginTop: "3em", width: imageWidth, zIndex: "10" } },
 						imagePreview,
-						_react2.default.createElement(_reactFileInput2.default, { name: 'companyDocument',
+						_react2.default.createElement(_reactFileInput2.default, { name: 'timelapseUpload',
 							accept: '.jpg,.jpeg,.pdf',
 							className: 'image-upload hand-on-hover',
 							onChange: this.handleChange,
