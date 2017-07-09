@@ -35,9 +35,11 @@ class User < ActiveRecord::Base
   has_many :photographs
   
   has_attached_file :avatar, 
-    styles: { thumb: {geometry: "150x200>"},
-              small: {geometry: "300x400>"}
-            }
+    styles: { thumb: {geometry: "200x150>", auto_orient: true},
+              small: {geometry: "400x300>", auto_orient: true}
+            },
+    :convert_options => {:thumb => "-gravity center -extent 200x150",
+                        :small => "-gravity center -extent 400x300"}
       
   validates :avatar, 
     attachment_content_type: {:content_type => ["image/jpg", "image/jpeg", "image/png"]},

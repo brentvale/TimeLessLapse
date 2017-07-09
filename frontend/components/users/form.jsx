@@ -14,13 +14,14 @@ class UserForm extends React.Component{
 		this.state = {
 			email: null,
 			focused: null,
-			imageHeight: 400,
+			imageHeight: 300,
 			imagePreview: null,
-			imageWidth: 300,
+			imageWidth: 400,
 			name: null,
 			showModal: false,
+			smallAvatar: null,
 			tagLine: null,
-			thumbnailAvatar: null,
+			thumbnailAvatar:null,
 			uploadedFile: null,
 			websiteUrl: null
 		}
@@ -53,6 +54,7 @@ class UserForm extends React.Component{
 										email: email,
 										websiteUrl: websiteUrl,
 										tagLine: tagLine,
+										smallAvatar: nextProps.currentUser.small_avatar,
 										thumbnailAvatar: nextProps.currentUser.thumbnail_avatar
 									});
 	}
@@ -183,7 +185,10 @@ class UserForm extends React.Component{
 			return <div>Fetching User Info</div>
 		}
 		
-		const imageDisplay = (this.state.thumbnailAvatar) ? <img src={this.state.thumbnailAvatar} id="profilePhoto"/> : <i className="fa fa-user-circle-o large hand-on-hover" aria-hidden="true"></i>;
+		const imageDisplay = (this.state.smallAvatar) ? <div id="profilePhotoContainer" className="center-block">
+																											<img src={this.state.thumbnailAvatar}/>
+																										</div> : 
+																										<i className="fa fa-user-circle-o large hand-on-hover" aria-hidden="true"></i>;
 
 		//MODAL
 		const imageHeight = 150;

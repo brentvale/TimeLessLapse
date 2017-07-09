@@ -14,8 +14,6 @@ import HubShowContainer from './hubs/hub_show_container'
 import NewPhoto from './photographs/new_photo';
 import EditUserContainer from './users/edit_user_container';
 
-import SessionFormContainer from './session_form/session_form_container';
-
 const Root = ({ store }) => {
 
   return (

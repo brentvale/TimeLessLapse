@@ -8,9 +8,10 @@ const UserInfo = ({currentUser}) => {
 	const tagLineDisplay = (currentUser.tag_line) ? currentUser.tag_line : "Add Tag Line";
 	const websiteDisplay = (currentUser.website_url) ? <a target="_blank" href={currentUser.website_url}>{currentUser.website_url}</a> : "Add Website";
 	const userProfileImageDisplay = (currentUser.thumbnail_avatar) ? <Link to={'/edit_user'}>
-																																			<img src={currentUser.thumbnail_avatar} 
-																																				style={{height: "80px", width: "80px", borderRadius: "40px"}}
-																																				className="hand-on-hover"/>
+																																			<div id="profilePhotoContainerTiny">
+																																				<img src={currentUser.thumbnail_avatar} 
+																																							className="hand-on-hover"/>
+																																			</div>
 																																		</Link>:
 																																		<Link to={'/edit_user'}>
 																																			<i className="fa fa-user-circle-o hand-on-hover small" aria-hidden="true"></i>
