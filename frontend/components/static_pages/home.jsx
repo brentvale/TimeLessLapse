@@ -78,8 +78,15 @@ class Home extends React.Component{
 	}
 	
 	render(){
+		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay;
 		if(!this.state.hub || !this.state.mainImages){
-			return <div style={{marginTop: "70px", textAlign:"center"}}>fetching hub...</div>;
+			hubIndexListItemDisplay = "";
+			mountainImageDisplay = "";
+			cameraImageDisplay = "";
+		} else {
+			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages}/>;
+			mountainImageDisplay = <img className="mountain" src={this.state.mainImages.mountain_silhouette_url} alt="Mountains" />;
+			cameraImageDisplay = <img className="tripod" src={this.state.mainImages.camera_url} alt="Camera Silhouette" />;
 		}
 		
 		let landingSpriteStyle;
@@ -102,8 +109,8 @@ class Home extends React.Component{
 					<h3 className="landing-step">Step 1</h3>
 					<h4>Take a Photo to Create a Hub</h4>
 					<p>Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.</p>
-					<img className="mountain" src={this.state.mainImages.mountain_silhouette_url} alt="Mountains" />
-					<img className="tripod" src={this.state.mainImages.camera_url} alt="Camera Silhouette" />
+					{mountainImageDisplay}
+					{cameraImageDisplay}
 				</div>
 				<div className="landing-page-block center-block right-block" style={{marginBottom: "0px"}}>
 					<h3 className="landing-step">Step 2</h3>
@@ -121,7 +128,7 @@ class Home extends React.Component{
 					<h4>Watch your progress</h4>
 					<p>{instructionsText}</p>
 					<div className="center-block" style={{maxWidth: "300px", paddingTop: "20px", marginBottom: "20px"}}>
-						<HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages}/>
+						{hubIndexListItemDisplay}
 					</div>
 				</div>
 				<div className="landing-page-block center-block align-center">

@@ -13566,12 +13566,17 @@ var Home = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			var hubIndexListItemDisplay = void 0,
+			    mountainImageDisplay = void 0,
+			    cameraImageDisplay = void 0;
 			if (!this.state.hub || !this.state.mainImages) {
-				return _react2.default.createElement(
-					'div',
-					{ style: { marginTop: "70px", textAlign: "center" } },
-					'fetching hub...'
-				);
+				hubIndexListItemDisplay = "";
+				mountainImageDisplay = "";
+				cameraImageDisplay = "";
+			} else {
+				hubIndexListItemDisplay = _react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages });
+				mountainImageDisplay = _react2.default.createElement('img', { className: 'mountain', src: this.state.mainImages.mountain_silhouette_url, alt: 'Mountains' });
+				cameraImageDisplay = _react2.default.createElement('img', { className: 'tripod', src: this.state.mainImages.camera_url, alt: 'Camera Silhouette' });
 			}
 
 			var landingSpriteStyle = void 0;
@@ -13624,8 +13629,8 @@ var Home = function (_React$Component) {
 						null,
 						'Take a photo from a fixed tripod or use a mounted camera holder. Timelesslapse uses the lat/lng coordinates of your photo to create a Hub.'
 					),
-					_react2.default.createElement('img', { className: 'mountain', src: this.state.mainImages.mountain_silhouette_url, alt: 'Mountains' }),
-					_react2.default.createElement('img', { className: 'tripod', src: this.state.mainImages.camera_url, alt: 'Camera Silhouette' })
+					mountainImageDisplay,
+					cameraImageDisplay
 				),
 				_react2.default.createElement(
 					'div',
@@ -13692,7 +13697,7 @@ var Home = function (_React$Component) {
 					_react2.default.createElement(
 						'div',
 						{ className: 'center-block', style: { maxWidth: "300px", paddingTop: "20px", marginBottom: "20px" } },
-						_react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages })
+						hubIndexListItemDisplay
 					)
 				),
 				_react2.default.createElement(
