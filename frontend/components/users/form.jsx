@@ -42,7 +42,14 @@ class UserForm extends React.Component{
 	}
 	
 	componentDidMount(){
-		this.props.requestCurrentUser();
+		if(this.props.currentUser){
+			this.setState({
+				smallAvatar: this.props.currentUser.small_avatar,
+				thumbnailAvatar: this.props.currentUser.thumbnail_avatar
+			})
+		} else {
+			this.props.requestCurrentUser();
+		}
 	}
 	
 	componentWillReceiveProps(nextProps){
