@@ -27459,6 +27459,7 @@ var UserForm = function (_React$Component) {
 		_this.update = _this.update.bind(_this);
 		_this.updateFocusedElement = _this.updateFocusedElement.bind(_this);
 		_this.updateUser = _this.updateUser.bind(_this);
+		_this.updateUserState = _this.updateUserState.bind(_this);
 		return _this;
 	}
 
@@ -27471,10 +27472,7 @@ var UserForm = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			if (this.props.currentUser) {
-				this.setState({
-					smallAvatar: this.props.currentUser.small_avatar,
-					thumbnailAvatar: this.props.currentUser.thumbnail_avatar
-				});
+				this.updateUserState(this.props.currentUser);
 			} else {
 				this.props.requestCurrentUser();
 			}
@@ -27482,17 +27480,7 @@ var UserForm = function (_React$Component) {
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			var name = nextProps.currentUser.name ? nextProps.currentUser.name : "";
-			var email = nextProps.currentUser.email ? nextProps.currentUser.email : "";
-			var websiteUrl = nextProps.currentUser.website_url ? nextProps.currentUser.website_url : "";
-			var tagLine = nextProps.currentUser.tag_line ? nextProps.currentUser.tag_line : "";
-			this.setState({ name: name,
-				email: email,
-				websiteUrl: websiteUrl,
-				tagLine: tagLine,
-				smallAvatar: nextProps.currentUser.small_avatar,
-				thumbnailAvatar: nextProps.currentUser.thumbnail_avatar
-			});
+			this.updateUserState(nextProps.currentUser);
 		}
 	}, {
 		key: 'dataHasChanged',
@@ -27614,6 +27602,20 @@ var UserForm = function (_React$Component) {
 		key: 'updateFocusedElement',
 		value: function updateFocusedElement(e) {
 			this.setState({ focused: e.currentTarget.id });
+		}
+	}, {
+		key: 'updateUserState',
+		value: function updateUserState(user) {
+			var name = user.name ? user.name : "";
+			var email = user.email ? user.email : "";
+			var websiteUrl = user.website_url ? user.website_url : "";
+			var tagLine = user.tag_line ? user.tag_line : "";
+			this.setState({ name: name,
+				email: email,
+				websiteUrl: websiteUrl,
+				tagLine: tagLine,
+				smallAvatar: user.small_avatar,
+				thumbnailAvatar: user.thumbnail_avatar });
 		}
 	}, {
 		key: 'render',
