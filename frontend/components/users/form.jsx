@@ -35,6 +35,7 @@ class UserForm extends React.Component{
 		this.update = this.update.bind(this);
 		this.updateFocusedElement = this.updateFocusedElement.bind(this);
 		this.updateUser = this.updateUser.bind(this);
+		this.updateUserState = this.updateUserState.bind(this);
 	}
 	
 	close(){
@@ -43,27 +44,14 @@ class UserForm extends React.Component{
 	
 	componentDidMount(){
 		if(this.props.currentUser){
-			this.setState({
-				smallAvatar: this.props.currentUser.small_avatar,
-				thumbnailAvatar: this.props.currentUser.thumbnail_avatar
-			})
+			this.updateUserState(this.props.currentUser);
 		} else {
 			this.props.requestCurrentUser();
 		}
 	}
 	
 	componentWillReceiveProps(nextProps){
-		const name = (nextProps.currentUser.name) ? nextProps.currentUser.name : "";
-		const email = (nextProps.currentUser.email) ? nextProps.currentUser.email : "";
-		const websiteUrl = (nextProps.currentUser.website_url) ? nextProps.currentUser.website_url : "";
-		const tagLine = (nextProps.currentUser.tag_line) ? nextProps.currentUser.tag_line : "";
-		this.setState({	name: name,
-										email: email,
-										websiteUrl: websiteUrl,
-										tagLine: tagLine,
-										smallAvatar: nextProps.currentUser.small_avatar,
-										thumbnailAvatar: nextProps.currentUser.thumbnail_avatar
-									});
+		this.updateUserState(nextProps.currentUser);
 	}
 	
 	dataHasChanged(){
@@ -184,6 +172,19 @@ class UserForm extends React.Component{
 	
 	updateFocusedElement(e){
 		this.setState({focused: e.currentTarget.id});
+	}
+	
+	updateUserState(user){
+		const name = (user.name) ? user.name : "";
+		const email = (user.email) ? user.email : "";
+		const websiteUrl = (user.website_url) ? user.website_url : "";
+		const tagLine = (user.tag_line) ? user.tag_line : "";
+		this.setState({ name: name, 
+										email: email, 
+										websiteUrl: websiteUrl, 
+										tagLine: tagLine, 
+										smallAvatar: user.small_avatar,
+										thumbnailAvatar: user.thumbnail_avatar }); 
 	}
 	
 	render(){
