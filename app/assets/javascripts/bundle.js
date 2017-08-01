@@ -13473,6 +13473,10 @@ var _hub_index_list_item = __webpack_require__(168);
 
 var _hub_index_list_item2 = _interopRequireDefault(_hub_index_list_item);
 
+var _speed_controls_block = __webpack_require__(669);
+
+var _speed_controls_block2 = _interopRequireDefault(_speed_controls_block);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13498,12 +13502,17 @@ var Home = function (_React$Component) {
 			hub: null,
 			mainImages: null,
 			//image has 6 column and 5 rows, total of 30 images 
-			imageIndex: 0
+			imageIndex: 0,
+			timeInterval: 500,
+			//value of 1 thru 10 represents frames per second value
+			//calculation of timeInterval = sliderValue / 1000 to get miliseconds
+			sliderValue: 2
 		};
 		_this.handleSpriteAnimation = _this.handleSpriteAnimation.bind(_this);
 		_this.calculateBackgroundPositionFromStateImageIndex = _this.calculateBackgroundPositionFromStateImageIndex.bind(_this);
 		_this.navigateToSignUp = _this.navigateToSignUp.bind(_this);
 		_this.handleGuestLogin = _this.handleGuestLogin.bind(_this);
+		_this.updateSliderValue = _this.updateSliderValue.bind(_this);
 		return _this;
 	}
 
@@ -13573,6 +13582,13 @@ var Home = function (_React$Component) {
 			window.location.replace('/users/sign_up');
 		}
 	}, {
+		key: 'updateSliderValue',
+		value: function updateSliderValue(sliderValue) {
+			//onChange of React-Slider gives a value (no event)
+			var newTimeInterval = 1000 / sliderValue;
+			this.setState({ sliderValue: sliderValue, timeInterval: newTimeInterval });
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var hubIndexListItemDisplay = void 0,
@@ -13583,7 +13599,7 @@ var Home = function (_React$Component) {
 				mountainImageDisplay = "";
 				cameraImageDisplay = "";
 			} else {
-				hubIndexListItemDisplay = _react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages });
+				hubIndexListItemDisplay = _react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages, timeInterval: this.state.timeInterval });
 				mountainImageDisplay = _react2.default.createElement('img', { className: 'mountain', src: this.state.mainImages.mountain_silhouette_url, alt: 'Mountains' });
 				cameraImageDisplay = _react2.default.createElement('img', { className: 'tripod', src: this.state.mainImages.camera_url, alt: 'Camera Silhouette' });
 			}
@@ -13596,6 +13612,8 @@ var Home = function (_React$Component) {
 			}
 
 			var instructionsText = USER_IS_MOBILE ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint." : "Enjoy the compiled timelapse by hovering over the photo with your mouse.";
+
+			var speedBar = this.state.hub && this.state.hub.photographs.length > 1 ? _react2.default.createElement(_speed_controls_block2.default, { sliderValue: this.state.sliderValue, updateSliderValue: this.updateSliderValue }) : "";
 			return _react2.default.createElement(
 				'div',
 				{ className: 'page-block page-block-border center-block' },
@@ -13705,8 +13723,9 @@ var Home = function (_React$Component) {
 					),
 					_react2.default.createElement(
 						'div',
-						{ className: 'center-block', style: { maxWidth: "300px", paddingTop: "20px", marginBottom: "20px" } },
-						hubIndexListItemDisplay
+						{ className: 'center-block', style: { maxWidth: "350px", paddingTop: "20px", marginBottom: "20px" } },
+						hubIndexListItemDisplay,
+						speedBar
 					)
 				),
 				_react2.default.createElement(
@@ -26224,7 +26243,6 @@ var HubShow = function (_React$Component) {
 		value: function updateSliderValue(sliderValue) {
 			//onChange of React-Slider gives a value (no event)
 			var newTimeInterval = 1000 / sliderValue;
-			console.log(newTimeInterval);
 			this.setState({ sliderValue: sliderValue, timeInterval: newTimeInterval });
 		}
 	}, {
