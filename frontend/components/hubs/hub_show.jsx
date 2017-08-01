@@ -6,6 +6,9 @@ import HubMap from './hub_map';
 import HubShowPhotoDisplay from './hub_show_photo_display';
 import UserInfo from '../users/info';
 
+import SpeedControlsBlock from './speed_controls_block';
+
+
 //GLOBAL VARIABLES
 import { tabletBreakPoint } from '../../util/global_variables';
 
@@ -15,12 +18,17 @@ class HubShow extends React.Component{
 		this.state = {
 			windowWidth: window.innerWidth,
 			editingTitle: false,
-			nameField: ""
+			nameField: "",
+			timeInterval: 500,
+			//value of 1 thru 10 represents frames per second value
+			//calculation of timeInterval = sliderValue / 1000 to get miliseconds
+			sliderValue: 2
 		}
 		this.saveHubName = this.saveHubName.bind(this);
 		this.changeWindowSize = this.changeWindowSize.bind(this);
 		this.changeHubName = this.changeHubName.bind(this);
 		this.handleChange = this.handleChange.bind(this);
+		this.updateSliderValue = this.updateSliderValue.bind(this);
 	}
 	
 	componentDidMount(){
@@ -60,6 +68,13 @@ class HubShow extends React.Component{
 		this.props.updateHub({hub: this.props.hub, hubName: this.state.nameField}).then(this.setState({editingTitle: false}));
 	}
 	
+	updateSliderValue(sliderValue){
+		//onChange of React-Slider gives a value (no event)
+		const newTimeInterval = 1000 / sliderValue;
+		console.log(newTimeInterval);
+		this.setState({sliderValue: sliderValue, timeInterval: newTimeInterval});
+	}
+	
 	render(){
 		let { hub, currentUser, homePage, mainImages } = this.props;
 		
@@ -93,7 +108,10 @@ class HubShow extends React.Component{
 						{spanEditOrSave}
 					</div>
 	
-					<HubIndexListItem hub={hub} windowWidth={this.state.windowWidth} mainImages={mainImages}/>
+					<HubIndexListItem hub={hub} windowWidth={this.state.windowWidth} mainImages={mainImages} timeInterval={this.state.timeInterval}/>
+						
+					<SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>
+						
 					
 					<HubMap lat={hub.latitude} lng={hub.longitude} windowWidth={this.state.windowWidth}/>
 		
