@@ -595,6 +595,75 @@ a.no-photos:hover .fa-picture-o.no-photos-alert{
 
 //FORMS
 //used on file upload input
+#new_meme{
+	width: 300px;
+	margin-bottom: 20px;
+}
+#imageDisplay{
+	text-align:center;
+	img{
+		height:auto;
+		width:100%;
+	}
+}
+.registration-form{
+	border:1px solid $boulder;
+	border-radius:3px;
+	color: $boulder;
+	height:3.5em;
+	margin: 0.2em 1em 0.2em 0em;
+	padding:0.5em;
+	width:100%;
+}
+#signUpContainer, #logInContainer{
+	margin-bottom: 10em;
+	margin-top: 60px;
+	max-width: 500px;
+	padding:1em;
+	width: 100%;
+	h2{
+		text-align:center;
+	}
+}
+#new_user, #new_session{
+	input{
+		background-size:40px 171px;
+		background-image: url("<%= asset_path('form_icons.png') %>");
+		background-repeat: no-repeat;
+		font-size:16px;
+		letter-spacing:1.3px;
+		padding-right: 4em;
+	}
+	#jobDescription, #addressLineOne, #addressLineTwo, #city, #state, #zip{
+		background-image: none;
+	}
+	label{
+		font-size: 16px;
+		font-weight:normal;
+		letter-spacing: 1.3px;
+		padding: 0.5em;
+	}
+}
+#forgotPasswordLink{
+	border-bottom: 1px solid #fff;
+	color: #09979c;
+	float:right;
+	font-size:0.8em;
+	margin-bottom:1em;
+	margin-top:0.4em;
+}
+#forgotPasswordLink:hover{
+	border-bottom: 1px solid #09979c;
+}
+#name{
+	background-position:right 16px;
+}
+#emailAddress{
+	background-position:right -34px;
+}
+#password, #confirmPassword{
+	background-position:right -84px;
+}
 input.profile-photo-upload{
 	display:inline;
   height:190px;
@@ -759,6 +828,8 @@ body.is-mobile .edit-block-content div p{
   position: relative;
   background: #ddd;
 }
+
+
 
 //MEDIA QUERIES
 //SCREEN SIZES

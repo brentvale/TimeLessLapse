@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  before_action :authenticate_user!, except: [:home, :fetch_landing_hub, :fetch_main_images, :demonstration]
+  before_action :authenticate_user!, except: [:home, :fetch_landing_hub, :fetch_main_images, :demonstration, :terms_of_service, :payment_terms_of_service]
   
   def home
   end
@@ -27,6 +27,12 @@ class StaticPagesController < ApplicationController
     user_to_sign_in = User.where(email: "guest@example.com").first
     sign_in(:user, user_to_sign_in)
     redirect_to root_url
+  end
+  
+  def terms_of_service
+  end
+  
+  def payment_terms_of_service
   end
   
 end
