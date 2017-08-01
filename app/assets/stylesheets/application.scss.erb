@@ -695,6 +695,57 @@ body.is-mobile .edit-block-content div p{
 	font-size:16px;
 }
 
+//SLIDER
+#sliderContainer{
+	#tortoise, #hare{
+		background: url("<%= asset_path('tortoise_and_hare.png') %>");
+		background-size: 100% 200%;
+		border-top: 1px solid grey;
+		border-bottom: 1px solid grey;
+		display:inline-block;
+		height:50px;
+		width:12%;
+	}
+	#tortoise{
+		border-left: 1px solid grey;
+	}
+	#hare{
+		border-right: 1px solid grey;
+		background-position: 0% -100%;
+	}
+}
+.horizontal-slider{
+  border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
+	display: inline-block;
+  height: 50px;
+  max-width: 700px;
+  width: 76%;
+}
+.horizontal-slider .bar{
+  top: 20px;
+  height: 10px;
+}
+.horizontal-slider .handle {
+	border-radius: 24px;
+  top: 0px;
+  width: 48px;
+  height: 48px;
+  line-height: 48px;
+}
+
+.handle{
+	font-size: 0.9em;
+	text-align: center;
+	background-color: $carnation;
+	color: white;
+	cursor: pointer;
+}
+.bar {
+  position: relative;
+  background: #ddd;
+}
+
 //MEDIA QUERIES
 //SCREEN SIZES
 $screen-lg-min: 1200px;

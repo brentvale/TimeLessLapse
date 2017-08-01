@@ -6,6 +6,10 @@ import HubIndexPhotoDisplay from './hub_index_photo_display';
 import HomeContainer from '../static_pages/home_container';
 import UserInfo from '../users/info';
 
+//give user more granular control from hub_show (ability to adjust speed)
+//set default value here for speed to display timelesslapse on hubs_index
+const DEFAULT_TIME_INTERVAL = 400;
+
 class HubIndex extends React.Component{
 	constructor(){
 		super();
@@ -73,7 +77,8 @@ class HubIndex extends React.Component{
 																						hub={hub} 
 																						activeHubId={that.state.activeHubId} 
 																						activateHub={that.activateHub} 
-																						deactivateHub={that.deactivateHub}/>
+																						deactivateHub={that.deactivateHub}
+																						timeInterval={DEFAULT_TIME_INTERVAL}/>
 						})}
 					</div>
 				</div>

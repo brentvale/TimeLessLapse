@@ -22,7 +22,14 @@ class HubIndexListItem extends React.Component{
 	}
 	
 	componentDidMount(){
-		this.setState({nameField: this.props.hub.hub_name});
+		const newTimeInterval = (this.props.timeInterval) ? this.props.timeInterval : 500;
+		this.setState({nameField: this.props.hub.hub_name,
+									 interval: newTimeInterval });
+	}
+	
+	componentWillReceiveProps(nextProps){
+		const newTimeInterval = (nextProps.timeInterval) ? nextProps.timeInterval : 500;
+		this.setState({interval: newTimeInterval});
 	}
 	
 	componentWillUnmount(){

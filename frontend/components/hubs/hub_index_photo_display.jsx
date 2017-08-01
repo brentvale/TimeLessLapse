@@ -9,7 +9,6 @@ class HubIndexPhotoDisplay extends React.Component{
 		super();
 		this.state = {
 			currentImageIndex: 0,
-			interval: 500,
 			lessThanTabletBreakSize: window.innerWidth < tabletBreakPoint
 		}
 		this.stopFlipping = this.stopFlipping.bind(this);
@@ -35,15 +34,15 @@ class HubIndexPhotoDisplay extends React.Component{
 	
 	startFlipping(e){
 		this.props.activateHub( parseInt( $(e.currentTarget).data("hub-id") ) );
-		let that = this;
+		
 		let photosLength = this.props.hub.photographs.length;
 		this.interval = setInterval(() => {
-			if((that.state.currentImageIndex + 1) < photosLength){
-				that.setState({currentImageIndex: that.state.currentImageIndex+1});
+			if((this.state.currentImageIndex + 1) < photosLength){
+				this.setState({currentImageIndex: this.state.currentImageIndex+1});
 			} else {
-				that.setState({currentImageIndex: 0})
+				this.setState({currentImageIndex: 0})
 			}
-		}, that.state.interval);
+		}, this.props.timeInterval);
 	}
 	
 	stopFlipping(){

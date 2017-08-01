@@ -5,7 +5,6 @@ import { getSingleHub, getCurrentUser, getMainImages } from '../../reducers/sele
 
 import HubShow from './hub_show';
 
-
 const mapStateToProps = (state, { params }) => {
 	const hubId = parseInt(params.hubId)
 	const hub = getSingleHub(state, hubId);
