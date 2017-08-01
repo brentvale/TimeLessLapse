@@ -71,7 +71,6 @@ class HubShow extends React.Component{
 	updateSliderValue(sliderValue){
 		//onChange of React-Slider gives a value (no event)
 		const newTimeInterval = 1000 / sliderValue;
-		console.log(newTimeInterval);
 		this.setState({sliderValue: sliderValue, timeInterval: newTimeInterval});
 	}
 	

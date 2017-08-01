@@ -3,6 +3,7 @@ import React from 'react';
 //COMPONENTS
 import { Link } from 'react-router';
 import HubIndexListItem from '../hubs/hub_index_list_item';
+import SpeedControlsBlock from '../hubs/speed_controls_block';
 
 const SPRITE_ANIMATION_TIME = 200;
 
@@ -13,12 +14,17 @@ class Home extends React.Component{
 			hub: null,
 			mainImages: null,
 			//image has 6 column and 5 rows, total of 30 images 
-			imageIndex: 0
+			imageIndex: 0,
+			timeInterval: 500,
+			//value of 1 thru 10 represents frames per second value
+			//calculation of timeInterval = sliderValue / 1000 to get miliseconds
+			sliderValue: 2
 		}
 		this.handleSpriteAnimation = this.handleSpriteAnimation.bind(this);
 		this.calculateBackgroundPositionFromStateImageIndex = this.calculateBackgroundPositionFromStateImageIndex.bind(this);
 		this.navigateToSignUp = this.navigateToSignUp.bind(this);
 		this.handleGuestLogin = this.handleGuestLogin.bind(this);
+		this.updateSliderValue = this.updateSliderValue.bind(this);
 	}
 	
 	componentDidMount(){
@@ -77,6 +83,12 @@ class Home extends React.Component{
 		window.location.replace('/users/sign_up');
 	}
 	
+	updateSliderValue(sliderValue){
+		//onChange of React-Slider gives a value (no event)
+		const newTimeInterval = 1000 / sliderValue;
+		this.setState({sliderValue: sliderValue, timeInterval: newTimeInterval});
+	}
+	
 	render(){
 		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay;
 		if(!this.state.hub || !this.state.mainImages){
@@ -84,7 +96,7 @@ class Home extends React.Component{
 			mountainImageDisplay = "";
 			cameraImageDisplay = "";
 		} else {
-			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages}/>;
+			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages} timeInterval={this.state.timeInterval}/>;
 			mountainImageDisplay = <img className="mountain" src={this.state.mainImages.mountain_silhouette_url} alt="Mountains" />;
 			cameraImageDisplay = <img className="tripod" src={this.state.mainImages.camera_url} alt="Camera Silhouette" />;
 		}
@@ -97,6 +109,9 @@ class Home extends React.Component{
 		}
 		
 		let instructionsText = (USER_IS_MOBILE) ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint.":"Enjoy the compiled timelapse by hovering over the photo with your mouse.";
+		
+		const speedBar = (this.state.hub && this.state.hub.photographs.length > 1) ? <SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>
+																																														 : "";
 		return(
 			<div className="page-block page-block-border center-block">
 				
@@ -116,7 +131,6 @@ class Home extends React.Component{
 					<h3 className="landing-step">Step 2</h3>
 					<h4>Repeat</h4>
 					<p style={{marginBottom: "20px"}}>Take daily photos.  Track progress toward your health goals, life goals, or G3s (<span>G</span>arden <span>G</span>rowing <span>G</span>oals).</p>
-					
 				</div>
 				<div className="center-block icon-center-block">
 					<i className="fa fa-picture-o landing" aria-hidden="true"></i>
@@ -127,8 +141,9 @@ class Home extends React.Component{
 					<h3 className="landing-step">Step 3</h3>
 					<h4>Watch your progress</h4>
 					<p>{instructionsText}</p>
-					<div className="center-block" style={{maxWidth: "300px", paddingTop: "20px", marginBottom: "20px"}}>
+					<div className="center-block" style={{maxWidth: "350px", paddingTop: "20px", marginBottom: "20px"}}>
 						{hubIndexListItemDisplay}
+						{speedBar}
 					</div>
 				</div>
 				<div className="landing-page-block center-block align-center">

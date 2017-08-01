@@ -5,7 +5,11 @@ class StaticPagesController < ApplicationController
   end
   
   def fetch_landing_hub
-    @hub = TimelapseHub.find(5)
+    if Rails.env.production?
+      @hub = TimelapseHub.find(14)
+    else
+      @hub = TimelapseHub.find(5)
+    end
     @photographs = @hub.photographs.sort_by {|x| x.order_number}
     render 'api/timelapse_hubs/show'
   end
