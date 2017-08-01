@@ -698,20 +698,33 @@ body.is-mobile .edit-block-content div p{
 //SLIDER
 #sliderContainer{
 	#tortoise, #hare{
-		background: url("<%= asset_path('tortoise_and_hare.png') %>");
-		background-size: 100% 200%;
 		border-top: 1px solid grey;
 		border-bottom: 1px solid grey;
 		display:inline-block;
 		height:50px;
+		vertical-align:top;
 		width:12%;
+		div {
+			background: url("<%= asset_path('tortoise_and_hare.png') %>");
+			background-size: 100% 200%;
+			display:inline-block;
+			height: 40px;
+			width:36px;
+		}
 	}
 	#tortoise{
 		border-left: 1px solid grey;
+		text-align:right;
+		div {
+			margin-right:0;
+		}
 	}
 	#hare{
 		border-right: 1px solid grey;
-		background-position: 0% -100%;
+		text-align:left;
+		div {
+			background-position: 0% -100%;
+		}
 	}
 }
 .horizontal-slider{
@@ -720,26 +733,27 @@ body.is-mobile .edit-block-content div p{
 	display: inline-block;
   height: 50px;
   max-width: 700px;
+	vertical-align:middle;
   width: 76%;
 }
-.horizontal-slider .bar{
-  top: 20px;
-  height: 10px;
-}
 .horizontal-slider .handle {
-	border-radius: 24px;
+	border-radius: 20px;
+  height: 40px;
+  line-height: 50px;
+	margin-top:5px;
   top: 0px;
-  width: 48px;
-  height: 48px;
-  line-height: 48px;
+  width: 40px;
 }
-
 .handle{
 	font-size: 0.9em;
 	text-align: center;
 	background-color: $carnation;
 	color: white;
 	cursor: pointer;
+}
+.horizontal-slider .bar{
+  top: 25px;
+  height: 4px;
 }
 .bar {
   position: relative;

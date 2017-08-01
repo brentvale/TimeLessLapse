@@ -76,7 +76,7 @@ class HubShow extends React.Component{
 	}
 	
 	render(){
-		let { hub, currentUser, homePage, mainImages } = this.props;
+		const { hub, currentUser, homePage, mainImages } = this.props;
 		
 		if(!hub || (!currentUser && !homePage)){
 			return <div>Fetching Data...</div>
@@ -84,17 +84,18 @@ class HubShow extends React.Component{
 		let spanKlass = "bold";
 		let that = this;
 		
-		let titleEditingField;
-		
-		titleEditingField = (this.state.editingTitle) ? <input autoFocus
+		const titleEditingField = (this.state.editingTitle) ? <input autoFocus
 																													 className="center-block heading"
 																													 value={this.state.nameField}
 																													 onChange={this.handleChange("nameField")} /> :
 																											<h2 className="heading-block center-block">{hub.hub_name}</h2>;
 																											
-		let spanEditOrSave = (this.state.editingTitle) ? <span onClick={this.saveHubName} className={"hand-on-hover"}>Save</span> : <span onClick={this.changeHubName} className={"hand-on-hover"}>Edit</span>;
+		const spanEditOrSave = (this.state.editingTitle) ? <span onClick={this.saveHubName} className={"hand-on-hover"}>Save</span> : <span onClick={this.changeHubName} className={"hand-on-hover"}>Edit</span>;
 		
-		let currentUserDisplay = (currentUser) ? <UserInfo currentUser={currentUser}/> : "";
+		const currentUserDisplay = (currentUser) ? <UserInfo currentUser={currentUser}/> : "";
+		
+		const speedBar = (hub.photographs.length > 1) ? <SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>
+																										: "";
 		return(
 			<div>
 				{ currentUserDisplay }
@@ -110,9 +111,8 @@ class HubShow extends React.Component{
 	
 					<HubIndexListItem hub={hub} windowWidth={this.state.windowWidth} mainImages={mainImages} timeInterval={this.state.timeInterval}/>
 						
-					<SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>
+					{ speedBar }
 						
-					
 					<HubMap lat={hub.latitude} lng={hub.longitude} windowWidth={this.state.windowWidth}/>
 		
 					<div className="heading-block-container">

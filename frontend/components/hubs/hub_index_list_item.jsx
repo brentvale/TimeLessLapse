@@ -92,13 +92,14 @@ class HubIndexListItem extends React.Component{
 			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display"/>;
 		}
 		
-		const now = (this.state.currentImageIndex / hub.photographs.length) * 100;																			
+		const now = (this.state.currentImageIndex / hub.photographs.length) * 100;	
+		const progressBar = (hub.photographs.length > 1) ? <ProgressBar bsStyle="danger" now={now} /> : "";											
 		
 		if(USER_IS_MOBILE){
 			return (
 				<div className="center-block"
 						 style={{position:"relative"}}>
-						<ProgressBar bsStyle="danger" now={now} />
+						 {progressBar}
 						 {imageToUse}
 						 <img src={imageSrc} 
 						 			alt="Fingerprint to animate timelapse." 
@@ -112,7 +113,7 @@ class HubIndexListItem extends React.Component{
 				<div onMouseEnter={this.startFlipping} 
 						 onMouseLeave={this.stopFlipping} 
 						 className="center-block">
-						 <ProgressBar bsStyle="danger" now={now} />
+						 {progressBar}
 						 {imageToUse}
 				</div>
 			);

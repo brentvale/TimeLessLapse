@@ -6,8 +6,9 @@ export default class SpeedControlsBlock extends Component{
 	render(){
 		return(
 			<div id="sliderContainer" className="center-block">
-				<div id="tortoise"></div>
+				<div id="tortoise"><div></div></div>
 				<ReactSlider  defaultValue={2} 
+											min={1}
 											max={10} 
 											orientation='horizontal'
 											withBars={true}
@@ -15,7 +16,7 @@ export default class SpeedControlsBlock extends Component{
 											pearling={true}
 											value={this.props.sliderValue}
 											onChange={this.props.updateSliderValue}/>	
-				<div id="hare"></div>
+				<div id="hare"><div></div></div>
 			</div>
 			
 		)

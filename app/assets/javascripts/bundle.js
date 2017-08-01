@@ -13267,13 +13267,14 @@ var HubIndexListItem = function (_React$Component) {
 			}
 
 			var now = this.state.currentImageIndex / hub.photographs.length * 100;
+			var progressBar = hub.photographs.length > 1 ? _react2.default.createElement(_reactBootstrap.ProgressBar, { bsStyle: 'danger', now: now }) : "";
 
 			if (USER_IS_MOBILE) {
 				return _react2.default.createElement(
 					'div',
 					{ className: 'center-block',
 						style: { position: "relative" } },
-					_react2.default.createElement(_reactBootstrap.ProgressBar, { bsStyle: 'danger', now: now }),
+					progressBar,
 					imageToUse,
 					_react2.default.createElement('img', { src: imageSrc,
 						alt: 'Fingerprint to animate timelapse.',
@@ -13287,7 +13288,7 @@ var HubIndexListItem = function (_React$Component) {
 					{ onMouseEnter: this.startFlipping,
 						onMouseLeave: this.stopFlipping,
 						className: 'center-block' },
-					_react2.default.createElement(_reactBootstrap.ProgressBar, { bsStyle: 'danger', now: now }),
+					progressBar,
 					imageToUse
 				);
 			}
@@ -26248,9 +26249,7 @@ var HubShow = function (_React$Component) {
 			var spanKlass = "bold";
 			var that = this;
 
-			var titleEditingField = void 0;
-
-			titleEditingField = this.state.editingTitle ? _react2.default.createElement('input', { autoFocus: true,
+			var titleEditingField = this.state.editingTitle ? _react2.default.createElement('input', { autoFocus: true,
 				className: 'center-block heading',
 				value: this.state.nameField,
 				onChange: this.handleChange("nameField") }) : _react2.default.createElement(
@@ -26270,6 +26269,8 @@ var HubShow = function (_React$Component) {
 			);
 
 			var currentUserDisplay = currentUser ? _react2.default.createElement(_info2.default, { currentUser: currentUser }) : "";
+
+			var speedBar = hub.photographs.length > 1 ? _react2.default.createElement(_speed_controls_block2.default, { sliderValue: this.state.sliderValue, updateSliderValue: this.updateSliderValue }) : "";
 			return _react2.default.createElement(
 				'div',
 				null,
@@ -26289,7 +26290,7 @@ var HubShow = function (_React$Component) {
 						spanEditOrSave
 					),
 					_react2.default.createElement(_hub_index_list_item2.default, { hub: hub, windowWidth: this.state.windowWidth, mainImages: mainImages, timeInterval: this.state.timeInterval }),
-					_react2.default.createElement(_speed_controls_block2.default, { sliderValue: this.state.sliderValue, updateSliderValue: this.updateSliderValue }),
+					speedBar,
 					_react2.default.createElement(_hub_map2.default, { lat: hub.latitude, lng: hub.longitude, windowWidth: this.state.windowWidth }),
 					_react2.default.createElement(
 						'div',
@@ -75335,8 +75336,13 @@ var SpeedControlsBlock = function (_Component) {
 			return _react2.default.createElement(
 				'div',
 				{ id: 'sliderContainer', className: 'center-block' },
-				_react2.default.createElement('div', { id: 'tortoise' }),
+				_react2.default.createElement(
+					'div',
+					{ id: 'tortoise' },
+					_react2.default.createElement('div', null)
+				),
 				_react2.default.createElement(_reactSlider2.default, { defaultValue: 2,
+					min: 1,
 					max: 10,
 					orientation: 'horizontal',
 					withBars: true,
@@ -75344,7 +75350,11 @@ var SpeedControlsBlock = function (_Component) {
 					pearling: true,
 					value: this.props.sliderValue,
 					onChange: this.props.updateSliderValue }),
-				_react2.default.createElement('div', { id: 'hare' })
+				_react2.default.createElement(
+					'div',
+					{ id: 'hare' },
+					_react2.default.createElement('div', null)
+				)
 			);
 		}
 	}]);
