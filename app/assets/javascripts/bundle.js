@@ -13599,9 +13599,9 @@ var Home = function (_React$Component) {
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			// if(nextProps.mainImages){
-			// 	this.handleSpriteAnimation();
-			// }
+			if (nextProps.mainImages) {
+				this.handleSpriteAnimation();
+			}
 			this.setState({ hub: nextProps.homeHub,
 				mainImages: nextProps.mainImages });
 		}
