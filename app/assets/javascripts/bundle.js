@@ -13416,7 +13416,9 @@ var CustomNav = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
-			var currentUser = this.props.currentUser;
+			var _props = this.props,
+			    currentUser = _props.currentUser,
+			    selectedLanguage = _props.selectedLanguage;
 
 
 			var navItemSignIn = void 0,
@@ -13434,7 +13436,7 @@ var CustomNav = function (_React$Component) {
 					{ href: '/users/sign_out',
 						rel: 'nofollow',
 						'data-method': 'delete' },
-					_language2.default.navigation.sign_out[this.props.selectedLanguage]
+					_language2.default.navigation.sign_out[selectedLanguage]
 				);
 				brandContent = _react2.default.createElement(
 					_reactRouter.Link,
@@ -13444,30 +13446,30 @@ var CustomNav = function (_React$Component) {
 				hubsLink = _react2.default.createElement(
 					_reactBootstrap.NavItem,
 					{ href: "/" },
-					_language2.default.navigation.hubs[this.props.selectedLanguage]
+					_language2.default.navigation.hubs[selectedLanguage]
 				);
 				profileLink = _react2.default.createElement(
 					_reactBootstrap.NavItem,
 					{ href: "#/edit_user" },
-					_language2.default.navigation.profile[this.props.selectedLanguage]
+					_language2.default.navigation.profile[selectedLanguage]
 				);
 			} else {
 				navItemSignIn = _react2.default.createElement(
 					_reactBootstrap.NavItem,
-					{ href: '/users/sign_in?langId=' + window.LANG_SELECTED,
+					{ href: '/users/sign_in?langId=' + selectedLanguage,
 						onClick: this.navigateToSignIn },
-					_language2.default.navigation.log_in[this.props.selectedLanguage]
+					_language2.default.navigation.log_in[selectedLanguage]
 				);
 				navItemSignUp = _react2.default.createElement(
 					_reactBootstrap.NavItem,
-					{ href: '/users/sign_up?langId=' + window.LANG_SELECTED,
+					{ href: '/users/sign_up?langId=' + selectedLanguage,
 						onClick: this.navigateToSignIn },
-					_language2.default.navigation.sign_up[this.props.selectedLanguage]
+					_language2.default.navigation.sign_up[selectedLanguage]
 				);
 				navItemSignOut = "";
 				brandContent = _react2.default.createElement(
 					'a',
-					{ href: '?langId=' + window.LANG_SELECTED },
+					{ href: '?langId=' + selectedLanguage },
 					'TimeLessLapse'
 				);
 				hubsLink = "";
@@ -26627,7 +26629,7 @@ exports.default = LanguageSelection;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _reactRedux = __webpack_require__(61);
@@ -26646,18 +26648,19 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps(state) {
-  return {
-    currentUser: (0, _selectors.getCurrentUser)(state)
-  };
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+	return {
+		currentUser: (0, _selectors.getCurrentUser)(state),
+		selectedLanguage: ownProps.selectedLanguage
+	};
 };
 
 var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-  return {
-    requestCurrentUser: function requestCurrentUser() {
-      return dispatch(UserActions.requestCurrentUser());
-    }
-  };
+	return {
+		requestCurrentUser: function requestCurrentUser() {
+			return dispatch(UserActions.requestCurrentUser());
+		}
+	};
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_custom_nav2.default);

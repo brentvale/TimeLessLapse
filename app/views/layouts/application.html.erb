@@ -50,8 +50,7 @@
 	
 </div>
 
-<% if session['language_id']['language_id']  %>
-<p><%= session['language_id']['language_id'] %></p>
+<% if !session['language_id'].nil? %>
 	<script>
 		window.LANG_SELECTED = parseInt("<%= session['language_id']['language_id'] %>");
 	</script>

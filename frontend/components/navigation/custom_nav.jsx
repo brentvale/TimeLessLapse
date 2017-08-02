@@ -19,7 +19,7 @@ class CustomNav extends React.Component {
 	}
 	
 	render(){
-	  const {currentUser} = this.props;
+	  const {currentUser, selectedLanguage} = this.props;
 		
 		let navItemSignIn, navItemSignUp, navItemSignOut, brandContent, hubsLink, profileLink;
 		
@@ -29,23 +29,23 @@ class CustomNav extends React.Component {
 			navItemSignUp = "";
     	navItemSignOut =  <NavItem  href="/users/sign_out"
                       								rel="nofollow" 
-                      								data-method="delete">{language.navigation.sign_out[this.props.selectedLanguage]}</NavItem>
+                      								data-method="delete">{language.navigation.sign_out[selectedLanguage]}</NavItem>
 			brandContent = <Link to={"/take_photo"}>
 												<i className="fa fa-camera" aria-hidden="true"></i>
 										 </Link>;
 			hubsLink = <NavItem href={"/"}>
-									 {language.navigation.hubs[this.props.selectedLanguage]}
+									 {language.navigation.hubs[selectedLanguage]}
 								 </NavItem>;
 			profileLink = <NavItem href={"#/edit_user"}>
-											{language.navigation.profile[this.props.selectedLanguage]}
+											{language.navigation.profile[selectedLanguage]}
 									 	</NavItem>;
 		} else {
-    	navItemSignIn =  <NavItem  href={`/users/sign_in?langId=${window.LANG_SELECTED}`}
-																			onClick={this.navigateToSignIn}>{language.navigation.log_in[this.props.selectedLanguage]}</NavItem>
-    	navItemSignUp =  <NavItem  href={`/users/sign_up?langId=${window.LANG_SELECTED}`}
-																			onClick={this.navigateToSignIn}>{language.navigation.sign_up[this.props.selectedLanguage]}</NavItem>
+    	navItemSignIn =  <NavItem  href={`/users/sign_in?langId=${selectedLanguage}`}
+																			onClick={this.navigateToSignIn}>{language.navigation.log_in[selectedLanguage]}</NavItem>
+    	navItemSignUp =  <NavItem  href={`/users/sign_up?langId=${selectedLanguage}`}
+																			onClick={this.navigateToSignIn}>{language.navigation.sign_up[selectedLanguage]}</NavItem>
 			navItemSignOut = "";
-			brandContent = <a href={`?langId=${window.LANG_SELECTED}`}>TimeLessLapse</a>;
+			brandContent = <a href={`?langId=${selectedLanguage}`}>TimeLessLapse</a>;
 			hubsLink = "";
 			profileLink = "";
 		}

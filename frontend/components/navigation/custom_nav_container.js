@@ -6,8 +6,9 @@ import * as UserActions from '../../actions/user_actions';
 
 
 
-const mapStateToProps = state => ({
-	currentUser: getCurrentUser(state)
+const mapStateToProps = (state, ownProps) => ({
+	currentUser: getCurrentUser(state),
+	selectedLanguage: ownProps.selectedLanguage
 });
 
 const mapDispatchToProps = dispatch => ({
