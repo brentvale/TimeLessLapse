@@ -13220,16 +13220,18 @@ var HubIndexListItem = function (_React$Component) {
 	}, {
 		key: 'startFlipping',
 		value: function startFlipping(e) {
+			var _this2 = this;
+
 			e.preventDefault();
-			var that = this;
+
 			var photosLength = this.props.hub.photographs.length;
 			this.interval = setInterval(function () {
-				if (that.state.currentImageIndex + 1 < photosLength) {
-					that.setState({ currentImageIndex: that.state.currentImageIndex + 1 });
+				if (_this2.state.currentImageIndex + 1 < photosLength) {
+					_this2.setState({ currentImageIndex: _this2.state.currentImageIndex + 1 });
 				} else {
-					that.setState({ currentImageIndex: 0 });
+					_this2.setState({ currentImageIndex: 0 });
 				}
-			}, that.state.interval);
+			}, this.state.interval);
 		}
 	}, {
 		key: 'stopFlipping',
