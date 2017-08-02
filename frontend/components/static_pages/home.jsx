@@ -90,15 +90,17 @@ class Home extends React.Component{
 	}
 	
 	render(){
-		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay;
+		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay, speedBar;
 		if(!this.state.hub || !this.state.mainImages){
 			hubIndexListItemDisplay = "";
 			mountainImageDisplay = "";
 			cameraImageDisplay = "";
+			speedBar = "";
 		} else {
 			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages} timeInterval={this.state.timeInterval}/>;
 			mountainImageDisplay = <img className="mountain" src={this.state.mainImages.mountain_silhouette_url} alt="Mountains" />;
 			cameraImageDisplay = <img className="tripod" src={this.state.mainImages.camera_url} alt="Camera Silhouette" />;
+			speedBar = <SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>;
 		}
 		
 		let landingSpriteStyle;
@@ -110,8 +112,6 @@ class Home extends React.Component{
 		
 		let instructionsText = (USER_IS_MOBILE) ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint.":"Enjoy the compiled timelapse by hovering over the photo with your mouse.";
 		
-		const speedBar = (this.state.hub && this.state.hub.photographs.length > 1) ? <SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>
-																																														 : "";
 		return(
 			<div className="page-block page-block-border center-block">
 				
@@ -158,7 +158,6 @@ class Home extends React.Component{
 					<div className="button button-create button-landing-width hand-on-hover button-height-large" onClick={this.handleGuestLogin}>Guest Login</div>
 				</div>
 
-				
 			</div>
 		)
 	}

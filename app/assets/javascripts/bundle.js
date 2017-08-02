@@ -13593,15 +13593,18 @@ var Home = function (_React$Component) {
 		value: function render() {
 			var hubIndexListItemDisplay = void 0,
 			    mountainImageDisplay = void 0,
-			    cameraImageDisplay = void 0;
+			    cameraImageDisplay = void 0,
+			    speedBar = void 0;
 			if (!this.state.hub || !this.state.mainImages) {
 				hubIndexListItemDisplay = "";
 				mountainImageDisplay = "";
 				cameraImageDisplay = "";
+				speedBar = "";
 			} else {
 				hubIndexListItemDisplay = _react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages, timeInterval: this.state.timeInterval });
 				mountainImageDisplay = _react2.default.createElement('img', { className: 'mountain', src: this.state.mainImages.mountain_silhouette_url, alt: 'Mountains' });
 				cameraImageDisplay = _react2.default.createElement('img', { className: 'tripod', src: this.state.mainImages.camera_url, alt: 'Camera Silhouette' });
+				speedBar = _react2.default.createElement(_speed_controls_block2.default, { sliderValue: this.state.sliderValue, updateSliderValue: this.updateSliderValue });
 			}
 
 			var landingSpriteStyle = void 0;
@@ -13613,7 +13616,6 @@ var Home = function (_React$Component) {
 
 			var instructionsText = USER_IS_MOBILE ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint." : "Enjoy the compiled timelapse by hovering over the photo with your mouse.";
 
-			var speedBar = this.state.hub && this.state.hub.photographs.length > 1 ? _react2.default.createElement(_speed_controls_block2.default, { sliderValue: this.state.sliderValue, updateSliderValue: this.updateSliderValue }) : "";
 			return _react2.default.createElement(
 				'div',
 				{ className: 'page-block page-block-border center-block' },
