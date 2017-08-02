@@ -90,16 +90,16 @@ class Home extends React.Component{
 	render(){
 		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay, speedBar;
 		
-		if(!this.state.hub || !this.state.mainImages){
-			hubIndexListItemDisplay = "";
-			mountainImageDisplay = "";
-			cameraImageDisplay = "";
-			speedBar = "";
-		} else {
+		if(this.state.hub && this.state.mainImages){
 			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages} timeInterval={this.state.timeInterval}/>;
 			mountainImageDisplay = <img className="mountain" src={this.state.mainImages.mountain_silhouette_url} alt="Mountains" />;
 			cameraImageDisplay = <img className="tripod" src={this.state.mainImages.camera_url} alt="Camera Silhouette" />;
 			speedBar = <SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>;
+		} else {
+			hubIndexListItemDisplay = "";
+			mountainImageDisplay = "";
+			cameraImageDisplay = "";
+			speedBar = "";
 		}
 		
 		let landingSpriteStyle;

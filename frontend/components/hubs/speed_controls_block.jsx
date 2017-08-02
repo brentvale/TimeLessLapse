@@ -18,7 +18,6 @@ export default class SpeedControlsBlock extends Component{
 											onChange={this.props.updateSliderValue}/>	
 				<div id="hare"><div></div></div>
 			</div>
-			
 		)
 	}
 }
