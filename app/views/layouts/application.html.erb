@@ -50,10 +50,36 @@
 	
 </div>
 
+<% if session['language_id']['language_id']  %>
+<p><%= session['language_id']['language_id'] %></p>
+	<script>
+		window.LANG_SELECTED = parseInt("<%= session['language_id']['language_id'] %>");
+	</script>
+<% else %>
+	<script>
+		$(function(){
+			$.ajax({
+				url: '/static_pages/update_session_language_id',
+				method: 'POST',
+				data: {
+					static_pages: {
+						language_id: 0
+					}
+				},
+				success: (resp) => {
+					window.LANG_SELECTED = parseInt(resp.language_id);
+				},
+				error: () => {
+					console.log("unable to update active language");
+				}
+			})
+		})
+	</script>
+<% end %>
 
 <script>
-  //manually remove alerts/notices from devise
-  $(function(){
+  $(function(){		
+		//manually remove alerts/notices from devise
     setTimeout(function(){
       $(".notice").addClass("remove-element");
     }, 3000);

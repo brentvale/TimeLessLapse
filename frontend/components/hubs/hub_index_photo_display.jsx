@@ -22,6 +22,7 @@ class HubIndexPhotoDisplay extends React.Component{
 	
 	componentWillUnmount(){
 		window.removeEventListener('resize', this.changeStateSizeIfBreakpointReached);
+		clearInterval(this.interval);
 	}
 	
 	changeStateSizeIfBreakpointReached(){

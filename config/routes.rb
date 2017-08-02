@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get '/static_pages/new_hub_instructions', to: 'static_pages#new_hub_instructions', as: '/create_hub'
   get '/static_pages/fetch_landing_hub', to: 'static_pages#fetch_landing_hub'
   get '/static_pages/fetch_main_images', to: 'static_pages#fetch_main_images'
+  post '/static_pages/update_session_language_id', to: 'static_pages#update_session_language_id'
   
   get '/terms_of_service', to: 'static_pages#terms_of_service'
   get '/payment_terms_of_service', to: 'static_pages#payment_terms_of_service'
