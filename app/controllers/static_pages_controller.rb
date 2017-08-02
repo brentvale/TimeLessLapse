@@ -1,5 +1,11 @@
 class StaticPagesController < ApplicationController
-  before_action :authenticate_user!, except: [:home, :fetch_landing_hub, :fetch_main_images, :demonstration, :terms_of_service, :payment_terms_of_service]
+  before_action :authenticate_user!, except: [:home, 
+                                              :fetch_landing_hub, 
+                                              :fetch_main_images, 
+                                              :demonstration, 
+                                              :terms_of_service, 
+                                              :payment_terms_of_service,
+                                              :update_session_language_id]
   
   def home
   end
@@ -27,6 +33,17 @@ class StaticPagesController < ApplicationController
   end
   
   def payment_terms_of_service
+  end
+  
+  def update_session_language_id
+    session[:language_id] = strong_params
+    render json: {language_id: session[:language_id][:language_id]}
+  end
+  
+  private
+  
+  def strong_params
+    params.require(:static_pages).permit(:language_id)
   end
   
 end

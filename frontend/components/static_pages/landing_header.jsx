@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 
+import language from '../../util/language';
+
 const SPRITE_ANIMATION_TIME = 200;
 
 class LandingHeader extends Component{
@@ -12,6 +14,7 @@ class LandingHeader extends Component{
 		this.handleSpriteAnimation = this.handleSpriteAnimation.bind(this);
 		this.calculateBackgroundPositionFromStateImageIndex = this.calculateBackgroundPositionFromStateImageIndex.bind(this);
 	}
+	
 	componentDidMount(){
 		this.handleSpriteAnimation();
 	}
@@ -50,6 +53,7 @@ class LandingHeader extends Component{
 	}
 	
 	render(){
+		const {selectedLanguage} = this.props;
 		let landingSpriteStyle;
 		if(this.state.imageIndex === 0){
 			landingSpriteStyle = "0px 0px"
@@ -61,7 +65,7 @@ class LandingHeader extends Component{
 				<div id="landingHeader">
 					<div id="landingSprite" className="center-block" style={{backgroundPosition: landingSpriteStyle}}></div>
 					<h1>Time<span>less</span>lapse</h1>
-					<h2>Watch daily photos become life&#39;s timeless&nbsp;events.</h2>
+					<h2>{language.landing_header.caption[selectedLanguage]}</h2>
 				</div>
 		)
 	}

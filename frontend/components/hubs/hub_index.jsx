@@ -11,8 +11,8 @@ import UserInfo from '../users/info';
 const DEFAULT_TIME_INTERVAL = 400;
 
 class HubIndex extends React.Component{
-	constructor(){
-		super();
+	constructor(props){
+		super(props);
 		this.state = {
 			fetchedHubs: false,
 			activeHubId: 0
@@ -41,9 +41,9 @@ class HubIndex extends React.Component{
 	}
 	
 	render(){
-		let {hubs, currentUser} = this.props;
+		let {hubs, currentUser, selectedLanguage} = this.props;
 		if(!currentUser){
-			return (<HomeContainer />);
+			return (<HomeContainer selectedLanguage={selectedLanguage}/>);
 		}
 		
 		if(hubs.length === 0){

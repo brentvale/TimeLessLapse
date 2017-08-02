@@ -6,10 +6,13 @@ import * as UserActions from '../../actions/user_actions';
 import HubIndex from './hub_index';
 
 
-const mapStateToProps = state => ({
-	hubs: getAllHubs(state),
-	currentUser: getCurrentUser(state),
-});
+const mapStateToProps = (state, ownProps) => {
+	return {
+		hubs: getAllHubs(state),
+		currentUser: getCurrentUser(state),
+		selectedLanguage: ownProps.selectedLanguage
+	}
+}
 
 const mapDispatchToProps = dispatch => ({
   requestHubs: () => dispatch(HubActions.requestHubs()),

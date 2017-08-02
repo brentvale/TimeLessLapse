@@ -2,6 +2,8 @@ import React from 'react';
 import {Navbar, Nav, NavItem, NavDropdown, MenuItem} from 'react-bootstrap';
 import { Link } from 'react-router';
 
+import language from '../../util/language';
+
 class CustomNav extends React.Component {
 	constructor(){
 		super();
@@ -27,25 +29,23 @@ class CustomNav extends React.Component {
 			navItemSignUp = "";
     	navItemSignOut =  <NavItem  href="/users/sign_out"
                       								rel="nofollow" 
-                      								data-method="delete">Sign Out</NavItem>
+                      								data-method="delete">{language.navigation.sign_out[this.props.selectedLanguage]}</NavItem>
 			brandContent = <Link to={"/take_photo"}>
 												<i className="fa fa-camera" aria-hidden="true"></i>
 										 </Link>;
 			hubsLink = <NavItem href={"/"}>
-									 Hubs
+									 {language.navigation.hubs[this.props.selectedLanguage]}
 								 </NavItem>;
 			profileLink = <NavItem href={"#/edit_user"}>
-											Profile
+											{language.navigation.profile[this.props.selectedLanguage]}
 									 	</NavItem>;
 		} else {
-    	navItemSignIn =  <NavItem  href="/users/sign_in"
-                      								rel="nofollow"
-																			onClick={this.navigateToSignIn}>Sign In</NavItem>
-    	navItemSignUp =  <NavItem  href="/users/sign_up"
-                      								rel="nofollow"
-																			onClick={this.navigateToSignIn}>Sign Up</NavItem>
+    	navItemSignIn =  <NavItem  href={`/users/sign_in?langId=${window.LANG_SELECTED}`}
+																			onClick={this.navigateToSignIn}>{language.navigation.log_in[this.props.selectedLanguage]}</NavItem>
+    	navItemSignUp =  <NavItem  href={`/users/sign_up?langId=${window.LANG_SELECTED}`}
+																			onClick={this.navigateToSignIn}>{language.navigation.sign_up[this.props.selectedLanguage]}</NavItem>
 			navItemSignOut = "";
-			brandContent = <a href="/">TimeLessLapse</a>;
+			brandContent = <a href={`?langId=${window.LANG_SELECTED}`}>TimeLessLapse</a>;
 			hubsLink = "";
 			profileLink = "";
 		}
