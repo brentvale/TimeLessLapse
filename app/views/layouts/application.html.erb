@@ -49,12 +49,9 @@
 	<%= yield %>
 	
 </div>
-
-<% if !session['language_id'].nil? %>
-	<script>
-		window.LANG_SELECTED = parseInt("<%= session['language_id']['language_id'] %>");
-	</script>
-<% else %>
+<p><%= session %></p>
+<p><%= session['language_id'] %></p>
+<% if session.nil? || session['language_id'].nil? %>
 	<script>
 		$(function(){
 			$.ajax({
@@ -73,6 +70,13 @@
 				}
 			})
 		})
+		
+	</script>
+<% else %>
+	<script>
+		$(function(){		
+			window.LANG_SELECTED = parseInt("<%= session['language_id']['language_id'] %>");
+		});
 	</script>
 <% end %>
 

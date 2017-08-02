@@ -8,7 +8,7 @@ class App extends Component{
 	constructor(){
 		super();
 		this.state = {
-			activeLanguage: window.LANG_SELECTED
+			activeLanguage: window.LANG_SELECTED || 0
 		};
 		this.updateActiveLanguage = this.updateActiveLanguage.bind(this);
 	}

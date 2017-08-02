@@ -25485,7 +25485,7 @@ var App = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this));
 
 		_this.state = {
-			activeLanguage: window.LANG_SELECTED
+			activeLanguage: window.LANG_SELECTED || 0
 		};
 		_this.updateActiveLanguage = _this.updateActiveLanguage.bind(_this);
 		return _this;
