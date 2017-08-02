@@ -1,11 +1,11 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { Link } from 'react-router';
 import {ProgressBar} from 'react-bootstrap';
 
 //GLOBAL VARIABLES
 import { tabletBreakPoint } from '../../util/global_variables';
 
-class HubIndexListItem extends React.Component{
+class HubIndexListItem extends Component{
 	constructor(){
 		super();
 		this.state = {
@@ -80,10 +80,10 @@ class HubIndexListItem extends React.Component{
 			return <div>Not photographs with timelapse hub with id {hub.id}</div>
 		}	
 		
-		let imageSrc = "";
-		if(typeof mainImages !== "undefined"){
-			imageSrc = mainImages.finger_print_url;
-		}								
+		let imageSrc = "https://image.ibb.co/mdbUH5/finger_print.png";
+		// if(typeof mainImages !== "undefined"){
+// 			imageSrc = mainImages.finger_print_url;
+// 		}							
 		
 		let imageToUse;
 		if(windowWidth > 400){

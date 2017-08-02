@@ -19,7 +19,7 @@ class Home extends React.Component{
 			//value of 1 thru 10 represents frames per second value
 			//calculation of timeInterval = sliderValue / 1000 to get miliseconds
 			sliderValue: 2
-		}
+		};
 		this.handleSpriteAnimation = this.handleSpriteAnimation.bind(this);
 		this.calculateBackgroundPositionFromStateImageIndex = this.calculateBackgroundPositionFromStateImageIndex.bind(this);
 		this.navigateToSignUp = this.navigateToSignUp.bind(this);
@@ -89,11 +89,13 @@ class Home extends React.Component{
 	
 	render(){
 		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay, speedBar;
-		
-		if(this.state.hub && this.state.mainImages){
+		// https://image.ibb.co/mdbUH5/finger_print.png
+		// https://image.ibb.co/fLUic5/mountain_silhouette.png
+		// https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png
+		if(this.state.hub){
 			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages} timeInterval={this.state.timeInterval}/>;
-			mountainImageDisplay = <img className="mountain" src={this.state.mainImages.mountain_silhouette_url} alt="Mountains" />;
-			cameraImageDisplay = <img className="tripod" src={this.state.mainImages.camera_url} alt="Camera Silhouette" />;
+			mountainImageDisplay = <img className="mountain" src="https://image.ibb.co/fLUic5/mountain_silhouette.png" alt="Mountains" />;
+			cameraImageDisplay = <img className="tripod" src="https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png" alt="Camera Silhouette" />;
 			speedBar = <SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>;
 		} else {
 			hubIndexListItemDisplay = "";

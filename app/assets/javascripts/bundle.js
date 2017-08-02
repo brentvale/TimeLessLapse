@@ -13152,8 +13152,8 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //GLOBAL VARIABLES
 
 
-var HubIndexListItem = function (_React$Component) {
-	_inherits(HubIndexListItem, _React$Component);
+var HubIndexListItem = function (_Component) {
+	_inherits(HubIndexListItem, _Component);
 
 	function HubIndexListItem() {
 		_classCallCheck(this, HubIndexListItem);
@@ -13256,10 +13256,10 @@ var HubIndexListItem = function (_React$Component) {
 				);
 			}
 
-			var imageSrc = "";
-			if (typeof mainImages !== "undefined") {
-				imageSrc = mainImages.finger_print_url;
-			}
+			var imageSrc = "https://image.ibb.co/mdbUH5/finger_print.png";
+			// if(typeof mainImages !== "undefined"){
+			// 			imageSrc = mainImages.finger_print_url;
+			// 		}							
 
 			var imageToUse = void 0;
 			if (windowWidth > 400) {
@@ -13298,7 +13298,7 @@ var HubIndexListItem = function (_React$Component) {
 	}]);
 
 	return HubIndexListItem;
-}(_react2.default.Component);
+}(_react.Component);
 
 exports.default = HubIndexListItem;
 
@@ -13667,11 +13667,13 @@ var Home = function (_React$Component) {
 			    mountainImageDisplay = void 0,
 			    cameraImageDisplay = void 0,
 			    speedBar = void 0;
-
-			if (this.state.hub && this.state.mainImages) {
+			// https://image.ibb.co/mdbUH5/finger_print.png
+			// https://image.ibb.co/fLUic5/mountain_silhouette.png
+			// https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png
+			if (this.state.hub) {
 				hubIndexListItemDisplay = _react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages, timeInterval: this.state.timeInterval });
-				mountainImageDisplay = _react2.default.createElement('img', { className: 'mountain', src: this.state.mainImages.mountain_silhouette_url, alt: 'Mountains' });
-				cameraImageDisplay = _react2.default.createElement('img', { className: 'tripod', src: this.state.mainImages.camera_url, alt: 'Camera Silhouette' });
+				mountainImageDisplay = _react2.default.createElement('img', { className: 'mountain', src: 'https://image.ibb.co/fLUic5/mountain_silhouette.png', alt: 'Mountains' });
+				cameraImageDisplay = _react2.default.createElement('img', { className: 'tripod', src: 'https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png', alt: 'Camera Silhouette' });
 				speedBar = _react2.default.createElement(_speed_controls_block2.default, { sliderValue: this.state.sliderValue, updateSliderValue: this.updateSliderValue });
 			} else {
 				hubIndexListItemDisplay = "";
