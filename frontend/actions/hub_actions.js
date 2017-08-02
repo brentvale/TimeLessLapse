@@ -2,14 +2,8 @@ import * as util from '../util/hub_api_util';
 
 export const RECEIVE_HUBS = "RECEIVE_HUBS";
 export const RECEIVE_HUB = "RECEIVE_HUB";
-export const RECEIVE_HUB_IMAGE = "RECEIVE_HUB_IMAGE";
 
 //async actions
-export function requestMainImages(){
-	return(dispatch) => {
-		return util.requestMainImages().then(obj => dispatch(receiveMainImages(obj)) );
-	};
-}
 
 export function requestHubs(){
 	return(dispatch) => {
@@ -36,11 +30,6 @@ export function requestHomeHub(){
 }
 
 //sync actions
-export const receiveMainImages = (obj) => ({
-  type: RECEIVE_HUB_IMAGE,
-  mainImages: obj
-});
-
 export const receiveHubs = (obj) => ({
   type: RECEIVE_HUBS,
   hubs: obj

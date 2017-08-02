@@ -12,8 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	requestHomeHub: () => dispatch(HubActions.requestHomeHub()),
-	requestMainImages: () => dispatch(HubActions.requestMainImages())
+	requestHomeHub: () => dispatch(HubActions.requestHomeHub())
 });
 
 export default connect(

@@ -21,7 +21,7 @@ const getCurrentUser = ({ users }) => {
 }
 
 const getHomeHub = ({ hubs }) => {
-	return hubs[5];
+	return hubs[14];
 }
 
 const getMainImages = ({ hubs }) => {

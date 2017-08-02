@@ -32,10 +32,3 @@ export const fetchLandingHub = () => (
     url: '/static_pages/fetch_landing_hub'
   })
 );
-
-export const requestMainImages = () => (
-  $.ajax({
-    method: 'GET',
-    url: '/static_pages/fetch_main_images'
-  })
-);

@@ -5,19 +5,9 @@ class StaticPagesController < ApplicationController
   end
   
   def fetch_landing_hub
-    if Rails.env.production?
-      @hub = TimelapseHub.find(14)
-    else
-      @hub = TimelapseHub.find(5)
-    end
+    @hub = TimelapseHub.find(14)
     @photographs = @hub.photographs.sort_by {|x| x.order_number}
     render 'api/timelapse_hubs/show'
-  end
-  
-  def fetch_main_images
-    render json: {mountain_silhouette_url: ActionController::Base.helpers.asset_path('mountain_silhouette.png'),
-                  camera_url: ActionController::Base.helpers.asset_path('tripod_with_camera_silhouette.png'),
-                  finger_print_url: ActionController::Base.helpers.asset_path('finger_print.png')}
   end
   
   def new_hub_instructions

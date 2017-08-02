@@ -5157,8 +5157,7 @@ module.exports = reactProdInvariant;
 Object.defineProperty(exports, "__esModule", {
 	value: true
 });
-exports.receiveHub = exports.receiveHubs = exports.receiveMainImages = exports.RECEIVE_HUB_IMAGE = exports.RECEIVE_HUB = exports.RECEIVE_HUBS = undefined;
-exports.requestMainImages = requestMainImages;
+exports.receiveHub = exports.receiveHubs = exports.RECEIVE_HUB = exports.RECEIVE_HUBS = undefined;
 exports.requestHubs = requestHubs;
 exports.requestHub = requestHub;
 exports.updateHub = updateHub;
@@ -5172,16 +5171,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var RECEIVE_HUBS = exports.RECEIVE_HUBS = "RECEIVE_HUBS";
 var RECEIVE_HUB = exports.RECEIVE_HUB = "RECEIVE_HUB";
-var RECEIVE_HUB_IMAGE = exports.RECEIVE_HUB_IMAGE = "RECEIVE_HUB_IMAGE";
 
 //async actions
-function requestMainImages() {
-	return function (dispatch) {
-		return util.requestMainImages().then(function (obj) {
-			return dispatch(receiveMainImages(obj));
-		});
-	};
-}
 
 function requestHubs() {
 	return function (dispatch) {
@@ -5216,13 +5207,6 @@ function requestHomeHub() {
 }
 
 //sync actions
-var receiveMainImages = exports.receiveMainImages = function receiveMainImages(obj) {
-	return {
-		type: RECEIVE_HUB_IMAGE,
-		mainImages: obj
-	};
-};
-
 var receiveHubs = exports.receiveHubs = function receiveHubs(obj) {
 	return {
 		type: RECEIVE_HUBS,
@@ -5278,7 +5262,7 @@ var getCurrentUser = function getCurrentUser(_ref3) {
 var getHomeHub = function getHomeHub(_ref4) {
 	var hubs = _ref4.hubs;
 
-	return hubs[5];
+	return hubs[14];
 };
 
 var getMainImages = function getMainImages(_ref5) {
@@ -13551,6 +13535,10 @@ var _speed_controls_block = __webpack_require__(169);
 
 var _speed_controls_block2 = _interopRequireDefault(_speed_controls_block);
 
+var _landing_header = __webpack_require__(670);
+
+var _landing_header2 = _interopRequireDefault(_landing_header);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13561,8 +13549,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 //COMPONENTS
 
-
-var SPRITE_ANIMATION_TIME = 200;
 
 var Home = function (_React$Component) {
 	_inherits(Home, _React$Component);
@@ -13575,15 +13561,11 @@ var Home = function (_React$Component) {
 		_this.state = {
 			hub: null,
 			mainImages: null,
-			//image has 6 column and 5 rows, total of 30 images 
-			imageIndex: 0,
 			timeInterval: 500,
 			//value of 1 thru 10 represents frames per second value
 			//calculation of timeInterval = sliderValue / 1000 to get miliseconds
 			sliderValue: 2
 		};
-		_this.handleSpriteAnimation = _this.handleSpriteAnimation.bind(_this);
-		_this.calculateBackgroundPositionFromStateImageIndex = _this.calculateBackgroundPositionFromStateImageIndex.bind(_this);
 		_this.navigateToSignUp = _this.navigateToSignUp.bind(_this);
 		_this.handleGuestLogin = _this.handleGuestLogin.bind(_this);
 		_this.updateSliderValue = _this.updateSliderValue.bind(_this);
@@ -13594,59 +13576,16 @@ var Home = function (_React$Component) {
 		key: 'componentDidMount',
 		value: function componentDidMount() {
 			this.props.requestHomeHub();
-			this.props.requestMainImages();
 		}
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			if (nextProps.mainImages) {
-				this.handleSpriteAnimation();
-			}
-			this.setState({ hub: nextProps.homeHub,
-				mainImages: nextProps.mainImages });
-		}
-	}, {
-		key: 'componentWillUnmount',
-		value: function componentWillUnmount() {
-			clearInterval(this.interval);
-		}
-	}, {
-		key: 'calculateBackgroundPositionFromStateImageIndex',
-		value: function calculateBackgroundPositionFromStateImageIndex() {
-			//image dimensions = 1200 x 920 => height: 184px; width: 200px;
-			if (this.state.imageIndex === 0) {
-				return "0px 0px";
-			} else if (this.state.imageIndex >= 30) {
-				return "-1000px -736px";
-			} else {
-				var col = this.state.imageIndex % 6;
-				var row = Math.floor(this.state.imageIndex / 6);
-
-				var xPixels = col * 200;
-				var yPixels = row * 184;
-
-				return '-' + xPixels + 'px -' + yPixels + 'px';
-			}
+			this.setState({ hub: nextProps.homeHub });
 		}
 	}, {
 		key: 'handleGuestLogin',
 		value: function handleGuestLogin() {
 			window.location.replace('/welcome_guest_user');
-		}
-	}, {
-		key: 'handleSpriteAnimation',
-		value: function handleSpriteAnimation() {
-			var _this2 = this;
-
-			clearInterval(this.interval);
-			this.interval = setInterval(function () {
-				//39 total images with 0 indexing
-				if (_this2.state.imageIndex < 50) {
-					_this2.setState({ imageIndex: _this2.state.imageIndex + 1 });
-				} else {
-					_this2.setState({ imageIndex: 0 });
-				}
-			}, SPRITE_ANIMATION_TIME);
 		}
 	}, {
 		key: 'navigateToSignUp',
@@ -13664,57 +13603,25 @@ var Home = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var hubIndexListItemDisplay = void 0,
-			    mountainImageDisplay = void 0,
-			    cameraImageDisplay = void 0,
 			    speedBar = void 0;
-			// https://image.ibb.co/mdbUH5/finger_print.png
-			// https://image.ibb.co/fLUic5/mountain_silhouette.png
-			// https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png
+
 			if (this.state.hub) {
-				hubIndexListItemDisplay = _react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, homePage: true, mainImages: this.state.mainImages, timeInterval: this.state.timeInterval });
-				mountainImageDisplay = _react2.default.createElement('img', { className: 'mountain', src: 'https://image.ibb.co/fLUic5/mountain_silhouette.png', alt: 'Mountains' });
-				cameraImageDisplay = _react2.default.createElement('img', { className: 'tripod', src: 'https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png', alt: 'Camera Silhouette' });
+				hubIndexListItemDisplay = _react2.default.createElement(_hub_index_list_item2.default, { hub: this.state.hub, timeInterval: this.state.timeInterval, windowWidth: 500 });
 				speedBar = _react2.default.createElement(_speed_controls_block2.default, { sliderValue: this.state.sliderValue, updateSliderValue: this.updateSliderValue });
 			} else {
 				hubIndexListItemDisplay = "";
-				mountainImageDisplay = "";
-				cameraImageDisplay = "";
 				speedBar = "";
 			}
 
-			var landingSpriteStyle = void 0;
-			if (this.state.imageIndex === 0) {
-				landingSpriteStyle = "0px 0px";
-			} else {
-				landingSpriteStyle = this.calculateBackgroundPositionFromStateImageIndex();
-			}
+			var mountainImageDisplay = _react2.default.createElement('img', { className: 'mountain', src: 'https://image.ibb.co/fLUic5/mountain_silhouette.png', alt: 'Mountains' });
+			var cameraImageDisplay = _react2.default.createElement('img', { className: 'tripod', src: 'https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png', alt: 'Camera Silhouette' });
 
 			var instructionsText = USER_IS_MOBILE ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint." : "Enjoy the compiled timelapse by hovering over the photo with your mouse.";
 
 			return _react2.default.createElement(
 				'div',
 				{ className: 'page-block page-block-border center-block' },
-				_react2.default.createElement(
-					'div',
-					{ id: 'landingHeader' },
-					_react2.default.createElement('div', { id: 'landingSprite', className: 'center-block', style: { backgroundPosition: landingSpriteStyle } }),
-					_react2.default.createElement(
-						'h1',
-						null,
-						'Time',
-						_react2.default.createElement(
-							'span',
-							null,
-							'less'
-						),
-						'lapse'
-					),
-					_react2.default.createElement(
-						'h2',
-						null,
-						'Watch daily photos become life\'s timeless\xA0events.'
-					)
-				),
+				_react2.default.createElement(_landing_header2.default, null),
 				_react2.default.createElement(
 					'div',
 					{ className: 'landing-page-block center-block' },
@@ -27463,9 +27370,6 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 	return {
 		requestHomeHub: function requestHomeHub() {
 			return dispatch(HubActions.requestHomeHub());
-		},
-		requestMainImages: function requestMainImages() {
-			return dispatch(HubActions.requestMainImages());
 		}
 	};
 };
@@ -28084,9 +27988,6 @@ var hubsReducer = function hubsReducer() {
     case HubActions.RECEIVE_HUB:
       newState[action.hub.id] = action.hub;
       return newState;
-    case HubActions.RECEIVE_HUB_IMAGE:
-      newState["mainImages"] = action.mainImages;
-      return newState;
     default:
       return state;
   }
@@ -28266,7 +28167,7 @@ document.addEventListener('DOMContentLoaded', function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.requestMainImages = exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
+exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
 
 var _hub_actions = __webpack_require__(65);
 
@@ -28302,13 +28203,6 @@ var fetchLandingHub = exports.fetchLandingHub = function fetchLandingHub() {
   return $.ajax({
     method: 'GET',
     url: '/static_pages/fetch_landing_hub'
-  });
-};
-
-var requestMainImages = exports.requestMainImages = function requestMainImages() {
-  return $.ajax({
-    method: 'GET',
-    url: '/static_pages/fetch_main_images'
   });
 };
 
@@ -75386,6 +75280,132 @@ function isReactComponent(component) {
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 670 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SPRITE_ANIMATION_TIME = 200;
+
+var LandingHeader = function (_Component) {
+	_inherits(LandingHeader, _Component);
+
+	function LandingHeader() {
+		_classCallCheck(this, LandingHeader);
+
+		var _this = _possibleConstructorReturn(this, (LandingHeader.__proto__ || Object.getPrototypeOf(LandingHeader)).call(this));
+
+		_this.state = {
+			//image has 6 column and 5 rows, total of 30 images 
+			imageIndex: 0
+		};
+		_this.handleSpriteAnimation = _this.handleSpriteAnimation.bind(_this);
+		_this.calculateBackgroundPositionFromStateImageIndex = _this.calculateBackgroundPositionFromStateImageIndex.bind(_this);
+		return _this;
+	}
+
+	_createClass(LandingHeader, [{
+		key: "componentDidMount",
+		value: function componentDidMount() {
+			this.handleSpriteAnimation();
+		}
+	}, {
+		key: "componentWillUnmount",
+		value: function componentWillUnmount() {
+			clearInterval(this.interval);
+		}
+	}, {
+		key: "calculateBackgroundPositionFromStateImageIndex",
+		value: function calculateBackgroundPositionFromStateImageIndex() {
+			//image dimensions = 1200 x 920 => height: 184px; width: 200px;
+			if (this.state.imageIndex === 0) {
+				return "0px 0px";
+			} else if (this.state.imageIndex >= 30) {
+				return "-1000px -736px";
+			} else {
+				var col = this.state.imageIndex % 6;
+				var row = Math.floor(this.state.imageIndex / 6);
+
+				var xPixels = col * 200;
+				var yPixels = row * 184;
+
+				return "-" + xPixels + "px -" + yPixels + "px";
+			}
+		}
+	}, {
+		key: "handleSpriteAnimation",
+		value: function handleSpriteAnimation() {
+			var _this2 = this;
+
+			clearInterval(this.interval);
+			this.interval = setInterval(function () {
+				//39 total images with 0 indexing
+				if (_this2.state.imageIndex < 50) {
+					_this2.setState({ imageIndex: _this2.state.imageIndex + 1 });
+				} else {
+					_this2.setState({ imageIndex: 0 });
+				}
+			}, SPRITE_ANIMATION_TIME);
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			var landingSpriteStyle = void 0;
+			if (this.state.imageIndex === 0) {
+				landingSpriteStyle = "0px 0px";
+			} else {
+				landingSpriteStyle = this.calculateBackgroundPositionFromStateImageIndex();
+			}
+
+			return _react2.default.createElement(
+				"div",
+				{ id: "landingHeader" },
+				_react2.default.createElement("div", { id: "landingSprite", className: "center-block", style: { backgroundPosition: landingSpriteStyle } }),
+				_react2.default.createElement(
+					"h1",
+					null,
+					"Time",
+					_react2.default.createElement(
+						"span",
+						null,
+						"less"
+					),
+					"lapse"
+				),
+				_react2.default.createElement(
+					"h2",
+					null,
+					"Watch daily photos become life's timeless\xA0events."
+				)
+			);
+		}
+	}]);
+
+	return LandingHeader;
+}(_react.Component);
+
+exports.default = LandingHeader;
 
 /***/ })
 /******/ ]);

@@ -11,9 +11,6 @@ const hubsReducer = (state = {}, action) => {
     case HubActions.RECEIVE_HUB:
 			newState[action.hub.id] = action.hub;
 			return newState;
-		case HubActions.RECEIVE_HUB_IMAGE:
-			newState["mainImages"] = action.mainImages;
-			return newState;
     default:
       return state;
   }

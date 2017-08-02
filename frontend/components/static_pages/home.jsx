@@ -4,8 +4,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import HubIndexListItem from '../hubs/hub_index_list_item';
 import SpeedControlsBlock from '../hubs/speed_controls_block';
-
-const SPRITE_ANIMATION_TIME = 200;
+import LandingHeader from './landing_header';
 
 class Home extends React.Component{
 	constructor(){
@@ -13,15 +12,11 @@ class Home extends React.Component{
 		this.state = {
 			hub: null,
 			mainImages: null,
-			//image has 6 column and 5 rows, total of 30 images 
-			imageIndex: 0,
 			timeInterval: 500,
 			//value of 1 thru 10 represents frames per second value
 			//calculation of timeInterval = sliderValue / 1000 to get miliseconds
 			sliderValue: 2
 		};
-		this.handleSpriteAnimation = this.handleSpriteAnimation.bind(this);
-		this.calculateBackgroundPositionFromStateImageIndex = this.calculateBackgroundPositionFromStateImageIndex.bind(this);
 		this.navigateToSignUp = this.navigateToSignUp.bind(this);
 		this.handleGuestLogin = this.handleGuestLogin.bind(this);
 		this.updateSliderValue = this.updateSliderValue.bind(this);
@@ -29,52 +24,14 @@ class Home extends React.Component{
 	
 	componentDidMount(){
 		this.props.requestHomeHub();
-		this.props.requestMainImages();
 	}
 	
 	componentWillReceiveProps(nextProps){
-		if(nextProps.mainImages){
-			this.handleSpriteAnimation();
-		}
-		this.setState({hub: nextProps.homeHub,
-									 mainImages: nextProps.mainImages});
-	}
-	
-	componentWillUnmount(){
-		clearInterval(this.interval);
-	}
-	
-	calculateBackgroundPositionFromStateImageIndex(){
-		//image dimensions = 1200 x 920 => height: 184px; width: 200px;
-		if(this.state.imageIndex === 0){
-			return "0px 0px";
-		} else if(this.state.imageIndex >= 30){
-			return "-1000px -736px";
-		} else {
-			const col = this.state.imageIndex % 6;
-			const row = Math.floor(this.state.imageIndex / 6);
-			
-			const xPixels = col * 200;
-			const yPixels = row * 184;
-			
-			return `-${xPixels}px -${yPixels}px`;
-		}
+		this.setState({hub: nextProps.homeHub});
 	}
 	
 	handleGuestLogin(){
 		window.location.replace('/welcome_guest_user');
-	}
-	
-	handleSpriteAnimation(){
-		clearInterval(this.interval);
-		this.interval = setInterval(() => {
-			//39 total images with 0 indexing
-			if(this.state.imageIndex < 50){
-				this.setState({imageIndex: this.state.imageIndex + 1})
-			} else {
-				this.setState({imageIndex: 0});
-			}
-		},SPRITE_ANIMATION_TIME);
 	}
 	
 	navigateToSignUp(){
@@ -88,39 +45,26 @@ class Home extends React.Component{
 	}
 	
 	render(){
-		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay, speedBar;
-		// https://image.ibb.co/mdbUH5/finger_print.png
-		// https://image.ibb.co/fLUic5/mountain_silhouette.png
-		// https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png
+		let hubIndexListItemDisplay, speedBar;
+
 		if(this.state.hub){
-			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} homePage={true} mainImages={this.state.mainImages} timeInterval={this.state.timeInterval}/>;
-			mountainImageDisplay = <img className="mountain" src="https://image.ibb.co/fLUic5/mountain_silhouette.png" alt="Mountains" />;
-			cameraImageDisplay = <img className="tripod" src="https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png" alt="Camera Silhouette" />;
+			hubIndexListItemDisplay = <HubIndexListItem hub={this.state.hub} timeInterval={this.state.timeInterval} windowWidth={500}/>;
 			speedBar = <SpeedControlsBlock sliderValue={this.state.sliderValue} updateSliderValue={this.updateSliderValue}/>;
 		} else {
 			hubIndexListItemDisplay = "";
-			mountainImageDisplay = "";
-			cameraImageDisplay = "";
 			speedBar = "";
 		}
 		
-		let landingSpriteStyle;
-		if(this.state.imageIndex === 0){
-			landingSpriteStyle = "0px 0px"
-		} else {
-			landingSpriteStyle = this.calculateBackgroundPositionFromStateImageIndex();
-		}
+		const mountainImageDisplay = <img className="mountain" src="https://image.ibb.co/fLUic5/mountain_silhouette.png" alt="Mountains" />;
+		const cameraImageDisplay = <img className="tripod" src="https://image.ibb.co/cumwx5/tripod_with_camera_silhouette.png" alt="Camera Silhouette" />;
 		
 		let instructionsText = (USER_IS_MOBILE) ? "Enjoy the compiled timelapse by placing your finger on top of the pink fingerprint.":"Enjoy the compiled timelapse by hovering over the photo with your mouse.";
 		
 		return(
 			<div className="page-block page-block-border center-block">
 				
-				<div id="landingHeader">
-					<div id="landingSprite" className="center-block" style={{backgroundPosition: landingSpriteStyle}}></div>
-					<h1>Time<span>less</span>lapse</h1>
-					<h2>Watch daily photos become life&#39;s timeless&nbsp;events.</h2>
-				</div>
+				<LandingHeader />
+			
 				<div className="landing-page-block center-block">
 					<h3 className="landing-step">Step 1</h3>
 					<h4>Take a Photo to Create a Hub</h4>
