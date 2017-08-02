@@ -33,9 +33,9 @@ class Home extends React.Component{
 	}
 	
 	componentWillReceiveProps(nextProps){
-		if(nextProps.mainImages){
-			this.handleSpriteAnimation();
-		}
+		// if(nextProps.mainImages){
+		// 	this.handleSpriteAnimation();
+		// }
 		this.setState({hub: nextProps.homeHub,
 									 mainImages: nextProps.mainImages});
 	}
