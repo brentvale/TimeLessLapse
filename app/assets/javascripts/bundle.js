@@ -13525,13 +13525,11 @@ var Home = function (_React$Component) {
 	}, {
 		key: 'componentWillReceiveProps',
 		value: function componentWillReceiveProps(nextProps) {
-			if (nextProps.homeHub) {
-				this.setState({ hub: nextProps.homeHub });
-			}
 			if (nextProps.mainImages) {
 				this.handleSpriteAnimation();
-				this.setState({ mainImages: nextProps.mainImages });
 			}
+			this.setState({ hub: nextProps.homeHub,
+				mainImages: nextProps.mainImages });
 		}
 	}, {
 		key: 'componentWillUnmount',
@@ -13595,6 +13593,7 @@ var Home = function (_React$Component) {
 			    mountainImageDisplay = void 0,
 			    cameraImageDisplay = void 0,
 			    speedBar = void 0;
+
 			if (!this.state.hub || !this.state.mainImages) {
 				hubIndexListItemDisplay = "";
 				mountainImageDisplay = "";

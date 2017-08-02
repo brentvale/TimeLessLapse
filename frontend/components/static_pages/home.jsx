@@ -33,13 +33,11 @@ class Home extends React.Component{
 	}
 	
 	componentWillReceiveProps(nextProps){
-		if(nextProps.homeHub){
-			this.setState({hub: nextProps.homeHub});
-		}
 		if(nextProps.mainImages){
 			this.handleSpriteAnimation();
-			this.setState({mainImages: nextProps.mainImages})
 		}
+		this.setState({hub: nextProps.homeHub,
+									 mainImages: nextProps.mainImages});
 	}
 	
 	componentWillUnmount(){
@@ -91,6 +89,7 @@ class Home extends React.Component{
 	
 	render(){
 		let hubIndexListItemDisplay, mountainImageDisplay, cameraImageDisplay, speedBar;
+		
 		if(!this.state.hub || !this.state.mainImages){
 			hubIndexListItemDisplay = "";
 			mountainImageDisplay = "";
