@@ -49,8 +49,7 @@
 	<%= yield %>
 	
 </div>
-<p><%= session %></p>
-<p><%= session['language_id'] %></p>
+
 <% if session.nil? || session['language_id'].nil? %>
 	<script>
 		$(function(){

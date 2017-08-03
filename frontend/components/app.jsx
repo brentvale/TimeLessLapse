@@ -41,9 +41,14 @@ class App extends Component{
 			})
     );
 		
+		let languageContainer = "";
+		if(!this.props.currentUser || this.props.location.pathname === "/edit_user"){
+			languageContainer = <LanguageContainer updateActiveLanguage={this.updateActiveLanguage} selectedLanguage={this.state.activeLanguage}/>
+		}
+		
 		return(
 		  <div>
-				<LanguageContainer updateActiveLanguage={this.updateActiveLanguage} selectedLanguage={this.state.activeLanguage}/>
+				{ languageContainer }
 				<CustomNavContainer selectedLanguage={this.state.activeLanguage}/>
 				<div style={{marginTop: "50px"}}>{childrenWithProps}</div>
 		  </div>

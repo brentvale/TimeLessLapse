@@ -6,7 +6,7 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 
 import Home from './static_pages/home';
 import SettingsContainer from './static_pages/settings_container';
-import App from './app';
+import AppContainer from './app_container';
 import CustomNav from './navigation/custom_nav';
 
 import HubsContainer from './hubs/hubs_container';
@@ -19,7 +19,7 @@ const Root = ({ store }) => {
   return (
     <Provider store={store}>
       <Router history={hashHistory}>
-        <Route path="/" component={App}>
+        <Route path="/" component={AppContainer}>
           <IndexRoute component={HubsContainer}/>
          
 					<Route path="/take_photo" component={NewPhoto} />
