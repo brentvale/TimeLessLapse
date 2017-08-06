@@ -53,7 +53,7 @@ class HubIndexPhotoDisplay extends React.Component{
 		
 		//needs to come from link being clicked on, not just hovering
 		if(e.currentTarget.tagName === "A"){
-			this.props.router.push(`hubs/${e.currentTarget.dataset.hubId}`);
+			this.props.router.push(`hubs/${e.currentTarget.attributes["data-hub-id"].value}`);
 		}
 	}
 
@@ -88,7 +88,7 @@ class HubIndexPhotoDisplay extends React.Component{
 							 
 							 <img src={hub.photographs[this.state.currentImageIndex].small_image} className="drop-shadow"/>
 							 
-							 <Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping} onTouchStart={this.stopFlipping}>
+							 <Link to={`/hubs/${hub.id}`} data-hub-id={hub.id}onClick={this.stopFlipping} onTouchStart={this.stopFlipping}>
 							 		<i className="fa fa-share-square hand-on-hover" aria-hidden="true"></i>
 							 </Link>
 					</div>
