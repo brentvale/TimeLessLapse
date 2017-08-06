@@ -26072,6 +26072,7 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 		value: function startFlipping(e) {
 			var _this2 = this;
 
+			e.preventDefault();
 			this.props.activateHub(parseInt($(e.currentTarget).data("hub-id")));
 
 			var photosLength = this.props.hub.photographs.length;
