@@ -26086,9 +26086,14 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 		}
 	}, {
 		key: 'stopFlipping',
-		value: function stopFlipping() {
+		value: function stopFlipping(e) {
 			this.props.deactivateHub();
 			clearInterval(this.interval);
+
+			//needs to come from link being clicked on, not just hovering
+			if (e.currentTarget.tagName === "A") {
+				this.props.router.push('hubs/' + e.currentTarget.dataset.hubId);
+			}
 		}
 	}, {
 		key: 'render',
@@ -26106,22 +26111,6 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 				);
 			}
 
-			var hubInfoDisplay = _react2.default.createElement(
-				'div',
-				null,
-				_react2.default.createElement(
-					_reactRouter.Link,
-					{ to: '/hubs/' + hub.id, onClick: this.stopFlipping },
-					'View ',
-					hub.hub_name,
-					' Hub >>'
-				),
-				_react2.default.createElement(
-					'h2',
-					{ className: 'heading-block' },
-					hub.hub_name
-				)
-			);
 			var hubImageKlass = this.props.activeHubId == hub.id ? "center-block active-hub" : "center-block inactive-hub";
 
 			var containerKlass = void 0;
@@ -26157,7 +26146,7 @@ var HubIndexPhotoDisplay = function (_React$Component) {
 	return HubIndexPhotoDisplay;
 }(_react2.default.Component);
 
-exports.default = HubIndexPhotoDisplay;
+exports.default = (0, _reactRouter.withRouter)(HubIndexPhotoDisplay);
 
 /***/ }),
 /* 297 */

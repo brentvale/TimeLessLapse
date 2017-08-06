@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Link } from 'react-router';
+import { Link, withRouter } from 'react-router';
 //GLOBAL VARIABLES
 import { tabletBreakPoint } from '../../util/global_variables';
 
@@ -47,9 +47,14 @@ class HubIndexPhotoDisplay extends React.Component{
 		}, this.props.timeInterval);
 	}
 	
-	stopFlipping(){
+	stopFlipping(e){
 		this.props.deactivateHub();
 		clearInterval(this.interval);
+		
+		//needs to come from link being clicked on, not just hovering
+		if(e.currentTarget.tagName === "A"){
+			this.props.router.push(`hubs/${e.currentTarget.dataset.hubId}`);
+		}
 	}
 
 	render(){
@@ -59,11 +64,7 @@ class HubIndexPhotoDisplay extends React.Component{
 		if(hub.photographs.length === 0){
 			return <div>Not photographs with timelapse_hub with id {hub.id}</div>
 		}									
-																							
-		let hubInfoDisplay =  <div>
-														<Link to={`/hubs/${hub.id}`} onClick={this.stopFlipping}>View {hub.hub_name} Hub >></Link>
-														<h2 className="heading-block">{hub.hub_name}</h2>
-													</div>;
+																			
 		let hubImageKlass = (this.props.activeHubId == hub.id) ? "center-block active-hub" : "center-block inactive-hub";
 		
 		let containerKlass;
@@ -97,4 +98,4 @@ class HubIndexPhotoDisplay extends React.Component{
 		);
 	}
 }
-export default HubIndexPhotoDisplay;
+export default withRouter(HubIndexPhotoDisplay);
