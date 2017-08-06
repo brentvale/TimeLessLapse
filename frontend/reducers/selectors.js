@@ -24,8 +24,4 @@ const getHomeHub = ({ hubs }) => {
 	return hubs[14];
 }
 
-const getMainImages = ({ hubs }) => {
-	return hubs["mainImages"];
-}
-
-export { getAllHubs, getSingleHub, getCurrentUser, getHomeHub, getMainImages};
+export { getAllHubs, getSingleHub, getCurrentUser, getHomeHub };
