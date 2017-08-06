@@ -5211,6 +5211,7 @@ exports.requestHubs = requestHubs;
 exports.requestHub = requestHub;
 exports.updateHub = updateHub;
 exports.requestHomeHub = requestHomeHub;
+exports.createNewHub = createNewHub;
 
 var _hub_api_util = __webpack_require__(319);
 
@@ -5250,6 +5251,14 @@ function updateHub(hubObj) {
 function requestHomeHub() {
 	return function (dispatch) {
 		return util.fetchLandingHub().then(function (obj) {
+			return dispatch(receiveHub(obj));
+		});
+	};
+}
+
+function createNewHub(formData) {
+	return function (dispatch) {
+		return util.createNewHub(formData).then(function (obj) {
 			return dispatch(receiveHub(obj));
 		});
 	};
@@ -26980,9 +26989,9 @@ var _reactKonva = __webpack_require__(264);
 
 var ReactKonva = _interopRequireWildcard(_reactKonva);
 
-var _select_hub = __webpack_require__(306);
+var _select_hub_container = __webpack_require__(675);
 
-var _select_hub2 = _interopRequireDefault(_select_hub);
+var _select_hub_container2 = _interopRequireDefault(_select_hub_container);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -27015,14 +27024,13 @@ var NewPhoto = function (_React$Component) {
 			targetHubName: null
 		};
 		_this.close = _this.close.bind(_this);
-		_this.createNewHub = _this.createNewHub.bind(_this);
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 		_this.handleChange = _this.handleChange.bind(_this);
 		_this.handleConfirmed = _this.handleConfirmed.bind(_this);
-		_this.handleUnConfirmed = _this.handleUnConfirmed.bind(_this);
 		_this.handleSelectHub = _this.handleSelectHub.bind(_this);
+		_this.handleUnConfirmed = _this.handleUnConfirmed.bind(_this);
+		_this.navigateToTimelapseHubs = _this.navigateToTimelapseHubs.bind(_this);
 		_this.navigateToTimelapseHub = _this.navigateToTimelapseHub.bind(_this);
-		_this.navigateToTimelapseHubs = _this.navigateToTimelapseHub.bind(_this);
 		_this.open = _this.open.bind(_this);
 		_this.updatePhotographWithHubId = _this.updatePhotographWithHubId.bind(_this);
 		return _this;
@@ -27037,33 +27045,6 @@ var NewPhoto = function (_React$Component) {
 		key: 'open',
 		value: function open() {
 			this.setState({ showModal: true });
-		}
-	}, {
-		key: 'navigateToTimelapseHub',
-		value: function navigateToTimelapseHub(hubId) {
-			this.props.router.push('hubs/' + hubId);
-		}
-	}, {
-		key: 'createNewHub',
-		value: function createNewHub(e) {
-			var that = this;
-			$.ajax({
-				url: "api/timelapse_hubs",
-				method: "POST",
-				data: {
-					timelapse_hub: {
-						latitude: that.state.photograph.latitude.slice(0, 13),
-						longitude: that.state.photograph.longitude.slice(0, 13),
-						hub_name: "Unnamed",
-						first_photograph_id: that.state.photograph.id
-					}
-				},
-				success: function success(resp) {
-					that.navigateToTimelapseHub(resp);
-				},
-				error: function error(resp) {}
-			});
-			alert('creating new hub and using photograph with id: ' + this.state.photograph.id + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  latitude: ' + this.state.photograph.latitude + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t longitude: ' + this.state.photograph.longitude);
 		}
 	}, {
 		key: 'handleChange',
@@ -27251,10 +27232,15 @@ var NewPhoto = function (_React$Component) {
 					);
 					break;
 				case 2:
-					display = _react2.default.createElement(_select_hub2.default, { handleSelectHub: this.handleSelectHub, createNewHub: this.createNewHub });
+					display = _react2.default.createElement(_select_hub_container2.default, { handleSelectHub: this.handleSelectHub, createNewHub: this.createNewHub, photograph: this.state.photograph });
 					break;
 			}
 			return display;
+		}
+	}, {
+		key: 'navigateToTimelapseHub',
+		value: function navigateToTimelapseHub(hubId) {
+			this.props.router.push('hubs/' + hubId);
 		}
 	}, {
 		key: 'updatePhotographWithHubId',
@@ -27500,51 +27486,48 @@ var SelectHub = function (_React$Component) {
 			hubs: null,
 			errors: null
 		};
-		_this.handleSelectHub = _this.handleSelectHub.bind(_this);
+		_this.handleCreateNewHub = _this.handleCreateNewHub.bind(_this);
 		return _this;
 	}
 
 	_createClass(SelectHub, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			var that = this;
-
-			$.ajax({
-				url: "api/timelapse_hubs",
-				method: "GET",
-				success: function success(resp) {
-					that.setState({ hubs: resp });
-				},
-				error: function error(resp) {
-					that.setState({ errors: resp });
-				}
-			});
+			if (this.props.hubs.length === 0) {
+				this.props.requestHubs();
+			}
 		}
 	}, {
-		key: 'handleSelectHub',
-		value: function handleSelectHub(e) {
-			this.props.handleSelectHub(e);
+		key: 'handleCreateNewHub',
+		value: function handleCreateNewHub(e) {
+			e.preventDefault();
+			this.props.createNewHub({ timelapse_hub: {
+					latitude: this.props.photograph.latitude.slice(0, 13),
+					longitude: this.props.photograph.longitude.slice(0, 13),
+					hub_name: "Unnamed",
+					first_photograph_id: this.props.photograph.id
+				}
+			}).then(alert('creating new hub and using photograph with id: ' + this.props.photograph.id + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  latitude: ' + this.props.photograph.latitude + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tlongitude: ' + this.props.photograph.longitude));
+			// this.navigateToTimelapseHub(obj)
 		}
 	}, {
 		key: 'render',
 		value: function render() {
-			if (!this.state.hubs) {
-				return _react2.default.createElement(
-					'div',
-					null,
-					'Fetching Timelapse Hubs...'
-				);
-			}
+			var _props = this.props,
+			    hubs = _props.hubs,
+			    createNewHub = _props.createNewHub,
+			    handleSelectHub = _props.handleSelectHub;
+
 			var that = this;
 			return _react2.default.createElement(
 				'div',
 				{ style: { textAlign: "center" } },
-				Object.keys(this.state.hubs).map(function (hub_id, idx) {
-					return _react2.default.createElement(_select_hub_list_item2.default, { key: idx, hub: that.state.hubs[hub_id], handleSelectHub: that.props.handleSelectHub });
+				Object.keys(hubs).map(function (hub_id, idx) {
+					return _react2.default.createElement(_select_hub_list_item2.default, { key: idx, hub: hubs[hub_id], handleSelectHub: handleSelectHub });
 				}),
 				_react2.default.createElement(
 					'div',
-					{ onClick: this.props.createNewHub, className: 'center-block select-hub-list-item hand-on-hover', style: { padding: "0" } },
+					{ onClick: createNewHub, className: 'center-block select-hub-list-item hand-on-hover', style: { padding: "0" } },
 					_react2.default.createElement('i', { className: 'fa fa-picture-o', 'aria-hidden': 'true' }),
 					_react2.default.createElement(
 						'div',
@@ -27617,8 +27600,11 @@ var SelectHubListItem = function (_React$Component) {
 	_createClass(SelectHubListItem, [{
 		key: "handleSelectHub",
 		value: function handleSelectHub(e) {
+			e.preventDefault();
+			var storedEvent = e;
 			var that = this;
-			this.props.handleSelectHub({ e: e, callback: function callback() {
+
+			this.props.handleSelectHub({ e: storedEvent, callback: function callback() {
 					that.setState({ selected: false });
 				} });
 			this.setState({ selected: true });
@@ -28641,45 +28627,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
-exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
+exports.createNewHub = exports.fetchLandingHub = exports.updateHub = exports.fetchHub = exports.fetchHubs = undefined;
 
 var _hub_actions = __webpack_require__(66);
 
 var fetchHubs = exports.fetchHubs = function fetchHubs() {
-  return $.ajax({
-    method: 'GET',
-    url: '/api/timelapse_hubs'
-  });
+	return $.ajax({
+		method: 'GET',
+		url: '/api/timelapse_hubs'
+	});
 };
 
 var fetchHub = exports.fetchHub = function fetchHub(id) {
-  return $.ajax({
-    method: 'GET',
-    url: '/api/timelapse_hubs/' + id
-  });
+	return $.ajax({
+		method: 'GET',
+		url: '/api/timelapse_hubs/' + id
+	});
 };
 
 var updateHub = exports.updateHub = function updateHub(_ref) {
-  var hub = _ref.hub,
-      hubName = _ref.hubName;
-  return $.ajax({
-    url: 'api/timelapse_hubs/' + hub.id,
-    method: 'PATCH',
-    data: {
-      timelapse_hub: {
-        hub_name: hubName
-      }
-    }
-  });
+	var hub = _ref.hub,
+	    hubName = _ref.hubName;
+	return $.ajax({
+		url: 'api/timelapse_hubs/' + hub.id,
+		method: 'PATCH',
+		data: {
+			timelapse_hub: {
+				hub_name: hubName
+			}
+		}
+	});
 };
 
 var fetchLandingHub = exports.fetchLandingHub = function fetchLandingHub() {
-  return $.ajax({
-    method: 'GET',
-    url: '/static_pages/fetch_landing_hub'
-  });
+	return $.ajax({
+		method: 'GET',
+		url: '/static_pages/fetch_landing_hub'
+	});
+};
+var createNewHub = exports.createNewHub = function createNewHub(formData) {
+	return $.ajax({
+		url: "api/timelapse_hubs",
+		method: "POST",
+		data: formData
+	});
 };
 
 /***/ }),
@@ -75756,6 +75749,57 @@ function isReactComponent(component) {
 /***/ (function(module, exports) {
 
 /* (ignored) */
+
+/***/ }),
+/* 675 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _reactRedux = __webpack_require__(41);
+
+var _hub_actions = __webpack_require__(66);
+
+var HubActions = _interopRequireWildcard(_hub_actions);
+
+var _selectors = __webpack_require__(43);
+
+var _select_hub = __webpack_require__(306);
+
+var _select_hub2 = _interopRequireDefault(_select_hub);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var mapStateToProps = function mapStateToProps(state, ownProps) {
+	return {
+		hubs: (0, _selectors.getAllHubs)(state),
+		selectedLanguage: ownProps.selectedLanguage,
+		photograph: ownProps.photograph
+	};
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch, ownProps) {
+	return {
+		createNewHub: function createNewHub(formData) {
+			return dispatch(HubActions.createNewHub(formData));
+		},
+		handleSelectHub: function handleSelectHub(obj) {
+			return ownProps.handleSelectHub(obj);
+		},
+		requestHubs: function requestHubs() {
+			return dispatch(HubActions.requestHubs());
+		}
+	};
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_select_hub2.default);
 
 /***/ })
 /******/ ]);

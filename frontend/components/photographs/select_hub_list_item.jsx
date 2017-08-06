@@ -12,8 +12,11 @@ class SelectHubListItem extends React.Component {
 	}
 	
 	handleSelectHub(e){
+		e.preventDefault();
+		const storedEvent = e;
 		let that = this;
-		this.props.handleSelectHub({e: e, callback: (() => { that.setState({selected: false}) } ) });
+		
+		this.props.handleSelectHub({e: storedEvent, callback: (() => { that.setState({selected: false}) } ) });
 		this.setState({selected: true});
 	}
 	

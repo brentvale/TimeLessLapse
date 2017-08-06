@@ -29,6 +29,12 @@ export function requestHomeHub(){
 	}
 }
 
+export function createNewHub(formData){
+	return(dispatch) => {
+		return util.createNewHub(formData).then(obj => dispatch(receiveHub(obj)));
+	}
+}
+
 //sync actions
 export const receiveHubs = (obj) => ({
   type: RECEIVE_HUBS,

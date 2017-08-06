@@ -10,7 +10,7 @@ window.EXIF_IMAGE = Exif;
 import {Button, Modal} from 'react-bootstrap';
 import FileInput from 'react-file-input';
 import * as ReactKonva from 'react-konva';
-import SelectHub from './select_hub';
+import SelectHubContainer from './select_hub_container';
 
 class NewPhoto extends React.Component{
 	constructor(){
@@ -26,14 +26,13 @@ class NewPhoto extends React.Component{
 			targetHubName: null
 		};
 		this.close = this.close.bind(this);
-		this.createNewHub = this.createNewHub.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.handleChange = this.handleChange.bind(this);
 		this.handleConfirmed = this.handleConfirmed.bind(this);
-		this.handleUnConfirmed = this.handleUnConfirmed.bind(this);
 		this.handleSelectHub = this.handleSelectHub.bind(this);
+		this.handleUnConfirmed = this.handleUnConfirmed.bind(this);
+		this.navigateToTimelapseHubs = this.navigateToTimelapseHubs.bind(this);
 		this.navigateToTimelapseHub = this.navigateToTimelapseHub.bind(this);
-		this.navigateToTimelapseHubs = this.navigateToTimelapseHub.bind(this);
 		this.open = this.open.bind(this);
 		this.updatePhotographWithHubId = this.updatePhotographWithHubId.bind(this);
 	}
@@ -45,35 +44,6 @@ class NewPhoto extends React.Component{
   open() {
   	this.setState({ showModal: true });
   }
-	
-  navigateToTimelapseHub(hubId) {
-    this.props.router.push(`hubs/${hubId}`);
-  }
-	
-	createNewHub(e){
-		let that = this;
-		$.ajax({
-			url: "api/timelapse_hubs",
-			method: "POST",
-			data: {
-				timelapse_hub: {
-					latitude: that.state.photograph.latitude.slice(0,13),
-					longitude: that.state.photograph.longitude.slice(0,13),
-					hub_name: "Unnamed",
-					first_photograph_id: that.state.photograph.id
-				}
-			},
-			success: (resp) => {	
-			  that.navigateToTimelapseHub(resp);
-			},
-			error: (resp) => {
-				
-			}
-		});
-		alert(`creating new hub and using photograph with id: ${this.state.photograph.id}
-																							  latitude: ${this.state.photograph.latitude}
-																							 longitude: ${this.state.photograph.longitude}`);
-	}
 	
   handleChange(e){
 		let that = this;
@@ -240,11 +210,15 @@ class NewPhoto extends React.Component{
 				        </form>
 			break;
 		case 2:
-			display = <SelectHub handleSelectHub={this.handleSelectHub} createNewHub={this.createNewHub}/>
+			display = <SelectHubContainer handleSelectHub={this.handleSelectHub} createNewHub={this.createNewHub} photograph={this.state.photograph}/>
 			break;
 		}
 		return display;
 	}
+	
+  navigateToTimelapseHub(hubId) {
+    this.props.router.push(`hubs/${hubId}`);
+  }
 	
 	updatePhotographWithHubId(){
 		let that = this;
