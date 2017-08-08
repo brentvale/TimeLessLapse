@@ -14,17 +14,20 @@ export const fetchHub = (id) => (
   })
 );
 
-export const updateHub = ({hub, hubName}) => (
-	$.ajax({
-		url: `api/timelapse_hubs/${hub.id}`,
-		method: 'PATCH',
-		data: {
-			timelapse_hub: {
-				hub_name: hubName
+export const updateHub = ({hub, hubName}) => {
+	return (
+		$.ajax({
+			url: `api/timelapse_hubs/${hub.id}`,
+			method: 'PATCH',
+			data: {
+				timelapse_hub: {
+					hub_name: hubName,
+					public: hub.public
+				}
 			}
-		}
-	})
-);
+		})
+	)
+};
 
 export const fetchLandingHub = () => (
   $.ajax({

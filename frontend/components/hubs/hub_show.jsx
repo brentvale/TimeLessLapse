@@ -5,6 +5,7 @@ import HubIndexListItem from './hub_index_list_item';
 import HubMap from './hub_map';
 import HubShowPhotoDisplay from './hub_show_photo_display';
 import UserInfo from '../users/info';
+import PublicPrivateSlider from '../shared/public_private_slider';
 
 import SpeedControlsBlock from './speed_controls_block';
 
@@ -74,7 +75,7 @@ class HubShow extends React.Component{
 	}
 	
 	render(){
-		const { hub, currentUser, homePage } = this.props;
+		const { hub, currentUser, homePage, updateHub } = this.props;
 		
 		if(!hub || (!currentUser && !homePage)){
 			return <div>Fetching Data...</div>
@@ -106,10 +107,12 @@ class HubShow extends React.Component{
 						{titleEditingField}
 						{spanEditOrSave}
 					</div>
-	
+						
 					<HubIndexListItem hub={hub} windowWidth={this.state.windowWidth} timeInterval={this.state.timeInterval}/>
 						
 					{ speedBar }
+					
+					<PublicPrivateSlider hub={hub} updateHub={updateHub}/>
 						
 					<HubMap lat={hub.latitude} lng={hub.longitude} windowWidth={this.state.windowWidth}/>
 		

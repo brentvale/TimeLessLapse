@@ -40,6 +40,6 @@ class Api::TimelapseHubsController < ApplicationController
   private
   
   def timelapse_hub_params
-    params.require(:timelapse_hub).permit(:latitude, :longitude, :hub_name, :user_id, :first_photograph_id)
+    params.require(:timelapse_hub).permit(:latitude, :longitude, :hub_name, :user_id, :first_photograph_id, :public)
   end
 end
