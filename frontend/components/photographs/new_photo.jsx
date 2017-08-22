@@ -210,7 +210,7 @@ class NewPhoto extends React.Component{
 				        </form>
 			break;
 		case 2:
-			display = <SelectHubContainer handleSelectHub={this.handleSelectHub} createNewHub={this.createNewHub} photograph={this.state.photograph}/>
+			display = <SelectHubContainer handleSelectHub={this.handleSelectHub} photograph={this.state.photograph}/>
 			break;
 		}
 		return display;

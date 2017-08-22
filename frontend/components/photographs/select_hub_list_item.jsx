@@ -22,6 +22,9 @@ class SelectHubListItem extends React.Component {
 	
 	render(){
 		let { hub } = this.props;
+		if(!hub.photographs){
+			return <div>Navigating to new hub.</div>
+		}
 		let hubImageSrc = (typeof hub.photographs[0] === "undefined") ? "" : hub.photographs[0].thumbnail_image;
 		
 		return(

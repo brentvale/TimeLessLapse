@@ -35,10 +35,14 @@ export const fetchLandingHub = () => (
     url: '/static_pages/fetch_landing_hub'
   })
 );
-export const createNewHub = (formData) =>(
+export const createNewHub = (formData) => (
 	$.ajax({
 		url: "api/timelapse_hubs",
 		method: "POST",
 		data: formData
 	})
 )
+	
+
+	
+

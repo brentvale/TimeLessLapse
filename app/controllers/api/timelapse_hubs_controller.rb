@@ -15,7 +15,7 @@ class Api::TimelapseHubsController < ApplicationController
     @hub.user_id = current_user.id
     if @hub.save
       @hub.save_first_photograph(params[:timelapse_hub][:first_photograph_id])
-      render json: @hub.id
+      render :show
     else
       render json: {message: "something went wrong server side creating a hub", errors: @hub.errors.full_messages}
     end
