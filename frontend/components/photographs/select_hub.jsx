@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { withRouter } from 'react-router';
 import SelectHubListItem from './select_hub_list_item';
 
 class SelectHub extends React.Component{
@@ -10,6 +10,7 @@ class SelectHub extends React.Component{
 			errors: null
 		}
 		this.handleCreateNewHub = this.handleCreateNewHub.bind(this);
+		this.navigateToTimelapseHub = this.navigateToTimelapseHub.bind(this);
 	}
 	
 	componentDidMount(){
@@ -26,14 +27,20 @@ class SelectHub extends React.Component{
 																							hub_name: "Unnamed",
 																							first_photograph_id: this.props.photograph.id
 																							}
-														}).then(alert(`creating new hub and using photograph with id: ${this.props.photograph.id}
-																							  latitude: ${this.props.photograph.latitude}
-																								longitude: ${this.props.photograph.longitude}`));
-											// this.navigateToTimelapseHub(obj)
+														}).then((obj) => {alert(`creating new hub and using photograph with id: ${this.props.photograph.id}
+																								  latitude: ${this.props.photograph.latitude}
+																									longitude: ${this.props.photograph.longitude}`);
+																									
+																									this.navigateToTimelapseHub(obj.hub.id)} );
+											
 	}
 	
+  navigateToTimelapseHub(hubId) {
+    this.props.router.push(`hubs/${hubId}`);
+  }
+	
 	render(){
-		const {hubs, createNewHub, handleSelectHub} = this.props;
+		const {hubs, handleSelectHub} = this.props;
 		let that = this;
 		return(
 			<div style={{textAlign: "center"}}>
@@ -41,7 +48,7 @@ class SelectHub extends React.Component{
 					return <SelectHubListItem key={idx} hub={hubs[hub_id]} handleSelectHub={handleSelectHub}/>
 				})}
 				
-				<div onClick={createNewHub} className="center-block select-hub-list-item hand-on-hover" style={{padding: "0"}}>
+				<div onClick={this.handleCreateNewHub} className="center-block select-hub-list-item hand-on-hover" style={{padding: "0"}}>
 					<i className="fa fa-picture-o" aria-hidden="true"></i>
 					<div style={{verticalAlign: "top", height: "100%"}}>
 						<h4 style={{marginTop: "2em", display: "inline-block", verticalAlign: "middle"}}>Create New Hub</h4>
@@ -53,4 +60,4 @@ class SelectHub extends React.Component{
 	}
 }
 
-export default SelectHub;
+export default withRouter(SelectHub);

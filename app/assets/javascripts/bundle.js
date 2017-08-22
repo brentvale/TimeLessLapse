@@ -27228,7 +27228,7 @@ var NewPhoto = function (_React$Component) {
 					);
 					break;
 				case 2:
-					display = _react2.default.createElement(_select_hub_container2.default, { handleSelectHub: this.handleSelectHub, createNewHub: this.createNewHub, photograph: this.state.photograph });
+					display = _react2.default.createElement(_select_hub_container2.default, { handleSelectHub: this.handleSelectHub, photograph: this.state.photograph });
 					break;
 			}
 			return display;
@@ -27458,6 +27458,8 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = __webpack_require__(28);
+
 var _select_hub_list_item = __webpack_require__(308);
 
 var _select_hub_list_item2 = _interopRequireDefault(_select_hub_list_item);
@@ -27483,6 +27485,7 @@ var SelectHub = function (_React$Component) {
 			errors: null
 		};
 		_this.handleCreateNewHub = _this.handleCreateNewHub.bind(_this);
+		_this.navigateToTimelapseHub = _this.navigateToTimelapseHub.bind(_this);
 		return _this;
 	}
 
@@ -27496,6 +27499,8 @@ var SelectHub = function (_React$Component) {
 	}, {
 		key: 'handleCreateNewHub',
 		value: function handleCreateNewHub(e) {
+			var _this2 = this;
+
 			e.preventDefault();
 			this.props.createNewHub({ timelapse_hub: {
 					latitude: this.props.photograph.latitude.slice(0, 13),
@@ -27503,15 +27508,22 @@ var SelectHub = function (_React$Component) {
 					hub_name: "Unnamed",
 					first_photograph_id: this.props.photograph.id
 				}
-			}).then(alert('creating new hub and using photograph with id: ' + this.props.photograph.id + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  latitude: ' + this.props.photograph.latitude + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tlongitude: ' + this.props.photograph.longitude));
-			// this.navigateToTimelapseHub(obj)
+			}).then(function (obj) {
+				alert('creating new hub and using photograph with id: ' + _this2.props.photograph.id + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t  latitude: ' + _this2.props.photograph.latitude + '\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tlongitude: ' + _this2.props.photograph.longitude);
+
+				_this2.navigateToTimelapseHub(obj.hub.id);
+			});
+		}
+	}, {
+		key: 'navigateToTimelapseHub',
+		value: function navigateToTimelapseHub(hubId) {
+			this.props.router.push('hubs/' + hubId);
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var _props = this.props,
 			    hubs = _props.hubs,
-			    createNewHub = _props.createNewHub,
 			    handleSelectHub = _props.handleSelectHub;
 
 			var that = this;
@@ -27523,7 +27535,7 @@ var SelectHub = function (_React$Component) {
 				}),
 				_react2.default.createElement(
 					'div',
-					{ onClick: createNewHub, className: 'center-block select-hub-list-item hand-on-hover', style: { padding: "0" } },
+					{ onClick: this.handleCreateNewHub, className: 'center-block select-hub-list-item hand-on-hover', style: { padding: "0" } },
 					_react2.default.createElement('i', { className: 'fa fa-picture-o', 'aria-hidden': 'true' }),
 					_react2.default.createElement(
 						'div',
@@ -27542,7 +27554,7 @@ var SelectHub = function (_React$Component) {
 	return SelectHub;
 }(_react2.default.Component);
 
-exports.default = SelectHub;
+exports.default = (0, _reactRouter.withRouter)(SelectHub);
 
 /***/ }),
 /* 307 */
@@ -27661,6 +27673,13 @@ var SelectHubListItem = function (_React$Component) {
 		value: function render() {
 			var hub = this.props.hub;
 
+			if (!hub.photographs) {
+				return _react2.default.createElement(
+					"div",
+					null,
+					"Navigating to new hub."
+				);
+			}
 			var hubImageSrc = typeof hub.photographs[0] === "undefined" ? "" : hub.photographs[0].thumbnail_image;
 
 			return _react2.default.createElement(
