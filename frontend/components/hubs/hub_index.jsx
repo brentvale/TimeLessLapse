@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Link } from 'react-router';
 //COMPONENTS
-import HubIndexPhotoDisplay from './hub_index_photo_display';
+import HubIndexPhotoDisplayThumbnail from './hub_index_photo_display_thumbnail';
 import HomeContainer from '../static_pages/home_container';
 import UserInfo from '../users/info';
 
@@ -73,12 +73,8 @@ class HubIndex extends React.Component{
 					<div className="page-block page-block-border center-block">
 			
 						{hubs.map((hub) => {
-							return <HubIndexPhotoDisplay key={hub.id} 
-																						hub={hub} 
-																						activeHubId={that.state.activeHubId} 
-																						activateHub={that.activateHub} 
-																						deactivateHub={that.deactivateHub}
-																						timeInterval={DEFAULT_TIME_INTERVAL}/>
+							return <HubIndexPhotoDisplayThumbnail key={hub.id} 
+																										hub={hub} />
 						})}
 					</div>
 				</div>
