@@ -31,10 +31,18 @@
     "redux-thunk": "^2.1.0",
     "webpack": "^2.6.1"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "babel-jest": "^21.0.2",
+    "enzyme": "^2.9.1",
+    "jest": "^21.0.2",
+    "nock": "^9.0.14",
+    "redux-mock-store": "^1.2.3"
+  },
   "scripts": {
     "webpack:deploy": "webpack --config=./webpack.config.prod.js -p",
-    "heroku-postbuild": "npm run webpack:deploy"
+    "heroku-postbuild": "npm run webpack:deploy",
+    "test": "jest",
+    "test:watch": "npm test -- --watch"
   },
   "engines": {
     "node": "6.9.2",
