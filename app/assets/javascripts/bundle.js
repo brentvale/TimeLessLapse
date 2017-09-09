@@ -8968,7 +8968,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var tabletBreakPoint = exports.tabletBreakPoint = 768;
-var companyName = exports.companyName = "ProjectExchange";
 
 /***/ }),
 /* 111 */
