@@ -4,7 +4,6 @@ export const RECEIVE_HUBS = "RECEIVE_HUBS";
 export const RECEIVE_HUB = "RECEIVE_HUB";
 
 //async actions
-
 export function requestHubs(){
 	return(dispatch) => {
 		return util.fetchHubs().then(obj => dispatch(receiveHubs(obj)) );
@@ -19,19 +18,19 @@ export function requestHub(id){
 
 export function updateHub(hubObj){
 	return(dispatch) => {
-		return util.updateHub(hubObj).then(obj => dispatch(receiveHub(obj)));
+		return util.updateHub(hubObj).then(obj => dispatch(receiveHub(obj)) );
 	}
 }
 
 export function requestHomeHub(){
 	return(dispatch) => {
-		return util.fetchLandingHub().then(obj => dispatch(receiveHub(obj)));
+		return util.fetchLandingHub().then(obj => dispatch(receiveHub(obj)) );
 	}
 }
 
 export function createNewHub(formData){
 	return(dispatch) => {
-		return util.createNewHub(formData).then(obj => dispatch(receiveHub(obj)));
+		return util.createNewHub(formData).then(obj => dispatch(receiveHub(obj)) );
 	}
 }
 
