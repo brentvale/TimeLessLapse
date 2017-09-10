@@ -14,23 +14,14 @@ class HubIndex extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			fetchedHubs: false,
-			activeHubId: 0
+			fetchedHubs: false
 		}
-		this.activateHub = this.activateHub.bind(this);
-		this.deactivateHub = this.deactivateHub.bind(this);
 	}
 	
 	componentDidMount(){
-		this.props.requestCurrentUser();
-	}
-	
-	activateHub(hubId){
-		this.setState({activeHubId: hubId});
-	}
-	
-	deactivateHub(){
-		this.setState({activeHubId: 0})
+		if(!this.props.currentUser){
+			this.props.requestCurrentUser();
+		}
 	}
 	
 	componentWillReceiveProps(nextProps){

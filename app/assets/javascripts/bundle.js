@@ -25889,28 +25889,17 @@ var HubIndex = function (_React$Component) {
 		var _this = _possibleConstructorReturn(this, (HubIndex.__proto__ || Object.getPrototypeOf(HubIndex)).call(this, props));
 
 		_this.state = {
-			fetchedHubs: false,
-			activeHubId: 0
+			fetchedHubs: false
 		};
-		_this.activateHub = _this.activateHub.bind(_this);
-		_this.deactivateHub = _this.deactivateHub.bind(_this);
 		return _this;
 	}
 
 	_createClass(HubIndex, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			this.props.requestCurrentUser();
-		}
-	}, {
-		key: 'activateHub',
-		value: function activateHub(hubId) {
-			this.setState({ activeHubId: hubId });
-		}
-	}, {
-		key: 'deactivateHub',
-		value: function deactivateHub() {
-			this.setState({ activeHubId: 0 });
+			if (!this.props.currentUser) {
+				this.props.requestCurrentUser();
+			}
 		}
 	}, {
 		key: 'componentWillReceiveProps',
