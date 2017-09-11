@@ -4,6 +4,7 @@ import {ProgressBar} from 'react-bootstrap';
 
 //GLOBAL VARIABLES
 import { tabletBreakPoint } from '../../util/global_variables';
+import {convertToDisplayableDate} from './shared_functions';
 
 class HubIndexListItem extends Component{
 	constructor(){
@@ -72,7 +73,7 @@ class HubIndexListItem extends Component{
 	stopFlipping(){
 		clearInterval(this.interval);
 	}
-
+	
 	render(){
 		let { hub, windowWidth, mainImages } = this.props;
 																				
@@ -80,10 +81,7 @@ class HubIndexListItem extends Component{
 			return <div>Not photographs with timelapse hub with id {hub.id}</div>
 		}	
 		
-		let imageSrc = "https://image.ibb.co/mdbUH5/finger_print.png";
-		// if(typeof mainImages !== "undefined"){
-// 			imageSrc = mainImages.finger_print_url;
-// 		}							
+		let imageSrc = "https://image.ibb.co/mdbUH5/finger_print.png";						
 		
 		let imageToUse;
 		if(windowWidth > 400){
@@ -93,7 +91,10 @@ class HubIndexListItem extends Component{
 		}
 		
 		const now = (this.state.currentImageIndex / hub.photographs.length) * 100;	
-		const progressBar = (hub.photographs.length > 1) ? <ProgressBar bsStyle="danger" now={now} /> : "";											
+		const progressBar = (hub.photographs.length > 1) ? <ProgressBar bsStyle="danger" now={now} /> : "";	
+												
+		const dateDisplay = convertToDisplayableDate(hub.photographs[this.state.currentImageIndex].datetime_digitized);
+		const dateDisplayStyle = {position: 'absolute', top: '20px', right: '0px', height: "30px", lineHeight: "30px", width: "150px", backgroundColor: 'black', color: '#FD5C63', textAlign: 'center'};
 		
 		if(USER_IS_MOBILE){
 			return (
@@ -106,15 +107,18 @@ class HubIndexListItem extends Component{
 						 			id="fingerPrintIcon"
 						 			onTouchStart={this.startFlipping} 
 						 			onTouchEnd={this.stopFlipping}/>
+							<div style={dateDisplayStyle}>{dateDisplay}</div>
 				</div>
 			);
 		} else {
 			return (
 				<div onMouseEnter={this.startFlipping} 
 						 onMouseLeave={this.stopFlipping} 
-						 className="center-block">
+						 className="center-block"
+						 style={{position:"relative"}}>
 						 {progressBar}
 						 {imageToUse}
+						 <div style={dateDisplayStyle}>{dateDisplay}</div>
 				</div>
 			);
 		}						
