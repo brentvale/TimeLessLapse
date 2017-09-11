@@ -75880,7 +75880,7 @@ function convertToDisplayableDate(string) {
 		newHours += parseInt(digitsToRollbackOnTimeChange) - offsetHours;
 	}
 	var amOrPm = newHours >= 12 ? "pm" : "am";
-	var displayTime = "" + newHours + time.slice(2) + amOrPm;
+	var displayTime = "" + time + amOrPm;
 
 	return "" + namedMonth + " " + day + ", " + year + " " + displayTime;
 }

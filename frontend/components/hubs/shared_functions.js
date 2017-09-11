@@ -27,7 +27,7 @@ export function convertToDisplayableDate(string){
 		newHours += (parseInt(digitsToRollbackOnTimeChange) - offsetHours);
 	}
 	let amOrPm = (newHours >= 12) ? "pm" : "am";
-	let displayTime = "" + newHours + time.slice(2) + amOrPm;
+	let displayTime = "" + time + amOrPm;
 	
 	return "" + namedMonth + " " + day + ", " + year + " " + displayTime;
 }
