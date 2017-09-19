@@ -28,9 +28,9 @@ class Photograph < ActiveRecord::Base
               small: {geometry: "400x300>", auto_orient: true},
               large: {geometry: "800x600>", auto_orient: true}
             },
-    :convert_options => {:thumb => "-gravity center -extent 200x150",
-                        :small => "-gravity center -extent 400x300",
-                        :large => "-gravity center -extent 800x600"}
+    :convert_options => {:thumb => "-gravity center -extent 200x150 -quality 50",
+                        :small => "-gravity center -extent 400x300 -quality 50",
+                        :large => "-gravity center -extent 800x600 -quality 50"}
       
   validates :image, 
     attachment_content_type: {:content_type => ["image/jpg", "image/jpeg", "image/png"]},
