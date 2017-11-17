@@ -84,11 +84,12 @@ class HubIndexListItem extends Component{
 		let imageSrc = "https://image.ibb.co/mdbUH5/finger_print.png";						
 		
 		let imageToUse;
-		if(windowWidth > 400){
-			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].large_image} className="image-display"/>;
-		} else {
-			imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display"/>;
-		}
+    imageToUse = <img src={hub.photographs[this.state.currentImageIndex].large_image} className="image-display"/>;
+		// if(windowWidth > 400){
+//       imageToUse = <img src={hub.photographs[this.state.currentImageIndex].large_image} className="image-display"/>;
+//     } else {
+//       imageToUse = <img src={hub.photographs[this.state.currentImageIndex].small_image} className="image-display"/>;
+//     }
 		
 		const now = (this.state.currentImageIndex / hub.photographs.length) * 100;	
 		const progressBar = (hub.photographs.length > 1) ? <ProgressBar bsStyle="danger" now={now} /> : "";	
