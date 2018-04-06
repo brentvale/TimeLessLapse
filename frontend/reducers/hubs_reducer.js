@@ -1,5 +1,5 @@
 import * as HubActions from '../actions/hub_actions';
-import merge from 'lodash/merge';
+import {merge} from 'lodash';
 
 const hubsReducer = (state = {}, action) => {
   Object.freeze(state);

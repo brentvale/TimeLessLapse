@@ -33,7 +33,7 @@ gem 'devise',           '~> 4.2'
 gem 'paperclip'
 gem 'aws-sdk', '~> 2.3'
 
-gem 'bootstrap-sass', '~> 3.3.6'
+gem 'bootstrap-sass', '~> 3.3.7'
 
 gem 'exifr'
 
